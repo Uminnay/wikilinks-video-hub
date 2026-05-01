@@ -37,19 +37,19 @@ export async function updateSession(request: NextRequest) {
                         request.nextUrl.pathname.startsWith('/_next') ||
                         request.nextUrl.pathname.includes('.')
 
-  // if (!user && !isLoginPage && !isPublicRoute) {
-  //   // Redirigir al login
-  //   const url = request.nextUrl.clone()
-  //   url.pathname = '/login'
-  //   return NextResponse.redirect(url)
-  // }
+  if (!user && !isLoginPage && !isPublicRoute) {
+    // Redirigir al login
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
+  }
 
-  // if (user && isLoginPage) {
-  //   // Si está autenticado y en login, redirigir al inicio
-  //   const url = request.nextUrl.clone()
-  //   url.pathname = '/'
-  //   return NextResponse.redirect(url)
-  // }
+  if (user && isLoginPage) {
+    // Si está autenticado y en login, redirigir al inicio
+    const url = request.nextUrl.clone()
+    url.pathname = '/'
+    return NextResponse.redirect(url)
+  }
 
   return supabaseResponse
 }

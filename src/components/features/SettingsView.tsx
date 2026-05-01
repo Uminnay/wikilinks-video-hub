@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { useAppStore } from "@/store/useAppStore"
+import { signOut } from "@/app/login/actions"
+import { createClient } from "@/lib/supabase/client"
 
 const PRESET_COLORS = [
   '#FF3B30', '#FF9500', '#FFCC00', '#4CD964', '#5AC8FA', 
@@ -86,6 +88,20 @@ export default function SettingsView() {
 
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState<'profile' | 'categories' | 'priorities' | 'times' | 'tags'>('profile')
+  const [userEmail, setUserEmail] = useState<string | null>(null)
+  const [isSaving, setIsSaving] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    const fetchUser = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        setUserEmail(user.email || null)
+      }
+    }
+    fetchUser()
+  }, [])
 
   // Modals state
   const [showAddCategory, setShowAddCategory] = useState(false)
@@ -135,7 +151,7 @@ export default function SettingsView() {
   return (
     <div className="flex flex-col gap-6 relative">
       {/* Tabs */}
-      <div className="flex overflow-x-auto gap-2 pb-2 no-scrollbar -mx-4 px-4">
+      <div className="flex flex-wrap gap-2 pb-2">
         <button onClick={() => setActiveTab('profile')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'profile' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Perfil & Datos</button>
         <button onClick={() => setActiveTab('categories')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'categories' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Categorías</button>
         <button onClick={() => setActiveTab('priorities')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'priorities' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Prioridades</button>
@@ -149,13 +165,41 @@ export default function SettingsView() {
             <h2 className="text-sm font-semibold text-onSurface">Perfil</h2>
             <div>
               <label className="block text-[10px] font-medium uppercase tracking-wider text-onSurface-muted mb-1.5">Nombre</label>
-              <input 
-                type="text" 
-                value={userProfile.name} 
-                onChange={(e) => updateUserProfile(e.target.value)}
-                className="w-full bg-background border border-surface-high text-onSurface text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-primary transition-colors"
-              />
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  value={userProfile.name} 
+                  onChange={(e) => updateUserProfile(e.target.value)}
+                  placeholder="Tu nombre..."
+                  className="flex-1 bg-background border border-surface-high text-onSurface text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-primary transition-colors"
+                />
+                <div className="px-3 py-2 bg-surface-high rounded-lg text-[10px] uppercase font-bold text-primary flex items-center justify-center">
+                  Guardado
+                </div>
+              </div>
+              <p className="text-[10px] text-onSurface-muted mt-2 italic">El nombre se guarda automáticamente mientras escribes.</p>
             </div>
+            
+            {userEmail && (
+              <div className="pt-2">
+                <label className="block text-[10px] font-medium uppercase tracking-wider text-onSurface-muted mb-1.5">Cuenta</label>
+                <div className="flex items-center gap-2 text-onSurface text-xs bg-background border border-surface-high rounded-lg px-3 py-2">
+                  <span className="material-symbols-outlined text-[16px] text-onSurface-muted">mail</span>
+                  {userEmail}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-surface-low rounded-xl p-4 border border-surface-high space-y-3">
+            <h2 className="text-sm font-semibold text-error">Sesión</h2>
+            <button 
+              onClick={() => signOut()}
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-error/10 text-error hover:bg-error/20 transition-colors text-xs font-bold"
+            >
+              <span className="material-symbols-outlined text-[18px]">logout</span>
+              Cerrar Sesión
+            </button>
           </div>
 
           <div className="bg-surface-low rounded-xl p-4 border border-surface-high space-y-3">

@@ -83,6 +83,13 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
    - **Redes:** Traefik funciona en **`network_mode: host`**. 
    - **Regla de oro para Docker Compose:** No definir secciones de `networks` ni redes externas en las apps. Traefik detecta los contenedores por etiquetas (`labels`) a través del socket de Docker.
    - **Limpieza de Git:** Al usar `git clone` dentro de un comando de Docker Compose, añadir siempre `rm -rf ./*` al principio para evitar errores de "directorio no vacío" si el contenedor se reinicia.
+   - **Next.js Production Builds**: When deploying to production via Docker, always include `devDependencies` during the build phase (`npm install --include=dev`) because Next.js needs them to compile (Tailwind, TypeScript, etc.).
+   - **Node.js Engine**: Next.js 14+ requires Node 20+. Using `node:18` or lower will result in `EBADENGINE` errors and potential silent crashes during build. Always use `node:20-alpine`.
+   - **VPS Resource Management**: Next.js builds are resource-intensive. To prevent builds from hanging or crashing on a VPS:
+       - Increase memory limit: `NODE_OPTIONS='--max-old-space-size=4096'`.
+       - Bypass non-critical checks: Use `typescript: { ignoreBuildErrors: true }` and `eslint: { ignoreDuringBuilds: true }` in `next.config.mjs` to prevent minor errors from blocking the build.
+   - **Docker Compose Optimization**: Instead of `rm -rf && git clone`, use a persistent strategy: `( [ -d .git ] || git clone ... ) && git pull`. This speeds up the restart loop and prevents timeouts from the hosting provider.
+   - **Traefik Configuration**: Ensure `network_mode: host` and proper labels for SSL certificates (`letsencrypt`) are present in the `docker-compose.yml`.
    - **Puerto estándar:** La mayoría de las apps web (como Next.js) deben usar el puerto `3000` en el loadbalancer de Traefik.
 
 4. **Seguridad del Repositorio (Pendiente)**:

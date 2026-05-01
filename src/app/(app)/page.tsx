@@ -113,9 +113,9 @@ export default function HomePage() {
     <main className="px-4 pt-6 pb-24 max-w-3xl mx-auto flex flex-col gap-8">
       <header className="flex justify-between items-center w-full sticky top-0 bg-background/80 backdrop-blur-md py-3 z-30">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center overflow-hidden border border-surface-high">
+          <Link href="/settings" className="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center overflow-hidden border border-surface-high hover:brightness-110 transition-all">
             <span className="material-symbols-outlined text-onSurface-muted">person</span>
-          </div>
+          </Link>
           <h1 className="text-xl font-bold tracking-tighter text-primary">Wikilinks</h1>
         </div>
         <div className="flex items-center gap-2">
@@ -228,18 +228,18 @@ export default function HomePage() {
                 <AddFirstVideoBtn />
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 {categoriesWithCounts.map((cat) => (
                   <Link
                     key={cat.id}
                     href={`/category/${cat.id}`}
-                    className={`bg-surface-low rounded-2xl p-4 flex flex-col justify-between items-start gap-4 hover:bg-surface-high transition-colors group border border-surface-high aspect-square ${cat.count === 0 ? 'opacity-50' : ''}`}
+                    className={`bg-surface-low rounded-2xl p-4 flex flex-col justify-between items-start gap-3 hover:bg-surface-high transition-colors group border border-surface-high min-h-[100px] ${cat.count === 0 ? 'opacity-50' : ''}`}
                   >
-                    <div className="w-10 h-10 rounded-xl bg-surface-high flex items-center justify-center flex-shrink-0" style={{ color: cat.colorHex }}>
-                      <span className="material-symbols-outlined text-[24px]">{cat.icon}</span>
+                    <div className="w-9 h-9 rounded-xl bg-surface-high flex items-center justify-center flex-shrink-0" style={{ color: cat.colorHex }}>
+                      <span className="material-symbols-outlined text-[20px]">{cat.icon}</span>
                     </div>
                     <div className="w-full">
-                      <h3 className="text-sm font-semibold text-onSurface group-hover:text-primary transition-colors truncate">{cat.name}</h3>
+                      <h3 className="text-sm font-semibold text-onSurface group-hover:text-primary transition-colors leading-tight">{cat.name}</h3>
                       <div className="flex justify-between items-center mt-1">
                         <p className="text-[10px] uppercase tracking-wider text-onSurface-muted">{cat.count} {cat.count === 1 ? 'vídeo' : 'vídeos'}</p>
                         {cat.hasHighPriority && (
@@ -265,18 +265,18 @@ export default function HomePage() {
                 <p className="text-xs text-onSurface-muted mt-1">Crea etiquetas en Configuración y asígnalas a tus vídeos.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 {tagsWithCounts.map(tag => (
                   <Link
                     key={tag.id}
                     href={`/tag/${tag.id}`}
-                    className="bg-surface-low rounded-2xl p-4 flex flex-col justify-between items-start gap-4 hover:bg-surface-high transition-colors group border border-surface-high aspect-square"
+                    className="bg-surface-low rounded-2xl p-4 flex flex-col justify-between items-start gap-3 hover:bg-surface-high transition-colors group border border-surface-high min-h-[100px]"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-surface-high flex items-center justify-center flex-shrink-0 text-primary">
-                      <span className="material-symbols-outlined text-[24px]">tag</span>
+                    <div className="w-9 h-9 rounded-xl bg-surface-high flex items-center justify-center flex-shrink-0 text-primary">
+                      <span className="material-symbols-outlined text-[20px]">tag</span>
                     </div>
                     <div className="w-full">
-                      <h3 className="text-sm font-semibold text-onSurface group-hover:text-primary transition-colors truncate">#{tag.name}</h3>
+                      <h3 className="text-sm font-semibold text-onSurface group-hover:text-primary transition-colors leading-tight">#{tag.name}</h3>
                       <p className="text-[10px] uppercase tracking-wider text-onSurface-muted mt-1">{tag.count} {tag.count === 1 ? 'vídeo' : 'vídeos'}</p>
                     </div>
                   </Link>
@@ -296,15 +296,15 @@ export default function HomePage() {
                 <p className="text-sm text-onSurface-muted">Ningún vídeo tiene prioridad asignada todavía.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 {prioritiesWithCounts.map(prio => (
                   <Link
                     key={prio.id}
                     href={`/watch?priority=${prio.id}`}
-                    className="bg-surface-low rounded-2xl p-4 flex flex-col justify-between items-start gap-4 hover:bg-surface-high transition-colors group border border-surface-high aspect-square"
+                    className="bg-surface-low rounded-2xl p-4 flex flex-col justify-between items-start gap-3 hover:bg-surface-high transition-colors group border border-surface-high min-h-[100px]"
                   >
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                      className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
                       style={{ backgroundColor: `${prio.colorHex}22`, border: `1px solid ${prio.colorHex}55` }}
                     >
                       <div
@@ -313,7 +313,7 @@ export default function HomePage() {
                       />
                     </div>
                     <div className="w-full">
-                      <h3 className="text-sm font-semibold text-onSurface group-hover:text-primary transition-colors truncate">{prio.label}</h3>
+                      <h3 className="text-sm font-semibold text-onSurface group-hover:text-primary transition-colors leading-tight">{prio.label}</h3>
                       <p className="text-[10px] uppercase tracking-wider text-onSurface-muted mt-1">{prio.count} {prio.count === 1 ? 'vídeo' : 'vídeos'}</p>
                     </div>
                   </Link>
@@ -326,10 +326,10 @@ export default function HomePage() {
       {/* Alertas y Utilidades */}
       <section>
         <h2 className="text-[10px] font-sans font-medium uppercase tracking-wider text-onSurface-muted mb-4 ml-1">Herramientas y Tareas</h2>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           
           {/* Notion */}
-          <Link href="/notion" className="bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between aspect-video">
+          <Link href="/notion" className="bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between min-h-[110px]">
             <div className="flex justify-between items-start mb-3">
               <span className="material-symbols-outlined text-status-notion">description</span>
               {notionCount > 0 && (
@@ -345,7 +345,7 @@ export default function HomePage() {
           </Link>
 
           {/* Acciones */}
-          <Link href="/actions" className="bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between aspect-video">
+          <Link href="/actions" className="bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between min-h-[110px]">
             <div className="flex justify-between items-start mb-3">
               <span className="material-symbols-outlined text-primary">bolt</span>
               {actions.filter(a => a.status === 'pending').length > 0 && (
@@ -361,7 +361,7 @@ export default function HomePage() {
           </Link>
 
           {/* Sin clasificar */}
-          <Link href="/category/Sin clasificar" className={`bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between aspect-video ${unclassifiedCount === 0 ? 'opacity-50' : ''}`}>
+          <Link href="/category/Sin clasificar" className={`bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between min-h-[110px] ${unclassifiedCount === 0 ? 'opacity-50' : ''}`}>
             <div className="flex justify-between items-start mb-3">
               <span className="material-symbols-outlined text-onSurface-muted">folder_off</span>
               {unclassifiedCount > 0 && (
@@ -377,7 +377,7 @@ export default function HomePage() {
           </Link>
 
           {/* Papelera */}
-          <Link href="/trash" className="bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between aspect-video">
+          <Link href="/trash" className="bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between min-h-[110px]">
             <div className="flex justify-between items-start mb-3">
               <span className="material-symbols-outlined text-error">delete</span>
               {videos.filter(v => v.status === 'discarded').length > 0 && (
@@ -393,7 +393,7 @@ export default function HomePage() {
           </Link>
 
           {/* Histórico / Vistos */}
-          <Link href="/history" className="bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between aspect-video">
+          <Link href="/history" className="bg-surface-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-high transition-colors border border-surface-high flex flex-col justify-between min-h-[110px]">
             <div className="flex justify-between items-start mb-3">
               <span className="material-symbols-outlined text-onSurface-muted">history</span>
               {seenCount > 0 && (

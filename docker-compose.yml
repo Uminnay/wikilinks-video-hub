@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  wikilinks:
+    build: 
+      context: .
+      args:
+        # Se pasan las variables públicas en tiempo de build
+        - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+        - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    image: wikilinks-video-hub:latest
+    container_name: wikilinks
+    restart: unless-stopped
+    env_file:
+      - .env
+    labels:
+      - "traefik.enable=true"
+      # Ajustar el host según el dominio final
+      - "traefik.http.routers.wikilinks.rule=Host(`wikilinks.tudominio.com`)"
+      - "traefik.http.routers.wikilinks.entrypoints=websecure"
+      - "traefik.http.routers.wikilinks.tls.certresolver=myresolver" # Cambiar por el nombre de tu resolver en Traefik
+      - "traefik.http.services.wikilinks.loadbalancer.server.port=3000"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true # Asume que tienes una red externa llamada 'web' compartida con Traefik

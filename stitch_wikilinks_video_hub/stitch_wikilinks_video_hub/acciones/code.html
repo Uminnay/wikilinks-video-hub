@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Acciones - Kinetic Archivist</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#484555",
+                        "inverse-surface": "#e5e1e4",
+                        "error": "#ffb4ab",
+                        "tertiary": "#4edea3",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#e6deff",
+                        "error-container": "#93000a",
+                        "primary": "#cabeff",
+                        "on-error": "#690005",
+                        "surface": "#131315",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "surface-container-highest": "#353437",
+                        "secondary-fixed-dim": "#c6c5d6",
+                        "on-secondary": "#2e2f3d",
+                        "on-primary": "#32009a",
+                        "tertiary-container": "#00a572",
+                        "surface-variant": "#353437",
+                        "on-surface-variant": "#c9c4d8",
+                        "primary-fixed-dim": "#cabeff",
+                        "background": "#131315",
+                        "on-secondary-fixed": "#1a1b27",
+                        "inverse-on-surface": "#303032",
+                        "secondary-fixed": "#e2e1f3",
+                        "on-tertiary": "#003824",
+                        "on-primary-fixed": "#1c0062",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-background": "#e5e1e4",
+                        "outline": "#938ea1",
+                        "inverse-primary": "#613de0",
+                        "surface-container-high": "#2a2a2c",
+                        "on-primary-fixed-variant": "#4918c8",
+                        "on-primary-container": "#2b0088",
+                        "surface-tint": "#cabeff",
+                        "surface-container-lowest": "#0e0e10",
+                        "on-secondary-fixed-variant": "#454654",
+                        "on-tertiary-fixed": "#002113",
+                        "on-tertiary-container": "#00311f",
+                        "surface-container-low": "#1b1b1d",
+                        "surface-bright": "#39393b",
+                        "surface-dim": "#131315",
+                        "surface-container": "#201f21",
+                        "secondary-container": "#474856",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "secondary": "#c6c5d6",
+                        "on-surface": "#e5e1e4",
+                        "on-secondary-container": "#b7b7c8",
+                        "primary-container": "#947dff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .fill-icon { font-variation-settings: 'FILL' 1; }
+        .text-headline-sm { font-size: 1.5rem; line-height: 2rem; letter-spacing: -0.02em; font-weight: 700; }
+        .text-body-md { font-size: 0.875rem; line-height: 1.5; }
+        .text-label-sm { font-size: 0.6875rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; }
+        .text-title-sm { font-size: 0.875rem; font-weight: 600; line-height: 1.25rem; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased pb-24 md:pb-0 h-screen flex flex-col md:flex-row overflow-hidden">
+<!-- TopAppBar -->
+<header class="md:hidden flex justify-between items-center px-4 py-3 w-full h-16 bg-[#131315]/80 backdrop-blur-md docked full-width top-0 z-50 no-border-tonal-shift-bg-[#1B1B1D] shadow-[0px_12px_32px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden flex items-center justify-center text-primary">
+<span class="material-symbols-outlined fill-icon text-xl">person</span>
+</div>
+<h1 class="font-['Inter'] headline-sm tracking-tighter text-white">Acciones</h1>
+</div>
+<button class="text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto px-4 py-6 md:p-8 flex flex-col gap-6 md:max-w-4xl md:mx-auto w-full">
+<!-- Header (Web) -->
+<div class="hidden md:flex justify-between items-end mb-4">
+<div>
+<h1 class="text-headline-sm text-on-surface mb-1">Acciones</h1>
+<p class="text-body-md text-on-surface-variant">Manage and track your tasks.</p>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-highest border border-error/20 text-on-surface text-label-sm whitespace-nowrap transition-colors">
+<span class="w-2 h-2 rounded-full bg-[#F59E0B] shadow-[0_0_8px_#F59E0B]"></span>
+                Pendiente
+            </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container-high border border-transparent text-on-surface-variant text-label-sm whitespace-nowrap transition-colors">
+<span class="w-2 h-2 rounded-full bg-[#60A5FA]"></span>
+                En curso
+            </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container-high border border-transparent text-on-surface-variant text-label-sm whitespace-nowrap transition-colors">
+<span class="w-2 h-2 rounded-full bg-outline" style="background-color: #4B5563; shadow: 0 0 8px #4B5563;"></span>
+                Completada
+            </button>
+</div>
+<!-- Action Items List -->
+<div class="flex flex-col gap-2">
+<!-- Item 1 -->
+<div class="group flex items-center justify-between p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-highest transition-colors duration-200 cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Review Q3 Financials</span>
+<span class="text-body-md text-on-surface-variant">Linked to: "Q3 All Hands"</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="px-2.5 py-1 rounded-DEFAULT bg-[#F59E0B]/10 text-[#F59E0B] text-[0.625rem] font-semibold uppercase tracking-wider border border-[#F59E0B]/20">Pendiente</span>
+<span class="text-[0.6875rem] text-outline">Oct 12</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="group flex items-center justify-between p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-highest transition-colors duration-200 cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Update Pitch Deck</span>
+<span class="text-body-md text-on-surface-variant">Linked to: "Investor Briefing"</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="px-2.5 py-1 rounded-DEFAULT bg-[#F59E0B]/10 text-[#F59E0B] text-[0.625rem] font-semibold uppercase tracking-wider border border-[#F59E0B]/20">Pendiente</span>
+<span class="text-[0.6875rem] text-outline">Oct 14</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="group flex items-center justify-between p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-highest transition-colors duration-200 cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Schedule Follow-up Calls</span>
+<span class="text-body-md text-on-surface-variant">Linked to: "Client Syncs"</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="px-2.5 py-1 rounded-DEFAULT bg-[#F59E0B]/10 text-[#F59E0B] text-[0.625rem] font-semibold uppercase tracking-wider border border-[#F59E0B]/20">Pendiente</span>
+<span class="text-[0.6875rem] text-outline">Oct 15</span>
+</div>
+</div>
+<!-- Item 4 (En Curso example for visual variety despite filter, assuming it might show based on complex logic or just for design mock) -->
+<div class="group flex items-center justify-between p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-highest transition-colors duration-200 cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Grabar demo de producto</span>
+<span class="text-body-md text-on-surface-variant">Linked to: "V2 Planning"</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="px-2.5 py-1 rounded-DEFAULT bg-[#60A5FA]/10 text-[#60A5FA] text-[0.625rem] font-semibold uppercase tracking-wider border border-[#60A5FA]/20">En curso</span>
+<span class="text-[0.6875rem] text-outline">Oct 16</span>
+</div>
+</div><div class="group flex items-center justify-between p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/15 opacity-70 hover:opacity-100 transition-all duration-200">
+<div class="flex flex-col gap-1">
+<span class="text-title-sm text-on-surface line-through decoration-outline">Finalize Design Specs</span>
+<span class="text-body-md text-on-surface-variant line-through decoration-outline">Linked to: "V2 Planning"</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="px-2.5 py-1 rounded-DEFAULT bg-outline/10 text-outline text-[0.625rem] font-semibold uppercase tracking-wider border border-outline/20" style="background-color: rgba(75, 85, 99, 0.1); color: #4B5563; border-color: rgba(75, 85, 99, 0.2);">Completada</span>
+<span class="text-[0.6875rem] text-outline">Oct 10</span>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB -->
+<button class="md:hidden fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-br from-[#7C5CFC] to-[#947DFF] rounded-xl flex items-center justify-center text-white shadow-[0_8px_16px_rgba(124,92,252,0.3)] hover:scale-105 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-2 py-3 bg-[#1B1B1D] pb-safe z-50 shadow-[0px_-4px_24px_rgba(0,0,0,0.5)] bg-[#1B1B1D] against-bg-[#131315] rounded-t-none">
+<a class="flex flex-col items-center justify-center text-gray-500 p-2 hover:text-white transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase text-[0.625rem]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-500 p-2 hover:text-white transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1">add_box</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase text-[0.625rem]">Add</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-500 p-2 hover:text-white transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1">play_circle</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase text-[0.625rem] whitespace-nowrap overflow-hidden text-ellipsis w-full text-center">Watch Now</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#7C5CFC] to-[#947DFF] text-white rounded-[4px] p-2 hover:text-white transition-all scale-90 duration-150 w-16" href="#">
+<span class="material-symbols-outlined mb-1">bolt</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase text-[0.625rem]">Actions</span>
+</a>
+</nav>
+</body></html>

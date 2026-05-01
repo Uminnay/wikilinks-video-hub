@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Preparar para Notion - Wikilinks</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#0e0e10",
+                    "surface-bright": "#39393b",
+                    "primary-fixed-dim": "#cabeff",
+                    "inverse-primary": "#613de0",
+                    "on-primary": "#32009a",
+                    "on-tertiary": "#003824",
+                    "on-secondary-container": "#b7b7c8",
+                    "on-error-container": "#ffdad6",
+                    "background": "#131315",
+                    "inverse-on-surface": "#303032",
+                    "surface-container-high": "#2a2a2c",
+                    "surface-container": "#201f21",
+                    "tertiary-container": "#00a572",
+                    "primary-container": "#947dff",
+                    "error-container": "#93000a",
+                    "on-primary-fixed": "#1c0062",
+                    "secondary-fixed": "#e2e1f3",
+                    "on-error": "#690005",
+                    "surface-tint": "#cabeff",
+                    "outline-variant": "#484555",
+                    "on-secondary-fixed-variant": "#454654",
+                    "on-surface": "#e5e1e4",
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-background": "#e5e1e4",
+                    "secondary-container": "#474856",
+                    "outline": "#938ea1",
+                    "error": "#ffb4ab",
+                    "tertiary": "#4edea3",
+                    "on-primary-fixed-variant": "#4918c8",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "primary-fixed": "#e6deff",
+                    "on-secondary-fixed": "#1a1b27",
+                    "on-secondary": "#2e2f3d",
+                    "surface-container-highest": "#353437",
+                    "on-tertiary-container": "#00311f",
+                    "on-tertiary-fixed": "#002113",
+                    "surface-variant": "#353437",
+                    "primary": "#cabeff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "surface-container-low": "#1b1b1d",
+                    "on-primary-container": "#2b0088",
+                    "surface-dim": "#131315",
+                    "secondary-fixed-dim": "#c6c5d6",
+                    "secondary": "#c6c5d6",
+                    "surface": "#131315",
+                    "on-surface-variant": "#c9c4d8",
+                    "inverse-surface": "#e5e1e4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Hide scrollbar for clean linear look */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body min-h-screen selection:bg-primary-container/30 selection:text-primary-fixed">
+<!-- Task-Focused Header (Suppressed Global Nav) -->
+<header class="flex items-center px-4 py-3 h-16 w-full sticky top-0 z-50 bg-background/80 backdrop-blur-md shadow-[0px_4px_24px_rgba(0,0,0,0.2)]">
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-1 -ml-1 mr-3 flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+</button>
+<h1 class="font-headline text-[1.25rem] font-medium tracking-tight text-on-surface">Preparar para Notion</h1>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-4 py-6 max-w-2xl mx-auto w-full pb-24">
+<form class="flex flex-col gap-6">
+<!-- Título -->
+<div class="flex flex-col gap-2">
+<label class="font-label text-[0.6875rem] tracking-[0.05em] uppercase text-on-surface-variant" for="titulo">Título</label>
+<input class="w-full bg-transparent border-outline-variant/15 border text-body text-sm text-on-surface rounded p-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-highest/20 transition-all placeholder:text-outline-variant" id="titulo" placeholder="Ingresa el título" type="text" value="Arquitectura de Sistemas Distribuidos: Conceptos Core"/>
+</div>
+<!-- URL -->
+<div class="flex flex-col gap-2">
+<label class="font-label text-[0.6875rem] tracking-[0.05em] uppercase text-on-surface-variant" for="url">URL</label>
+<input class="w-full bg-transparent border-outline-variant/15 border text-body text-sm text-on-surface rounded p-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-highest/20 transition-all placeholder:text-outline-variant font-mono text-xs" id="url" type="url" value="https://youtube.com/watch?v=ejemplo_dist"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Canal -->
+<div class="flex flex-col gap-2">
+<label class="font-label text-[0.6875rem] tracking-[0.05em] uppercase text-on-surface-variant" for="canal">Canal</label>
+<input class="w-full bg-transparent border-outline-variant/15 border text-body text-sm text-on-surface rounded p-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-highest/20 transition-all placeholder:text-outline-variant" id="canal" type="text" value="TechLead Insights"/>
+</div>
+<!-- Categoría -->
+<div class="flex flex-col gap-2 relative">
+<label class="font-label text-[0.6875rem] tracking-[0.05em] uppercase text-on-surface-variant" for="categoria">Categoría</label>
+<div class="relative w-full">
+<select class="w-full bg-transparent border-outline-variant/15 border text-body text-sm text-on-surface rounded p-3 appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-highest/20 transition-all cursor-pointer" id="categoria">
+<option class="bg-surface-container-low text-on-surface" value="ingenieria">Ingeniería de Software</option>
+<option class="bg-surface-container-low text-on-surface" value="productividad">Productividad</option>
+<option class="bg-surface-container-low text-on-surface" value="diseno">Diseño de Sistemas</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Proyecto relacionado -->
+<div class="flex flex-col gap-2 relative">
+<label class="font-label text-[0.6875rem] tracking-[0.05em] uppercase text-on-surface-variant flex items-center justify-between" for="proyecto">
+<span>Proyecto relacionado</span>
+<span class="text-[0.6rem] text-outline opacity-70 normal-case tracking-normal">Opcional</span>
+</label>
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[1.1rem]">search</span>
+<input class="w-full bg-transparent border-outline-variant/15 border text-body text-sm text-on-surface rounded py-3 pl-9 pr-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-highest/20 transition-all placeholder:text-outline-variant" id="proyecto" placeholder="Buscar en Notion..." type="text"/>
+</div>
+</div>
+<!-- Nota personal -->
+<div class="flex flex-col gap-2">
+<label class="font-label text-[0.6875rem] tracking-[0.05em] uppercase text-on-surface-variant" for="nota">Nota personal</label>
+<textarea class="w-full bg-transparent border-outline-variant/15 border text-body text-sm text-on-surface rounded p-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-highest/20 transition-all placeholder:text-outline-variant resize-none" id="nota" placeholder="Añade contexto, timestamps importantes o ideas clave..." rows="4"></textarea>
+</div>
+<!-- Action Area -->
+<div class="mt-4 pt-6 border-t border-outline-variant/5">
+<button class="w-full bg-[#10B981] text-surface-container-lowest font-headline font-medium text-sm py-3.5 px-4 rounded shadow-[0px_8px_16px_rgba(16,185,129,0.15)] hover:brightness-110 active:scale-[0.98] transition-all flex justify-center items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[1.1rem]">save_alt</span>
+                    Guardar preparación
+                </button>
+</div>
+</form>
+</main>
+</body></html>

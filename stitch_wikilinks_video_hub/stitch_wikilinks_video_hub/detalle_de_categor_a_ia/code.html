@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Category Detail - IA</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#1a1b27",
+                        "inverse-surface": "#e5e1e4",
+                        "surface-container-highest": "#353437",
+                        "surface-container": "#201f21",
+                        "secondary-container": "#474856",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-primary-fixed": "#1c0062",
+                        "surface-variant": "#353437",
+                        "surface-tint": "#cabeff",
+                        "outline-variant": "#484555",
+                        "on-primary-container": "#2b0088",
+                        "primary-fixed": "#e6deff",
+                        "on-secondary-fixed-variant": "#454654",
+                        "on-surface": "#e5e1e4",
+                        "secondary": "#c6c5d6",
+                        "on-tertiary": "#003824",
+                        "surface": "#131315",
+                        "secondary-fixed": "#e2e1f3",
+                        "on-primary": "#32009a",
+                        "inverse-primary": "#613de0",
+                        "surface-container-high": "#2a2a2c",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1b1b1d",
+                        "on-surface-variant": "#c9c4d8",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#2e2f3d",
+                        "background": "#131315",
+                        "outline": "#938ea1",
+                        "secondary-fixed-dim": "#c6c5d6",
+                        "primary-fixed-dim": "#cabeff",
+                        "on-background": "#e5e1e4",
+                        "on-tertiary-container": "#00311f",
+                        "tertiary-fixed": "#6ffbbe",
+                        "primary-container": "#947dff",
+                        "surface-container-lowest": "#0e0e10",
+                        "primary": "#cabeff",
+                        "inverse-on-surface": "#303032",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#00a572",
+                        "surface-dim": "#131315",
+                        "tertiary": "#4edea3",
+                        "on-tertiary-fixed": "#002113",
+                        "on-primary-fixed-variant": "#4918c8",
+                        "surface-bright": "#39393b",
+                        "on-secondary-container": "#b7b7c8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .text-gradient {
+            background: linear-gradient(135deg, #7C5CFC, #947DFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 1rem); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-4 py-3 w-full h-16 bg-[#131315]/80 backdrop-blur-md docked full-width top-0 z-50 shadow-[0px_12px_32px_rgba(0,0,0,0.4)] border-b border-outline-variant/15 sticky top-0">
+<div class="flex items-center gap-3">
+<button aria-label="Back" class="text-on-surface hover:bg-[#353437] transition-colors p-2 rounded-full w-10 h-10 flex items-center justify-center group">
+<span class="material-symbols-outlined text-[24px] group-hover:scale-95 transition-transform duration-200">arrow_back</span>
+</button>
+<div class="flex items-baseline gap-2">
+<h1 class="font-headline text-[1.5rem] tracking-tight font-bold text-on-surface">IA</h1>
+<span class="font-label text-[0.875rem] text-outline">36</span>
+</div>
+</div>
+<button aria-label="Search" class="text-on-surface hover:bg-[#353437] transition-colors p-2 rounded-full w-10 h-10 flex items-center justify-center group">
+<span class="material-symbols-outlined text-[24px] group-hover:scale-95 transition-transform duration-200">search</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full flex flex-col gap-2 pt-2 px-2 overflow-x-hidden">
+<!-- Standard Video Row 1 -->
+<article class="flex w-full items-center gap-3 p-2 bg-surface-container-low rounded-xl hover:bg-surface-container-highest transition-colors relative group border border-transparent hover:border-outline-variant/15">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-surface-container-highest relative">
+<img alt="Video thumbnail" class="w-full h-full object-cover" data-alt="Abstract geometric shapes in electric blue and violet glowing against a dark void, representing artificial intelligence concepts" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC31ep6LYnVbbl04Wo2z11wfxxetjexdOtx-AT4W_iZKDJc5YDqX0kCb2sRFFZgu3RfUIRjfum4TzUO-CZsaSmWt99MW-ihI18J1IKYD-HJJEl5aQZ5bOtQ4CClMi5G8wwuLPXYJCwxId2liFJVskkpvGj0O0fVgU1178nwxRhuCwvSFU0jH7HUwC5zB0nYghgnJmUd-24XIpvo60tKXAuJmu9-DhqzUV5mUYxVvHntzp7eS3HKnD8xZKYJHe9eMqitkmZPsGekKxs6"/>
+<div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-lg"></div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+<h2 class="font-body text-[0.875rem] font-semibold text-on-surface truncate leading-tight mb-1">
+                    The Future of Autonomous AI Agents in 2024
+                </h2>
+<div class="flex items-center gap-2 font-label text-[0.6875rem] uppercase tracking-[0.05em] text-outline">
+<span class="truncate max-w-[120px]">Tech Visionaries</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant shrink-0"></span>
+<span>14:22</span>
+</div>
+</div>
+<div class="shrink-0 flex items-center gap-1.5 bg-surface-container py-1 px-2 rounded border border-outline-variant/15">
+<span class="w-2 h-2 rounded-full bg-[#F59E0B] shadow-[0_0_8px_rgba(245,158,11,0.4)]"></span>
+<span class="font-label text-[0.6875rem] uppercase tracking-[0.05em] text-on-surface">Alta</span>
+</div>
+</article>
+<!-- Standard Video Row 2 -->
+<article class="flex w-full items-center gap-3 p-2 bg-surface-container-low rounded-xl hover:bg-surface-container-highest transition-colors relative group border border-transparent hover:border-outline-variant/15">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-surface-container-highest relative">
+<img alt="Video thumbnail" class="w-full h-full object-cover" data-alt="Close up of a glowing humanoid robot face with blue lights, representing modern AI interfaces and robotics" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbkF6xra4vwCR2CNvWNwNmNMwbsj0DnPQ_lzQzV-VPuWd0aXqvrvU-h2Da_YBZjBpuRiLq0yF55I9-c6p6rYKWdfKVYsJ0TUr7qEBKh81JlBZy7zQWTwOc6x-RX3C3PmahFZoc-YrgJfxBa9Ti7sNCx0o13qY4fC0r2p1x__EbyRdV68GUXHqIY9id_tZL8mX0RF_ETHqs704-YIsdw-PMr9docSU7OkzpujD0ao0Z3JnkO1Zq54Mf1BnUn-lxkPLKNyopP2H8hdJs"/>
+<div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-lg"></div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+<h2 class="font-body text-[0.875rem] font-semibold text-on-surface truncate leading-tight mb-1">
+                    Building RAG Applications from Scratch
+                </h2>
+<div class="flex items-center gap-2 font-label text-[0.6875rem] uppercase tracking-[0.05em] text-outline">
+<span class="truncate max-w-[120px]">Data Science Pro</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant shrink-0"></span>
+<span>45:10</span>
+</div>
+</div>
+<div class="shrink-0 flex items-center gap-1.5 bg-surface-container py-1 px-2 rounded border border-outline-variant/15">
+<span class="w-2 h-2 rounded-full bg-inverse-primary"></span>
+<span class="font-label text-[0.6875rem] uppercase tracking-[0.05em] text-on-surface">Media</span>
+</div>
+</article>
+<!-- SWIPE LEFT STATE ROW (Simulated interaction) -->
+<div class="relative w-full rounded-xl overflow-hidden bg-surface-container-low isolate group">
+<!-- Hidden Action Buttons (Revealed on swipe) -->
+<div class="absolute top-0 right-0 h-full flex items-center justify-end z-0 pointer-events-none">
+<div class="flex h-full"><!-- Visto (Gray) -->
+<button class="h-full aspect-square bg-[#808090] flex flex-col items-center justify-center gap-1 hover:brightness-110 transition-all pointer-events-auto border-l border-outline-variant/10">
+<span class="material-symbols-outlined text-[20px] text-white">check</span>
+<span class="font-label text-[10px] text-white tracking-wide">Visto</span>
+</button>
+<!-- Descartar (Red) -->
+<button class="h-full aspect-square bg-error-container flex flex-col items-center justify-center gap-1 hover:brightness-110 transition-all pointer-events-auto border-l border-outline-variant/10">
+<span class="material-symbols-outlined text-[20px] text-[#ffb4ab]">delete</span>
+<span class="font-label text-[10px] text-[#ffb4ab] tracking-wide">Descartar</span>
+</button>
+<!-- Notion (Green) -->
+<button class="h-full aspect-square bg-[#10B981] flex flex-col items-center justify-center gap-1 hover:brightness-110 transition-all pointer-events-auto border-l border-outline-variant/10">
+<span class="material-symbols-outlined text-[20px] text-white">description</span>
+<span class="font-label text-[10px] text-white tracking-wide">Notion</span>
+</button>
+<!-- Acción (Violet) -->
+<button class="h-full aspect-square bg-[#7C5CFC] flex flex-col items-center justify-center gap-1 hover:brightness-110 transition-all pointer-events-auto border-l border-outline-variant/10 shadow-[-4px_0_12px_rgba(124,92,252,0.3)]">
+<span class="material-symbols-outlined text-[20px] text-white">bolt</span>
+<span class="font-label text-[10px] text-white tracking-wide">Acción</span>
+</button></div>
+</div>
+<!-- The Row Content (Shifted left to reveal buttons) -->
+<article class="flex w-full items-center gap-3 p-2 bg-surface-container-low rounded-xl transition-transform duration-300 relative z-10 shadow-[-8px_0_24px_rgba(0,0,0,0.5)] border border-outline-variant/20 -translate-x-[260px]">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-surface-container-highest relative">
+<img alt="Video thumbnail" class="w-full h-full object-cover opacity-80" data-alt="Dark server room with glowing blue indicator lights, conveying processing power and data infrastructure" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaAvlm-zx-CUyyq97GQ8yAa5EIDu0qy4Fjn__t4kEpFdGDtMFM4-x3diVILRxJIGHKPNlu1bG27TVytisTRzqi1a9MRyrYHxUu0A_iU7oAuGctNXrkq464QD1iElDUpA8gApEBSZMuMfTVSahkN7NrUp4WlcI_tFFBeoVdTOOEEmZcb9h6p39bxwVbaSXfWHUHaYkQWSWZ2DcXFHxUmTS8o2ao2trDz-ruZylEk_W8RXPGjxGEyVduuNXhIFWJzCUuoQXrBepE21ge"/>
+<div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-lg"></div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+<h2 class="font-body text-[0.875rem] font-semibold text-on-surface truncate leading-tight mb-1">
+                        Understanding Transformer Architectures in depth
+                    </h2>
+<div class="flex items-center gap-2 font-label text-[0.6875rem] uppercase tracking-[0.05em] text-outline">
+<span class="truncate max-w-[120px]">AI Explained</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant shrink-0"></span>
+<span>22:05</span>
+</div>
+</div>
+<div class="shrink-0 flex items-center gap-1.5 bg-surface-container py-1 px-2 rounded border border-outline-variant/15">
+<span class="w-2 h-2 rounded-full bg-[#F59E0B] shadow-[0_0_8px_rgba(245,158,11,0.4)]"></span>
+<span class="font-label text-[0.6875rem] uppercase tracking-[0.05em] text-on-surface">Alta</span>
+</div>
+</article>
+</div>
+<!-- Standard Video Row 3 -->
+<article class="flex w-full items-center gap-3 p-2 bg-surface-container-low rounded-xl hover:bg-surface-container-highest transition-colors relative group border border-transparent hover:border-outline-variant/15">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-surface-container-highest relative">
+<img alt="Video thumbnail" class="w-full h-full object-cover" data-alt="Digital neural network graphic with interconnected glowing nodes on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0nnWqCMDLHrfVBC1Y0dfMDsIf2n0SkRER9G2xxxJtSkkJHLe_NZmwLC-7yDimqrThFB_bLTdVKiYScBfYEDMY7kN3gtzD8My4iaNENdUE4T0lQVkAMXN5rY3W7arbS685zOGv4JoScwp1a_KArV75VF3FfjrzfmsGBOvzV34VaDwKISEz7Yz3Hlo_OPx5VRw6EgRB2Fou4y8Bgh80_xRuvTA-Y82l-ibOyOqUNARo2L1RUYDJSlnsS_8lpa99wGJHHUl9jVXT77Pp"/>
+<div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-lg"></div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+<h2 class="font-body text-[0.875rem] font-semibold text-on-surface truncate leading-tight mb-1">
+                    Midjourney v6: Complete Prompt Engineering Guide
+                </h2>
+<div class="flex items-center gap-2 font-label text-[0.6875rem] uppercase tracking-[0.05em] text-outline">
+<span class="truncate max-w-[120px]">Creative Canvas</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant shrink-0"></span>
+<span>18:30</span>
+</div>
+</div>
+<div class="shrink-0 flex items-center gap-1.5 bg-surface-container py-1 px-2 rounded border border-outline-variant/15">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span class="font-label text-[0.6875rem] uppercase tracking-[0.05em] text-on-surface">Baja</span>
+</div>
+</article>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-2 py-3 bg-[#1B1B1D] pb-safe shadow-[0px_-4px_24px_rgba(0,0,0,0.5)] z-50 md:hidden">
+<!-- Home (Active Semantic Match based on general hub context, though this is a detail screen, it's not settings/profile) -->
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#7C5CFC] to-[#947DFF] text-white rounded-[4px] p-2 scale-90 duration-150 group min-w-[64px]">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase text-[10px]">Home</span>
+</button>
+<!-- Add -->
+<button class="flex flex-col items-center justify-center text-gray-500 p-2 hover:text-white transition-all group min-w-[64px]">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:-translate-y-1 transition-transform">add_box</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase text-[10px]">Add</span>
+</button>
+<!-- Watch Now -->
+<button class="flex flex-col items-center justify-center text-gray-500 p-2 hover:text-white transition-all group min-w-[64px]">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:-translate-y-1 transition-transform">play_circle</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase text-[10px]">Watch Now</span>
+</button>
+<!-- Actions -->
+<button class="flex flex-col items-center justify-center text-gray-500 p-2 hover:text-white transition-all group min-w-[64px]">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:-translate-y-1 transition-transform">bolt</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase text-[10px]">Actions</span>
+</button>
+</nav>
+</body></html>

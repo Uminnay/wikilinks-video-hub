@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Guardar en Notion</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#484555",
+                        "inverse-surface": "#e5e1e4",
+                        "error": "#ffb4ab",
+                        "tertiary": "#4edea3",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#e6deff",
+                        "error-container": "#93000a",
+                        "primary": "#cabeff",
+                        "on-error": "#690005",
+                        "surface": "#131315",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "surface-container-highest": "#353437",
+                        "secondary-fixed-dim": "#c6c5d6",
+                        "on-secondary": "#2e2f3d",
+                        "on-primary": "#32009a",
+                        "tertiary-container": "#00a572",
+                        "surface-variant": "#353437",
+                        "on-surface-variant": "#c9c4d8",
+                        "primary-fixed-dim": "#cabeff",
+                        "background": "#131315",
+                        "on-secondary-fixed": "#1a1b27",
+                        "inverse-on-surface": "#303032",
+                        "secondary-fixed": "#e2e1f3",
+                        "on-tertiary": "#003824",
+                        "on-primary-fixed": "#1c0062",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-background": "#e5e1e4",
+                        "outline": "#938ea1",
+                        "inverse-primary": "#613de0",
+                        "surface-container-high": "#2a2a2c",
+                        "on-primary-fixed-variant": "#4918c8",
+                        "on-primary-container": "#2b0088",
+                        "surface-tint": "#cabeff",
+                        "surface-container-lowest": "#0e0e10",
+                        "on-secondary-fixed-variant": "#454654",
+                        "on-tertiary-fixed": "#002113",
+                        "on-tertiary-container": "#00311f",
+                        "surface-container-low": "#1b1b1d",
+                        "surface-bright": "#39393b",
+                        "surface-dim": "#131315",
+                        "surface-container": "#201f21",
+                        "secondary-container": "#474856",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "secondary": "#c6c5d6",
+                        "on-surface": "#e5e1e4",
+                        "on-secondary-container": "#b7b7c8",
+                        "primary-container": "#947dff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+        /* Focus styles for text area */
+        textarea:focus { border-color: theme('colors.primary') !important; box-shadow: 0 0 0 2px rgba(202, 190, 255, 0.2) !important; outline: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col antialiased">
+<!-- Top Navigation (Task-Focused - Hiding shell Nav due to back arrow) -->
+<header class="sticky top-0 z-50 bg-surface-dim/80 backdrop-blur-md border-b border-surface-container-highest px-4 py-3 flex items-center shadow-[0px_12px_32px_rgba(0,0,0,0.4)]">
+<button class="text-on-surface hover:text-primary transition-colors flex-shrink-0 p-2 -ml-2 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="ml-2 font-headline font-semibold text-xl tracking-tight flex-grow truncate">Guardar en Notion</h1>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto px-4 py-6 space-y-6 pb-24">
+<!-- List Item 1 -->
+<article class="bg-surface-container-low rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group border border-outline-variant/15">
+<div class="flex gap-4">
+<!-- Thumbnail -->
+<div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden relative">
+<img alt="Video thumbnail" class="w-full h-full object-cover" data-alt="Abstract vibrant gradient mesh representing digital content creation" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQZvbIPXKLYb8_RruzOLrPwuaZNDPKzt5-VlAZ-hPg6OCDKW_6xpnyMrcSDwpLhnDUsUmZ4nKhO9Up0lch6S8pC7F27TdFBFXL3Twj5YABcI-uYC7ehBmy8-91b8FGrm12rc_xdCsWfrNwFT0oeoD7NcXVoYNgePMDZlwsnL_msmEwZprD_GtfoPnJo_QW1ig9F8PzfVg-ZWWRVCGFs_RTGhue9CKZR4o9Sm6eiEAK-7FaN4PzAj4SeJidSgq-bauwTgm4IaoXGAaD"/>
+<div class="absolute bottom-1 right-1 bg-surface-container-highest/90 text-on-surface px-1.5 py-0.5 rounded text-[0.6875rem] font-label font-medium tracking-wide uppercase backdrop-blur-sm">
+                         12:45
+                     </div>
+</div>
+<!-- Info -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div>
+<h2 class="font-headline font-semibold text-base leading-tight line-clamp-2 text-on-surface">
+                            10 Tips for Advanced Notion Databases &amp; Relational Workflows
+                        </h2>
+<div class="mt-1 flex items-center gap-2 text-on-surface-variant text-sm">
+<span class="truncate">Productivity Guru</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Tutorial</span>
+</div><div class="text-xs text-on-surface-variant/60 mt-0.5">Productividad</div>
+</div>
+</div>
+</div>
+<!-- Note Input -->
+<div class="mt-4">
+<label class="sr-only" for="note-1">Nota personal</label>
+<textarea class="w-full bg-surface-dim border border-outline-variant/30 rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-0 transition-colors resize-none" id="note-1" placeholder="Añadir una nota personal (opcional)..." rows="2"></textarea>
+</div>
+<!-- Actions -->
+<div class="mt-4 flex gap-3">
+<button class="flex-1 bg-gradient-to-br from-tertiary to-tertiary-container text-on-tertiary-container font-medium text-sm py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[1.125rem]">check_circle</span>
+                    Preparar
+                </button>
+<button class="flex-1 bg-surface-variant border border-outline-variant/30 text-on-surface-variant font-medium text-sm py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[1.125rem]">delete</span>
+                    Quitar
+                </button><div class="text-xs text-on-surface-variant/60 mt-0.5">Productividad</div>
+</div>
+</article>
+<!-- List Item 2 -->
+<article class="bg-surface-container-low rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group border border-outline-variant/15">
+<div class="flex gap-4">
+<!-- Thumbnail -->
+<div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden relative">
+<img alt="Video thumbnail" class="w-full h-full object-cover" data-alt="Close up of a programmer typing on a mechanical keyboard with glowing RGB lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg-g7fFG6ez0AOPzGFGPUK6hIh83t6rNpGhmyg6qnBK1giIklbbuJdxLLSgst4PXar-zCBUv7gNLO3YxqUMc8pZSvmS3iELfgpGZ3_i_iZyM2-jGik9cdj_-dgy8gprJgD0Zp8sBUEsXOgN-arn-SbV82EZpDw_u4lhkp6HnKHkNKee7DJ_rkyIlhnwZRjp97rLKaoSNzutvG458tL2sWLIs_M8fU9aO5r6Y0NA6bVOV235a_ppd2H-qC5anB8Wvo98X6lMUdKcATh"/>
+<div class="absolute bottom-1 right-1 bg-surface-container-highest/90 text-on-surface px-1.5 py-0.5 rounded text-[0.6875rem] font-label font-medium tracking-wide uppercase backdrop-blur-sm">
+                         08:20
+                     </div>
+</div>
+<!-- Info -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div>
+<h2 class="font-headline font-semibold text-base leading-tight line-clamp-2 text-on-surface">
+                            Setup Perfecto: Coding en Dark Mode
+                        </h2>
+<div class="mt-1 flex items-center gap-2 text-on-surface-variant text-sm">
+<span class="truncate">DevSetup</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Tech</span>
+</div><div class="text-xs text-on-surface-variant/60 mt-0.5">IA</div>
+</div>
+</div>
+</div>
+<!-- Note Input -->
+<div class="mt-4">
+<label class="sr-only" for="note-2">Nota personal</label>
+<textarea class="w-full bg-surface-dim border border-outline-variant/30 rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-0 transition-colors resize-none" id="note-2" placeholder="Añadir una nota personal (opcional)..." rows="2">Idea para el nuevo escritorio.</textarea>
+</div>
+<!-- Actions -->
+<div class="mt-4 flex gap-3">
+<button class="flex-1 bg-gradient-to-br from-tertiary to-tertiary-container text-on-tertiary-container font-medium text-sm py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[1.125rem]">check_circle</span>
+                    Preparar
+                </button>
+<button class="flex-1 bg-surface-variant border border-outline-variant/30 text-on-surface-variant font-medium text-sm py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[1.125rem]">delete</span>
+                    Quitar
+                </button><div class="text-xs text-on-surface-variant/60 mt-0.5">IA</div>
+</div>
+</article>
+<!-- List Item 3 -->
+<article class="bg-surface-container-low rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group border border-outline-variant/15">
+<div class="flex gap-4">
+<!-- Thumbnail -->
+<div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden relative">
+<div class="w-full h-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant text-3xl">play_circle</span>
+</div>
+<div class="absolute bottom-1 right-1 bg-surface-container-highest/90 text-on-surface px-1.5 py-0.5 rounded text-[0.6875rem] font-label font-medium tracking-wide uppercase backdrop-blur-sm">15:20</div>
+</div>
+<!-- Info -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div>
+<h2 class="font-headline font-semibold text-base leading-tight line-clamp-2 text-on-surface">Cómo construir un Segundo Cerebro</h2>
+<div class="mt-1 flex items-center gap-2 text-on-surface-variant text-sm">
+<span class="truncate">Tiago Forte</span>
+</div><div class="text-xs text-on-surface-variant/60 mt-0.5">Productividad</div>
+</div>
+</div>
+</div>
+<!-- Note Input -->
+<div class="mt-4">
+<label class="sr-only" for="note-3">Nota personal</label>
+<textarea class="w-full bg-surface-dim border border-outline-variant/30 rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-0 transition-colors resize-none" id="note-3" placeholder="Añadir una nota personal (opcional)..." rows="2"></textarea>
+</div>
+<!-- Actions -->
+<div class="mt-4 flex gap-3">
+<button class="flex-1 bg-gradient-to-br from-tertiary to-tertiary-container text-on-tertiary-container font-medium text-sm py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[1.125rem]">check_circle</span>
+                    Preparar
+                </button>
+<button class="flex-1 bg-surface-variant border border-outline-variant/30 text-on-surface-variant font-medium text-sm py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[1.125rem]">delete</span>
+                    Quitar
+                </button><div class="text-xs text-on-surface-variant/60 mt-0.5">Productividad</div>
+</div>
+</article>
+</main>
+<!-- Suppressed Bottom Navigation: The prompt implies a task-focused screen ("Guardar en Notion") which implies a flow outside the main global nav. As per "Shell Visibility & Relevance (THE FILTER)" rules, if it's task-focused with a Back action, suppress the nav. -->
+</body></html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wikilinks Video Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#32009a",
+                        "surface-bright": "#39393b",
+                        "on-surface-variant": "#c9c4d8",
+                        "on-secondary-fixed": "#1a1b27",
+                        "on-tertiary-container": "#00311f",
+                        "on-surface": "#e5e1e4",
+                        "surface-container-highest": "#353437",
+                        "surface-container-low": "#1b1b1d",
+                        "inverse-on-surface": "#303032",
+                        "primary-fixed": "#e6deff",
+                        "on-tertiary-fixed": "#002113",
+                        "error": "#ffb4ab",
+                        "background": "#131315",
+                        "on-primary-container": "#2b0088",
+                        "surface-container-high": "#2a2a2c",
+                        "surface-variant": "#353437",
+                        "primary": "#cabeff",
+                        "surface-tint": "#cabeff",
+                        "tertiary-container": "#00a572",
+                        "surface-dim": "#131315",
+                        "secondary-fixed-dim": "#c6c5d6",
+                        "on-secondary": "#2e2f3d",
+                        "on-secondary-container": "#b7b7c8",
+                        "surface-container-lowest": "#0e0e10",
+                        "surface": "#131315",
+                        "primary-container": "#947dff",
+                        "secondary-fixed": "#e2e1f3",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-secondary-fixed-variant": "#454654",
+                        "outline": "#938ea1",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "secondary-container": "#474856",
+                        "error-container": "#93000a",
+                        "on-primary-fixed-variant": "#4918c8",
+                        "outline-variant": "#484555",
+                        "on-tertiary": "#003824",
+                        "on-error": "#690005",
+                        "on-background": "#e5e1e4",
+                        "secondary": "#c6c5d6",
+                        "surface-container": "#201f21",
+                        "inverse-primary": "#613de0",
+                        "primary-fixed-dim": "#cabeff",
+                        "inverse-surface": "#e5e1e4",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#4edea3",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-primary-fixed": "#1c0062"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .text-headline-sm { font-size: 1.5rem; letter-spacing: -0.02em; line-height: 2rem; }
+        .text-body-md { font-size: 0.875rem; line-height: 1.5; }
+        .text-label-sm { font-size: 0.6875rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        .text-title-sm { font-size: 0.875rem; font-weight: 500; line-height: 1.25rem; letter-spacing: 0.01em; }
+        
+        /* Ghost Border Fallback */
+        .ghost-border { border: 1px solid rgba(147, 142, 161, 0.15); }
+        
+        /* Ambient Shadow */
+        .ambient-shadow { box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.4); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 z-50 bg-[#131315]/80 backdrop-blur-md no-border-tonal-shift-bg-[#1B1B1D] shadow-[0px_12px_32px_rgba(0,0,0,0.4)] flex justify-between items-center px-4 py-3 w-full h-16 sticky">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center ghost-border overflow-hidden">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="close up professional portrait of a person with neutral expression on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDn-y10SZA9uF1HyKLjetJTC9gfFoyAjdA8Z-5LNRGjy8RPHurUs9HIRE2HiGGBzg0kTLWXZmeDy5IIQHvuTmrGGymO9cLiI2k0Y6QpIVQQlrmxPfpfKbLbtnAiDwiNFsTECHYfzupGLCcm6ffNF4Wy5g4IxpckThrnnYAty48E41i54LcjmIGSRv075NfvoIr_-hBmt6BGxRNRFeaBIcxkhiEA7aEUBd0KTtq6xlgV4j28TmUqIh_2rBsSctFeveql6koExcz9v5zg"/>
+</div>
+<h1 class="text-xl font-bold tracking-tighter text-[#7C5CFC]">Wikilinks</h1>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-[#353437] transition-colors">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-4 pt-6 max-w-3xl mx-auto flex flex-col gap-8">
+<!-- Alerts Section (Bento Grid) -->
+<section class="grid grid-cols-2 gap-3">
+<!-- Alert Card 1 -->
+<div class="bg-surface-container-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-container-high transition-colors ghost-border">
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-outline" data-icon="folder_off">folder_off</span>
+<div class="bg-surface-container-highest px-2 py-0.5 rounded text-label-sm text-on-surface ghost-border">14</div>
+</div>
+<h2 class="text-title-sm text-on-surface font-semibold">Sin clasificar</h2>
+<p class="text-label-sm text-outline mt-1">Requiere acción</p>
+</div>
+<!-- Alert Card 2 -->
+<div class="bg-surface-container-low rounded-xl p-4 relative overflow-hidden group hover:bg-surface-container-high transition-colors ghost-border flex flex-col justify-between">
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-[#10B981]" data-icon="description">description</span>
+</div>
+<div>
+<h2 class="text-title-sm text-on-surface font-semibold">Guardar en Notion</h2>
+<p class="text-label-sm mt-1 text-[#10B981]">12 vídeos candidatos</p>
+</div>
+</div>
+</section>
+<!-- Category List Section -->
+<section>
+<h2 class="text-label-sm text-outline mb-4 ml-1">Colecciones</h2>
+<div class="flex flex-col gap-2">
+<!-- Category 1 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center ghost-border text-primary">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+</div>
+<div>
+<h3 class="text-title-sm text-on-surface group-hover:text-primary transition-colors">IA</h3>
+<p class="text-label-sm text-outline">36 videos</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_4px_rgba(255,180,171,0.5)]"></div>
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Category 2 -->
+<!-- Category 3 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center ghost-border text-primary">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</div>
+<div>
+<h3 class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Productividad</h3>
+<p class="text-label-sm text-outline">8 videos</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-inverse-primary"></div>
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Category 4 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center ghost-border text-primary">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+</div>
+<div>
+<h3 class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Marketing</h3>
+<p class="text-label-sm text-outline">45 videos</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Category 5 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center ghost-border text-primary">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+</div>
+<div>
+<h3 class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Emprendimiento</h3>
+<p class="text-label-sm text-outline">19 videos</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_4px_rgba(255,180,171,0.5)]"></div>
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Category 6 -->
+<!-- Category 7 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center ghost-border text-primary">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<h3 class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Inversiones</h3>
+<p class="text-label-sm text-outline">47 videos</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Category 8 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center ghost-border text-primary">
+<span class="material-symbols-outlined" data-icon="sports_motorsports">sports_motorsports</span>
+</div>
+<div>
+<h3 class="text-title-sm text-on-surface group-hover:text-primary transition-colors">MotoGP</h3>
+<p class="text-label-sm text-outline">5 videos</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Category 9 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center ghost-border text-primary">
+<span class="material-symbols-outlined" data-icon="podcasts">podcasts</span>
+</div>
+<div>
+<h3 class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Podcasts</h3>
+<p class="text-label-sm text-outline">11 videos</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-outline"></div>
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center ghost-border text-primary">
+<span class="material-symbols-outlined" data-icon="folder">folder</span>
+</div>
+<div>
+<h3 class="text-title-sm text-on-surface group-hover:text-primary transition-colors">Otros</h3>
+<p class="text-label-sm text-outline">0 videos</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div></div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-2 py-3 bg-[#1B1B1D] against-bg-[#131315] shadow-[0px_-4px_24px_rgba(0,0,0,0.5)] z-50 rounded-t-none pb-safe">
+<!-- Tab 1: Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#7C5CFC] to-[#947DFF] text-white rounded-[4px] p-2 flex-1 mx-1 hover:text-white transition-all transform scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home" data-weight="fill">home</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase mt-1 hidden text-[10px]">Home</span>
+</a>
+<!-- Tab 2: Add (Special Centered FAB-style) -->
+<a class="flex flex-col items-center justify-center text-gray-500 p-2 flex-1 mx-1 hover:text-white transition-all relative" href="#">
+<div class="absolute -top-6 w-12 h-12 bg-gradient-to-br from-[#7C5CFC] to-[#947DFF] rounded-full flex items-center justify-center text-white shadow-[0_4px_12px_rgba(124,92,252,0.4)]">
+<span class="material-symbols-outlined" data-icon="add_box">add_box</span>
+</div>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase mt-4 text-[10px] invisible">Add</span>
+</a>
+<!-- Tab 3: Watch Now (Inactive) -->
+<a class="flex flex-col items-center justify-center text-gray-500 p-2 flex-1 mx-1 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase mt-1 hidden text-[10px]">Watch Now</span>
+</a>
+<!-- Tab 4: Actions (Inactive) -->
+<a class="flex flex-col items-center justify-center text-gray-500 p-2 flex-1 mx-1 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<span class="font-['Inter'] label-sm tracking-[0.05em] uppercase mt-1 hidden text-[10px]">Actions</span>
+</a>
+</nav>
+<!-- Support for safe area inset on modern mobile browsers -->
+<style>
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 1rem); }
+    </style>
+</body></html>

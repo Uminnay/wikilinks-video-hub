@@ -1,0 +1,21 @@
+{
+  "name": "Wikilinks Video Hub",
+  "short_name": "Wikilinks",
+  "description": "Tu gestor personal de vídeos de YouTube",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F0F11",
+  "theme_color": "#7C5CFC",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

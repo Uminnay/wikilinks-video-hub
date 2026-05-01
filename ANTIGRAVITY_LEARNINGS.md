@@ -20,7 +20,7 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
 
 ---
 
-## 👤 BLOQUE B: Preferencias de Usuario (Noel)
+## 👤 BLOQUE B: Preferencias de Usuario (Lia)
 *Estilo de trabajo y comunicación.*
 
 1. **Gestión de Reglas y Contexto**:
@@ -31,6 +31,9 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
    - Priorizar siempre un diseño limpio, moderno y estructurado.
    - En listados y grids, ocultar o atenuar el peso visual de los elementos vacíos (ej. categorías sin vídeos) para no saturar la vista.
    - Mantener el sistema de feedback visual claro pero sutil (ej. puntos de colores para prioridades, sin abusar de textos gigantes).
+
+3. **Iniciativa en la Ejecución**:
+   - El usuario prefiere que, si tengo las herramientas para realizar una acción técnica (como ejecutar comandos, editar archivos o configurar entornos), **la haga directamente** en lugar de pedir permiso o darle las instrucciones para que la haga él.
 
 ---
 
@@ -61,3 +64,27 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
 6. **Next.js - Uso de useSearchParams y Suspense**:
    - Cualquier componente de cliente que utilice `useSearchParams` (como `WatchNowView`) **DEBE** estar envuelto en un límite de `<Suspense>`.
    - **Regla:** Si un componente usa `useSearchParams`, crea un componente interno (ej. `WatchNowContent`) y expórtalo envuelto en `Suspense` para evitar errores de hidratación y fallos de construcción en Next.js.
+
+---
+
+## 🌐 BLOQUE D: Infraestructura y Despliegue (VPS Hostinger & cdmon)
+*Detalles técnicos del entorno de producción de Lia.*
+
+1. **Gestión de Dominios**:
+   - Los dominios de Lia (ej. `liagil.es`) se gestionan en **cdmon**. 
+   - Para crear subdominios, hay que añadir un registro tipo **A** en cdmon apuntando a la IP del VPS.
+
+2. **Servidor VPS (Hostinger)**:
+   - **IP:** `72.60.90.97`.
+   - **Sistema:** Ubuntu 24.04 con Docker.
+
+3. **Configuración de Traefik (Reverse Proxy)**:
+   - **Certificados SSL:** El certresolver se llama **`letsencrypt`** (NO `myresolver`).
+   - **Redes:** Traefik funciona en **`network_mode: host`**. 
+   - **Regla de oro para Docker Compose:** No definir secciones de `networks` ni redes externas en las apps. Traefik detecta los contenedores por etiquetas (`labels`) a través del socket de Docker.
+   - **Limpieza de Git:** Al usar `git clone` dentro de un comando de Docker Compose, añadir siempre `rm -rf ./*` al principio para evitar errores de "directorio no vacío" si el contenedor se reinicia.
+   - **Puerto estándar:** La mayoría de las apps web (como Next.js) deben usar el puerto `3000` en el loadbalancer de Traefik.
+
+4. **Seguridad del Repositorio (Pendiente)**:
+   - Actualmente el repo es **Público** para facilitar el primer despliegue.
+   - **Tarea Pendiente:** Crear un Personal Access Token (PAT) en GitHub, actualizar la URL en el `docker-compose.yml` de Hostinger y volver a poner el repositorio en **Privado**.

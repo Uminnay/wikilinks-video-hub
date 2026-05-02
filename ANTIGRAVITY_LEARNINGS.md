@@ -95,3 +95,20 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
 4. **Seguridad del Repositorio (Pendiente)**:
    - Actualmente el repo es **Público** para facilitar el primer despliegue.
    - **Tarea Pendiente:** Crear un Personal Access Token (PAT) en GitHub, actualizar la URL en el `docker-compose.yml` de Hostinger y volver a poner el repositorio en **Privado**.
+
+5. **🔴 OAuth Redirects detrás de Proxy (Docker/Traefik) — CRÍTICO**:
+   - **Problema:** Cuando la app corre en un contenedor Docker detrás de Traefik, las funciones del servidor (server actions, API routes) ven como hostname interno `localhost:3000` o el nombre del contenedor en lugar del dominio público. Esto provoca que las URLs de redirección de OAuth (Supabase/Google) apunten a `localhost` y el login falle en bucle.
+   - **Intentos que NO funcionan:**
+     - ❌ Detectar `request.headers.get('host')` → Devuelve el hostname interno del contenedor.
+     - ❌ Detectar `x-forwarded-host` / `x-forwarded-proto` → No siempre se pasan correctamente a través de Traefik.
+     - ❌ Variables `NEXT_PUBLIC_*` → Se compilan en tiempo de build (build-time), no de ejecución (runtime). Si la variable no existía durante `npm run build`, el código la ve como `undefined` incluso si la añades después al contenedor.
+     - ❌ Variables de entorno de runtime (`SITE_URL` sin prefijo) → Dependen de que la configuración de entorno del contenedor Docker esté correcta, lo cual puede fallar.
+   - **Solución definitiva: HARDCODEAR la URL de producción** directamente en el código:
+     ```ts
+     const PRODUCTION_URL = 'https://wikilinks.liagil.es'
+     const origin = process.env.NODE_ENV === 'production' ? PRODUCTION_URL : 'http://localhost:3001'
+     ```
+   - **Configuración de Supabase obligatoria:**
+     - **Site URL:** debe ser el dominio público (`https://wikilinks.liagil.es`)
+     - **Redirect URLs:** debe incluir `https://wikilinks.liagil.es/auth/callback`
+   - **Regla de oro:** NUNCA intentar "detectar" dinámicamente el dominio público desde dentro de un contenedor Docker detrás de un proxy. Si la app solo tiene un despliegue de producción, hardcodear la URL es la solución más fiable y simple.

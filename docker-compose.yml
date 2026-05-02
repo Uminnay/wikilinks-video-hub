@@ -15,10 +15,9 @@ services:
       - .env
     labels:
       - "traefik.enable=true"
-      # Ajustar el host según el dominio final
-      - "traefik.http.routers.wikilinks.rule=Host(`wikilinks.tudominio.com`)"
+      - "traefik.http.routers.wikilinks.rule=Host(`wikilinks.liagil.es`)"
       - "traefik.http.routers.wikilinks.entrypoints=websecure"
-      - "traefik.http.routers.wikilinks.tls.certresolver=myresolver" # Cambiar por el nombre de tu resolver en Traefik
+      - "traefik.http.routers.wikilinks.tls.certresolver=letsencrypt"
       - "traefik.http.services.wikilinks.loadbalancer.server.port=3000"
     networks:
       - web

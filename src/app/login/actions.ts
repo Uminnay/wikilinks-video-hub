@@ -10,8 +10,8 @@ export async function signInWithGoogle() {
   // Use the explicit SITE_URL env var for reliability behind proxies.
   // Falls back to header detection for local development.
   let origin: string
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    origin = process.env.NEXT_PUBLIC_SITE_URL
+  if (process.env.SITE_URL) {
+    origin = process.env.SITE_URL
   } else {
     const headersList = headers()
     const host = headersList.get('x-forwarded-host') || headersList.get('host') || 'localhost:3000'

@@ -4,6 +4,7 @@ import { useAppStore } from "@/store/useAppStore"
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
   const theme = useAppStore(state => state.theme)
+  const largeTextMode = useAppStore(state => state.largeTextMode)
   
   useEffect(() => {
     const html = document.documentElement
@@ -13,7 +14,14 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     html.classList.add(theme === 'light' ? 'light' : 'dark')
     // Also set a data attribute as backup
     html.setAttribute('data-theme', theme)
-  }, [theme])
+    
+    // Handle large text mode
+    if (largeTextMode) {
+      html.classList.add('large-text-mode')
+    } else {
+      html.classList.remove('large-text-mode')
+    }
+  }, [theme, largeTextMode])
 
   return <>{children}</>
 }

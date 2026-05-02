@@ -83,14 +83,21 @@ export default function SettingsView() {
     priorities, addPriority, updatePriority, deletePriority,
     timeFilters, addTimeFilter, updateTimeFilter, deleteTimeFilter,
     tags, addTag, updateTag, deleteTag,
-    videos, actions
+    notionConfig, updateNotionConfig,
+    videos, actions,
+    theme, toggleTheme,
+    largeTextMode, toggleLargeTextMode
   } = useAppStore()
 
   const [mounted, setMounted] = useState(false)
-  const [activeTab, setActiveTab] = useState<'profile' | 'categories' | 'priorities' | 'times' | 'tags'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'categories' | 'priorities' | 'times' | 'tags' | 'integrations'>('profile')
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [draftName, setDraftName] = useState("")
   const [isSaving, setIsSaving] = useState(false)
+
+  // Notion state
+  const [notionKey, setNotionKey] = useState(notionConfig?.apiKey || "")
+  const [notionDbId, setNotionDbId] = useState(notionConfig?.databaseId || "")
 
   useEffect(() => {
     setMounted(true)
@@ -159,6 +166,7 @@ export default function SettingsView() {
         <button onClick={() => setActiveTab('priorities')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'priorities' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Prioridades</button>
         <button onClick={() => setActiveTab('times')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'times' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Tiempos</button>
         <button onClick={() => setActiveTab('tags')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'tags' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Etiquetas</button>
+        <button onClick={() => setActiveTab('integrations')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'integrations' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Integraciones</button>
       </div>
 
       {activeTab === 'profile' && (
@@ -195,6 +203,36 @@ export default function SettingsView() {
                 </div>
               </div>
             )}
+          </div>
+
+          <div className="bg-surface-low rounded-xl p-4 border border-surface-high space-y-3">
+            <h2 className="text-sm font-semibold text-onSurface">Apariencia</h2>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="block text-xs font-medium text-onSurface">Tema Oscuro / Claro</span>
+                  <span className="block text-[10px] text-onSurface-muted">Alterna el estilo visual</span>
+                </div>
+                <button 
+                  onClick={toggleTheme}
+                  className={`w-12 h-6 rounded-full p-1 transition-colors ${theme === 'light' ? 'bg-primary' : 'bg-surface-high'}`}
+                >
+                  <div className={`w-4 h-4 rounded-full bg-white transition-transform ${theme === 'light' ? 'translate-x-6' : 'translate-x-0'}`} />
+                </button>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="block text-xs font-medium text-onSurface">Texto Grande</span>
+                  <span className="block text-[10px] text-onSurface-muted">Mejora la accesibilidad visual</span>
+                </div>
+                <button 
+                  onClick={toggleLargeTextMode}
+                  className={`w-12 h-6 rounded-full p-1 transition-colors ${largeTextMode ? 'bg-primary' : 'bg-surface-high'}`}
+                >
+                  <div className={`w-4 h-4 rounded-full bg-white transition-transform ${largeTextMode ? 'translate-x-6' : 'translate-x-0'}`} />
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="bg-surface-low rounded-xl p-4 border border-surface-high space-y-3">
@@ -518,6 +556,73 @@ export default function SettingsView() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Integrations Tab */}
+      {activeTab === 'integrations' && (
+        <section className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="bg-surface-low border border-surface-high rounded-xl p-4 space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-status-notion/10 flex items-center justify-center text-status-notion">
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4.459 4.208c.739 0 1.258.125 1.705.41l.161.104 12.015 8.76V5.419c0-.853-.33-1.211-.965-1.211h-.311V3h5.452v1.208h-.311c-.636 0-.965.358-.965 1.211v15.582c0 .284-.131.547-.361.713-.23.165-.526.212-.796.126l-.168-.063L5.451 11.233V18.58c0 .853.33 1.211.965 1.211h.311V21H1.275v-1.208h.311c.636 0 .965-.358.965-1.211V5.419c0-.853-.33-1.211-.965-1.211h-.311V3h3.184z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-onSurface">Notion</h3>
+                <p className="text-[10px] text-onSurface-muted">Exporta tus vídeos y notas directamente a Notion</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-onSurface-muted ml-1">Notion API Key</label>
+                <input 
+                  type="password" 
+                  value={notionKey}
+                  onChange={e => setNotionKey(e.target.value)}
+                  placeholder="secret_xxxxxxxxxxxxxxxxxxxxxxxx"
+                  className="w-full bg-background border border-surface-high text-onSurface text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:border-status-notion transition-all"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-onSurface-muted ml-1">Database ID</label>
+                <input 
+                  type="text" 
+                  value={notionDbId}
+                  onChange={e => setNotionDbId(e.target.value)}
+                  placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                  className="w-full bg-background border border-surface-high text-onSurface text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:border-status-notion transition-all"
+                />
+              </div>
+
+              <button 
+                onClick={() => {
+                  updateNotionConfig({ apiKey: notionKey, databaseId: notionDbId });
+                  alert("Configuración de Notion guardada");
+                }}
+                className="w-full py-2.5 bg-status-notion text-white text-xs font-bold rounded-lg shadow-lg shadow-status-notion/20 hover:brightness-110 transition-all flex items-center justify-center gap-2"
+              >
+                <span className="material-symbols-outlined text-[18px]">save</span>
+                Guardar Configuración
+              </button>
+
+              <div className="bg-surface-high/30 rounded-lg p-3 space-y-2">
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[12px]">info</span>
+                  Instrucciones
+                </h4>
+                <ol className="text-[10px] text-onSurface-muted space-y-1.5 list-decimal ml-4 leading-relaxed">
+                  <li>Crea una integración en <a href="https://www.notion.so/my-integrations" target="_blank" className="text-primary underline">Notion Developers</a>.</li>
+                  <li>Copia el "Internal Integration Token" y pégalo arriba.</li>
+                  <li>Ve a tu base de datos de Notion, dale a "..." y en "Connections" añade tu integración.</li>
+                  <li>Copia el ID de la base de datos de la URL (la parte larga entre '/' y '?').</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
       )}
 
     </div>

@@ -3,9 +3,9 @@
 import Link from "next/link"
 import { useAppStore } from "@/store/useAppStore"
 import { useEffect, useState } from "react"
-import HomeVideosView from "@/components/features/HomeVideosView"
+import HomeWebsView from "@/components/features/HomeWebsView"
 
-export default function HomePage() {
+export default function WebsPage() {
   const theme = useAppStore(state => state.theme)
   const userProfile = useAppStore(state => state.userProfile)
   const toggleTheme = useAppStore(state => state.toggleTheme)
@@ -43,7 +43,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <HomeVideosView />
+      <HomeWebsView />
     </main>
   )
 }

@@ -152,7 +152,7 @@ export default function VideoDetailView({ videoId }: { videoId: string }) {
       const trimmed = line.trim()
       if (!trimmed) return <div key={i} className="h-1.5" />
       // Section headers (lines with emoji at start)
-      if (/^[\u{1F3AF}\u{1F4A1}\u26A1\u{1F465}]/u.test(trimmed)) {
+      if (/^(🎯|💡|⚡|👥)/.test(trimmed)) {
         return (
           <h4 key={i} className="text-sm font-semibold text-primary mt-3 mb-1.5 first:mt-0 flex items-center gap-1">
             {trimmed}
@@ -581,7 +581,7 @@ export default function VideoDetailView({ videoId }: { videoId: string }) {
               onClick={() => updateVideo({ status: 'seen' })}
               className="py-3 rounded-xl bg-surface-low border border-surface-high hover:bg-surface-high text-sm font-medium text-onSurface transition-colors flex items-center justify-center gap-2"
             >
-              <span className="material-symbols-outlined text-[18px]">visibility</span>
+              <span className="material-symbols-outlined text-[18px]">check</span>
               Marcar visto
             </button>
           )}
@@ -591,7 +591,9 @@ export default function VideoDetailView({ videoId }: { videoId: string }) {
               onClick={() => updateVideo({ notion_status: 'candidate' })}
               className="py-3 rounded-xl bg-status-notion/10 border border-status-notion/20 hover:bg-status-notion/20 text-sm font-medium text-status-notion transition-colors flex items-center justify-center gap-2"
             >
-              <span className="material-symbols-outlined text-[18px]">description</span>
+              <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4.459 4.208c.739 0 1.258.125 1.705.41l.161.104 12.015 8.76V5.419c0-.853-.33-1.211-.965-1.211h-.311V3h5.452v1.208h-.311c-.636 0-.965.358-.965 1.211v15.582c0 .284-.131.547-.361.713-.23.165-.526.212-.796.126l-.168-.063L5.451 11.233V18.58c0 .284-.131.547-.361.713s-.526.212-.796.126l-.168-.063L5.451 11.233V18.58c0 .853.33 1.211.965 1.211h.311V21H1.275v-1.208h.311c.636 0 .965-.358.965-1.211V5.419c0-.853-.33-1.211-.965-1.211h-.311V3h3.184z"/>
+              </svg>
               Candidato Notion
             </button>
           )}

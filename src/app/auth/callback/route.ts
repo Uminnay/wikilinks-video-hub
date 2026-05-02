@@ -8,9 +8,10 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/'
 
+  const url = new URL(request.url)
   const resolvedOrigin = process.env.NODE_ENV === 'production' 
     ? PRODUCTION_URL 
-    : 'http://localhost:3001'
+    : `${url.protocol}//${url.host}`
 
   if (code) {
     const supabase = createClient()

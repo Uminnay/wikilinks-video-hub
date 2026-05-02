@@ -1,5 +1,6 @@
 import BottomNav from "@/components/ui/BottomNav";
 import AddVideoModal from "@/components/features/AddVideoModal";
+import AddWebLinkModal from "@/components/features/AddWebLinkModal";
 
 export default function AppLayout({
   children,
@@ -14,6 +15,7 @@ export default function AppLayout({
       
       <BottomNav />
       <AddVideoModal />
+      <AddWebLinkModal />
     </div>
   )
 }

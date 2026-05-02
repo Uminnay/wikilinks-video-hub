@@ -48,7 +48,7 @@ export default function VideoRow({
       {/* Background Actions (revealed on swipe) */}
       <div className="absolute inset-y-0 right-0 flex items-center justify-end">
         <button onClick={() => { onAction?.('seen'); setSwiped(false); }} className="h-full px-4 bg-status-seen text-white flex flex-col justify-center items-center gap-1 active:brightness-90 transition-all">
-          <span className="material-symbols-outlined text-[20px]">visibility</span>
+          <span className="material-symbols-outlined text-[20px]">check</span>
           <span className="text-[10px] font-sans uppercase tracking-wider">Visto</span>
         </button>
         <button onClick={() => { onAction?.('discard'); setSwiped(false); }} className="h-full px-4 bg-error text-white flex flex-col justify-center items-center gap-1 active:brightness-90 transition-all">
@@ -56,7 +56,9 @@ export default function VideoRow({
           <span className="text-[10px] font-sans uppercase tracking-wider">Descartar</span>
         </button>
         <button onClick={() => { onAction?.('notion'); setSwiped(false); }} className="h-full px-4 bg-status-notion text-white flex flex-col justify-center items-center gap-1 active:brightness-90 transition-all">
-          <span className="material-symbols-outlined text-[20px]">description</span>
+          <svg className="w-[20px] h-[20px]" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4.459 4.208c.739 0 1.258.125 1.705.41l.161.104 12.015 8.76V5.419c0-.853-.33-1.211-.965-1.211h-.311V3h5.452v1.208h-.311c-.636 0-.965.358-.965 1.211v15.582c0 .284-.131.547-.361.713-.23.165-.526.212-.796.126l-.168-.063L5.451 11.233V18.58c0 .853.33 1.211.965 1.211h.311V21H1.275v-1.208h.311c.636 0 .965-.358.965-1.211V5.419c0-.853-.33-1.211-.965-1.211h-.311V3h3.184z"/>
+          </svg>
           <span className="text-[10px] font-sans uppercase tracking-wider">Notion</span>
         </button>
         <button onClick={() => { onAction?.('custom'); setSwiped(false); }} className="h-full px-4 bg-primary text-white flex flex-col justify-center items-center gap-1 active:brightness-90 transition-all">

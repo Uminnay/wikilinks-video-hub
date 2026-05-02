@@ -1,28 +1,16 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useAppStore } from "@/store/useAppStore"
 
-export default function AddVideoModal() {
+export default function AddWebLinkModal() {
   const [isOpen, setIsOpen] = useState(false)
   const [url, setUrl] = useState("")
-  const [loadingMetadata, setLoadingMetadata] = useState(false)
+  const [title, setTitle] = useState("")
   const [saving, setSaving] = useState(false)
   
-  const [metadata, setMetadata] = useState<{
-    videoId: string;
-    title: string;
-    channel: string;
-    thumbnailUrl: string;
-    durationSeconds: number;
-    publishedAt: string | null;
-  } | null>(null)
-  
-  const [fetchFailed, setFetchFailed] = useState(false)
   const [duplicateError, setDuplicateError] = useState<{ categoryName: string } | null>(null)
-  const [manualTitle, setManualTitle] = useState("")
   const [category, setCategory] = useState<string | null>(null)
   const [priority, setPriority] = useState<string | null>(null)
   const [selectedTags, setSelectedTags] = useState<string[]>([])
@@ -39,14 +27,14 @@ export default function AddVideoModal() {
   const categories = useAppStore(state => state.categories)
   const priorities = useAppStore(state => state.priorities)
   const tags = useAppStore(state => state.tags)
-  const addVideo = useAppStore(state => state.addVideo)
+  const addWebLink = useAppStore(state => state.addWebLink)
   const addCategory = useAppStore(state => state.addCategory)
   const addTag = useAppStore(state => state.addTag)
 
   useEffect(() => {
     const handleOpen = () => setIsOpen(true)
-    window.addEventListener('open-add-video', handleOpen)
-    return () => window.removeEventListener('open-add-video', handleOpen)
+    window.addEventListener('open-add-web', handleOpen)
+    return () => window.removeEventListener('open-add-web', handleOpen)
   }, [])
 
   // Close when clicking outside
@@ -64,10 +52,8 @@ export default function AddVideoModal() {
     setIsOpen(false)
     setTimeout(() => {
       setUrl("")
-      setMetadata(null)
-      setFetchFailed(false)
+      setTitle("")
       setDuplicateError(null)
-      setManualTitle("")
       setCategory(null)
       setPriority(null)
       setSelectedTags([])
@@ -78,79 +64,30 @@ export default function AddVideoModal() {
     }, 300) // wait for animation
   }
 
-  // Handle URL Paste/Input
+  // Check duplicates
   useEffect(() => {
     if (!url) {
-      setMetadata(null)
-      setFetchFailed(false)
       setDuplicateError(null)
       return
     }
-
-    setDuplicateError(null)
-
-    const fetchMetadata = async () => {
-      setLoadingMetadata(true)
-      setFetchFailed(false)
-      setMetadata(null)
-      
-      try {
-        const res = await fetch(`/api/youtube?url=${encodeURIComponent(url)}`)
-        const data = await res.json()
-        
-        if (res.ok) {
-          setMetadata(data)
-        } else {
-          setFetchFailed(true)
-          if (data.partialData) {
-             // Fallback for ID and thumbnail even if API fails
-             setMetadata(data.partialData)
-          }
-        }
-      } catch (e) {
-        setFetchFailed(true)
-      } finally {
-        setLoadingMetadata(false)
-      }
-    }
-
-    const timer = setTimeout(() => {
-      fetchMetadata()
-    }, 500)
-
-    return () => clearTimeout(timer)
-  }, [url])
-
-  useEffect(() => {
-    if (!url) return;
-    const allVideos = useAppStore.getState().videos;
-    const existingVideo = allVideos.find(v => v.url === url || (metadata?.videoId && v.youtube_video_id === metadata.videoId));
-    if (existingVideo) {
-      const catName = categories.find(c => c.id === existingVideo.category)?.name || existingVideo.category;
+    const allLinks = useAppStore.getState().webLinks;
+    const existing = allLinks.find(w => w.url === url);
+    if (existing) {
+      const catName = categories.find(c => c.id === existing.category)?.name || existing.category;
       setDuplicateError({ categoryName: catName });
+    } else {
+      setDuplicateError(null)
     }
-  }, [url, metadata, categories])
+  }, [url, categories])
 
   const handleSave = async () => {
-    if (!url || !category || duplicateError) return
+    if (!url || !category || !title || duplicateError) return
 
     setSaving(true)
     
-    const titleToSave = metadata?.title || manualTitle
-    if (!titleToSave) {
-      alert("Introduce un título para el vídeo")
-      setSaving(false)
-      return
-    }
-
-    const videoData = {
+    const webData = {
       url,
-      youtube_video_id: metadata?.videoId || null,
-      title: titleToSave,
-      channel_name: metadata?.channel || null,
-      thumbnail_url: metadata?.thumbnailUrl || null,
-      duration_seconds: metadata?.durationSeconds || null,
-      published_at: metadata?.publishedAt || null,
+      title,
       category,
       priority,
       status: 'pending' as const,
@@ -158,8 +95,7 @@ export default function AddVideoModal() {
       tags: selectedTags
     }
 
-    // Save locally via Zustand
-    addVideo(videoData)
+    addWebLink(webData)
     
     router.refresh()
     closeModal()
@@ -216,7 +152,7 @@ export default function AddVideoModal() {
         
         <div className="flex-1 overflow-y-auto px-6 pb-24 space-y-6 no-scrollbar">
           <header className="flex items-center justify-between">
-            <h2 className="text-xl font-bold tracking-tight text-onSurface">Añadir vídeo</h2>
+            <h2 className="text-xl font-bold tracking-tight text-onSurface">Añadir Enlace Web</h2>
             <button onClick={closeModal} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-high transition-colors text-onSurface-muted">
               <span className="material-symbols-outlined text-[20px]">close</span>
             </button>
@@ -231,71 +167,35 @@ export default function AddVideoModal() {
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 autoFocus
-                placeholder="Pega la URL de YouTube" 
+                placeholder="Pega la URL de la web" 
                 className="w-full bg-background border border-surface-high text-onSurface text-sm rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-onSurface-muted"
               />
             </div>
           </section>
 
-          {/* Loading State */}
-          {loadingMetadata && (
-            <div className="flex items-center justify-center py-4">
-              <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          )}
-
-          {/* Error State / Manual Input */}
-          {fetchFailed && !loadingMetadata && !duplicateError && (
-            <div className="space-y-3 bg-surface-high/50 p-4 rounded-lg">
-              <p className="text-xs text-error">No se pudieron obtener los datos automáticamente. Introduce el título manualmente.</p>
+          {/* Title Input */}
+          <section className="space-y-3">
+            <div className="relative group">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-onSurface-muted group-focus-within:text-primary transition-colors text-[20px]">title</span>
               <input 
                 type="text"
-                value={manualTitle}
-                onChange={(e) => setManualTitle(e.target.value)}
-                placeholder="Título del vídeo" 
-                className="w-full bg-background border border-surface-high text-onSurface text-sm rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-all placeholder:text-onSurface-muted"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Título del enlace" 
+                className="w-full bg-background border border-surface-high text-onSurface text-sm rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-onSurface-muted"
               />
             </div>
-          )}
+          </section>
 
           {/* Duplicate Error Alert */}
           {duplicateError && (
             <div className="bg-error/10 border border-error/20 p-4 rounded-xl flex items-start gap-3">
               <span className="material-symbols-outlined text-error">warning</span>
               <div>
-                <h4 className="text-sm font-semibold text-error">Vídeo duplicado</h4>
-                <p className="text-xs text-error/80 mt-1">Este vídeo ya lo tienes guardado en la categoría <span className="font-bold">{duplicateError.categoryName}</span>.</p>
+                <h4 className="text-sm font-semibold text-error">Enlace duplicado</h4>
+                <p className="text-xs text-error/80 mt-1">Este enlace ya lo tienes guardado en la categoría <span className="font-bold">{duplicateError.categoryName}</span>.</p>
               </div>
             </div>
-          )}
-
-          {/* Success Preview */}
-          {metadata && !loadingMetadata && !fetchFailed && !duplicateError && metadata.title && (
-            <section className="bg-background border border-surface-high rounded-lg p-3 flex items-start gap-3">
-              <div className="w-16 h-12 bg-surface-high rounded flex-shrink-0 relative overflow-hidden">
-                <Image src={metadata.thumbnailUrl} alt={metadata.title} fill className="object-cover" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-status-notion truncate">{metadata.title}</h3>
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
-                  <p className="text-[10px] uppercase tracking-wider text-onSurface-muted flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">smart_display</span> {metadata.channel}
-                  </p>
-                  {metadata.durationSeconds > 0 && (
-                    <p className="text-[10px] uppercase tracking-wider text-onSurface-muted flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]">schedule</span> 
-                      {Math.floor(metadata.durationSeconds / 60)}:{(metadata.durationSeconds % 60).toString().padStart(2, '0')}
-                    </p>
-                  )}
-                  {metadata.publishedAt && (
-                    <p className="text-[10px] uppercase tracking-wider text-onSurface-muted flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]">calendar_today</span> 
-                      {new Date(metadata.publishedAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </section>
           )}
 
           {/* Categories */}
@@ -423,7 +323,7 @@ export default function AddVideoModal() {
         <div className="absolute bottom-0 left-0 w-full p-4 bg-surface-low border-t border-surface-high pb-safe">
           <button 
             onClick={handleSave}
-            disabled={!url || !category || saving || (fetchFailed && !manualTitle) || !!duplicateError}
+            disabled={!url || !title || !category || saving || !!duplicateError}
             className="w-full py-3.5 rounded-xl bg-gradient-to-br from-[#7C5CFC] to-[#947DFF] text-white text-sm font-medium shadow-[0_4px_12px_rgba(124,92,252,0.3)] hover:brightness-110 disabled:opacity-50 disabled:grayscale transition-all flex items-center justify-center gap-2"
           >
             {saving ? (
@@ -431,7 +331,7 @@ export default function AddVideoModal() {
             ) : (
               <>
                 <span className="material-symbols-outlined text-[20px]">save</span>
-                Guardar
+                Guardar Web
               </>
             )}
           </button>

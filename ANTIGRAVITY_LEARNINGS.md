@@ -103,12 +103,11 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
      - ❌ Detectar `x-forwarded-host` / `x-forwarded-proto` → No siempre se pasan correctamente a través de Traefik.
      - ❌ Variables `NEXT_PUBLIC_*` → Se compilan en tiempo de build (build-time), no de ejecución (runtime). Si la variable no existía durante `npm run build`, el código la ve como `undefined` incluso si la añades después al contenedor.
      - ❌ Variables de entorno de runtime (`SITE_URL` sin prefijo) → Dependen de que la configuración de entorno del contenedor Docker esté correcta, lo cual puede fallar.
-   - **Solución definitiva: HARDCODEAR la URL de producción** directamente en el código:
-     ```ts
-     const PRODUCTION_URL = 'https://wikilinks.liagil.es'
-     const origin = process.env.NODE_ENV === 'production' ? PRODUCTION_URL : 'http://localhost:3001'
-     ```
+   - **Solución definitiva (Trifecta Ganadora):**
+     1. **Login Client-Side:** Iniciar OAuth desde un componente de cliente (`"use client"`) usando `supabase.auth.signInWithOAuth`. Esto garantiza que la cookie PKCE se cree en el navegador del usuario y no en el servidor.
+     2. **Middleware Interceptor:** Configurar el middleware para detectar el parámetro `?code=` en cualquier URL, realizar el `exchangeCodeForSession` y redirigir a `/`.
+     3. **Cookie Forwarding (CRÍTICO):** Al redirigir desde el middleware tras validar el código, es OBLIGATORIO copiar manualmente las cookies de sesión (`supabase.auth.setAll`) al objeto de respuesta de redirección (`NextResponse.redirect`). Si no se hace, la sesión se crea en el servidor pero el navegador nunca recibe las cookies y el usuario vuelve al login.
    - **Configuración de Supabase obligatoria:**
      - **Site URL:** debe ser el dominio público (`https://wikilinks.liagil.es`)
-     - **Redirect URLs:** debe incluir `https://wikilinks.liagil.es/auth/callback`
-   - **Regla de oro:** NUNCA intentar "detectar" dinámicamente el dominio público desde dentro de un contenedor Docker detrás de un proxy. Si la app solo tiene un despliegue de producción, hardcodear la URL es la solución más fiable y simple.
+     - **Redirect URLs:** debe incluir `https://wikilinks.liagil.es/auth/callback` y `http://localhost:3001/auth/callback` para desarrollo.
+   - **Regla de oro:** No confíes en la detección automática de dominios en entornos Docker con Proxy. Hardcodear la URL de producción para redirecciones de Auth es el camino más corto y seguro.

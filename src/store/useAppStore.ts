@@ -18,11 +18,31 @@ export type Video = {
   category: string
   priority: string | null
   status: 'pending' | 'seen' | 'discarded' | 'notion_candidate'
-  notion_status: 'none' | 'candidate' | 'prepared'
+  notion_status: 'none' | 'candidate' | 'prepared' | 'exported'
   notion_title?: string
   notion_category?: string
   notion_personal_note?: string
   notion_related_project?: string
+  notion_date?: string
+  personal_notes?: string
+  ai_summary?: string
+  saved_at: string
+  tags?: string[]
+}
+
+export type WebLink = {
+  id: string
+  url: string
+  title: string
+  category: string
+  priority: string | null
+  status: 'pending' | 'seen' | 'discarded' | 'notion_candidate'
+  notion_status: 'none' | 'candidate' | 'prepared' | 'exported'
+  notion_title?: string
+  notion_category?: string
+  notion_personal_note?: string
+  notion_related_project?: string
+  notion_date?: string
   personal_notes?: string
   ai_summary?: string
   saved_at: string
@@ -39,28 +59,38 @@ export type ActionItem = {
 
 interface AppState {
   // Datos principales
+  activeModule: 'videos' | 'webs'
   videos: Video[]
+  webLinks: WebLink[]
   actions: ActionItem[]
   
   // Configuraciones
   userProfile: { name: string }
   theme: 'dark' | 'light'
+  largeTextMode: boolean
   categories: Category[]
   priorities: PriorityDef[]
   timeFilters: TimeFilter[]
   tags: Tag[]
+  notionConfig: { apiKey?: string; databaseId?: string }
   
   // Acciones (CRUD)
   addVideo: (video: Omit<Video, 'id' | 'saved_at'>) => void
   updateVideo: (id: string, updates: Partial<Video>) => void
   deleteVideo: (id: string) => void
   
+  addWebLink: (link: Omit<WebLink, 'id' | 'saved_at'>) => void
+  updateWebLink: (id: string, updates: Partial<WebLink>) => void
+  deleteWebLink: (id: string) => void
+  
   addAction: (action: Omit<ActionItem, 'id' | 'created_at'>) => void
   updateAction: (id: string, updates: Partial<ActionItem>) => void
   deleteAction: (id: string) => void
   
+  setActiveModule: (module: 'videos' | 'webs') => void
   updateUserProfile: (name: string) => void
   toggleTheme: () => void
+  toggleLargeTextMode: () => void
   
   addCategory: (cat: Category) => void
   updateCategory: (id: string, updates: Partial<Category>) => void
@@ -77,6 +107,7 @@ interface AppState {
   addTag: (tag: Tag) => void
   updateTag: (id: string, updates: Partial<Tag>) => void
   deleteTag: (id: string) => void
+  updateNotionConfig: (config: { apiKey?: string; databaseId?: string }) => void
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
@@ -107,14 +138,18 @@ const DEFAULT_TIME_FILTERS: TimeFilter[] = [
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
+      activeModule: 'videos',
       videos: [],
+      webLinks: [],
       actions: [],
       userProfile: { name: 'Usuario' },
       theme: 'dark',
+      largeTextMode: false,
       categories: DEFAULT_CATEGORIES,
       priorities: DEFAULT_PRIORITIES,
       timeFilters: DEFAULT_TIME_FILTERS,
       tags: [],
+      notionConfig: {},
       
       addVideo: (videoData) => set((state) => ({
         videos: [{ ...videoData, id: crypto.randomUUID(), saved_at: new Date().toISOString() }, ...state.videos]
@@ -126,6 +161,18 @@ export const useAppStore = create<AppState>()(
       
       deleteVideo: (id) => set((state) => ({
         videos: state.videos.filter(v => v.id !== id)
+      })),
+      
+      addWebLink: (linkData) => set((state) => ({
+        webLinks: [{ ...linkData, id: crypto.randomUUID(), saved_at: new Date().toISOString() }, ...state.webLinks]
+      })),
+      
+      updateWebLink: (id, updates) => set((state) => ({
+        webLinks: state.webLinks.map(w => w.id === id ? { ...w, ...updates } : w)
+      })),
+      
+      deleteWebLink: (id) => set((state) => ({
+        webLinks: state.webLinks.filter(w => w.id !== id)
       })),
       
       addAction: (actionData) => set((state) => ({
@@ -140,8 +187,10 @@ export const useAppStore = create<AppState>()(
         actions: state.actions.filter(a => a.id !== id)
       })),
       
+      setActiveModule: (module) => set({ activeModule: module }),
       updateUserProfile: (name) => set({ userProfile: { name } }),
       toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
+      toggleLargeTextMode: () => set((state) => ({ largeTextMode: !state.largeTextMode })),
       
       addCategory: (cat) => set((state) => ({ categories: [...state.categories, cat] })),
       updateCategory: (id, updates) => set((state) => ({
@@ -177,6 +226,9 @@ export const useAppStore = create<AppState>()(
       })),
       deleteTag: (id) => set((state) => ({
         tags: state.tags.filter(t => t.id !== id)
+      })),
+      updateNotionConfig: (config) => set((state) => ({
+        notionConfig: { ...state.notionConfig, ...config }
       }))
     }),
     {

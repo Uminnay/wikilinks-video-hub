@@ -41,7 +41,13 @@ export default function RootLayout({
           try {
             const stored = JSON.parse(localStorage.getItem('wikilinks-storage') || '{}');
             const theme = stored?.state?.theme || 'dark';
-            document.documentElement.className = theme === 'light' ? 'light' : 'dark';
+            const largeText = stored?.state?.largeTextMode || false;
+            
+            const classes = [];
+            classes.push(theme === 'light' ? 'light' : 'dark');
+            if (largeText) classes.push('large-text-mode');
+            
+            document.documentElement.className = classes.join(' ');
           } catch(e) {
             document.documentElement.className = 'dark';
           }

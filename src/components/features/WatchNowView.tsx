@@ -216,7 +216,7 @@ function WatchNowContent() {
                 id={video.id}
                 title={video.title}
                 channel={video.channel_name || 'Desconocido'}
-                thumbnailUrl={video.thumbnail_url}
+                thumbnailUrl={video.thumbnail_url || undefined}
                 durationFormatted={formatDuration(video.duration_seconds)}
                 publishedAt={video.published_at}
                 priorityId={video.priority}

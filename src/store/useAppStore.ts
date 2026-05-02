@@ -1,5 +1,7 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createClient } from '@/lib/supabase/client'
+
+const supabase = createClient()
 
 export type Category = { id: string; name: string; icon: string; colorHex: string }
 export type PriorityDef = { id: string; label: string; colorHex: string; level: number }
@@ -58,13 +60,14 @@ export type ActionItem = {
 }
 
 interface AppState {
-  // Datos principales
+  userId: string | null
+  isInitialized: boolean
   activeModule: 'videos' | 'webs'
+  
   videos: Video[]
   webLinks: WebLink[]
   actions: ActionItem[]
   
-  // Configuraciones
   userProfile: { name: string }
   theme: 'dark' | 'light'
   largeTextMode: boolean
@@ -74,40 +77,41 @@ interface AppState {
   tags: Tag[]
   notionConfig: { apiKey?: string; databaseId?: string }
   
-  // Acciones (CRUD)
-  addVideo: (video: Omit<Video, 'id' | 'saved_at'>) => void
-  updateVideo: (id: string, updates: Partial<Video>) => void
-  deleteVideo: (id: string) => void
-  
-  addWebLink: (link: Omit<WebLink, 'id' | 'saved_at'>) => void
-  updateWebLink: (id: string, updates: Partial<WebLink>) => void
-  deleteWebLink: (id: string) => void
-  
-  addAction: (action: Omit<ActionItem, 'id' | 'created_at'>) => void
-  updateAction: (id: string, updates: Partial<ActionItem>) => void
-  deleteAction: (id: string) => void
-  
+  initializeStore: () => Promise<void>
   setActiveModule: (module: 'videos' | 'webs') => void
-  updateUserProfile: (name: string) => void
-  toggleTheme: () => void
-  toggleLargeTextMode: () => void
   
-  addCategory: (cat: Category) => void
-  updateCategory: (id: string, updates: Partial<Category>) => void
-  deleteCategory: (id: string) => void
+  addVideo: (video: Omit<Video, 'id' | 'saved_at'>) => Promise<void>
+  updateVideo: (id: string, updates: Partial<Video>) => Promise<void>
+  deleteVideo: (id: string) => Promise<void>
   
-  addPriority: (prio: PriorityDef) => void
-  updatePriority: (id: string, updates: Partial<PriorityDef>) => void
-  deletePriority: (id: string) => void
+  addWebLink: (link: Omit<WebLink, 'id' | 'saved_at'>) => Promise<void>
+  updateWebLink: (id: string, updates: Partial<WebLink>) => Promise<void>
+  deleteWebLink: (id: string) => Promise<void>
   
-  addTimeFilter: (tf: TimeFilter) => void
-  updateTimeFilter: (id: string, updates: Partial<TimeFilter>) => void
-  deleteTimeFilter: (id: string) => void
+  addAction: (action: Omit<ActionItem, 'id' | 'created_at'>) => Promise<void>
+  updateAction: (id: string, updates: Partial<ActionItem>) => Promise<void>
+  deleteAction: (id: string) => Promise<void>
   
-  addTag: (tag: Tag) => void
-  updateTag: (id: string, updates: Partial<Tag>) => void
-  deleteTag: (id: string) => void
-  updateNotionConfig: (config: { apiKey?: string; databaseId?: string }) => void
+  updateUserProfile: (name: string) => Promise<void>
+  toggleTheme: () => Promise<void>
+  toggleLargeTextMode: () => Promise<void>
+  
+  addCategory: (cat: Category) => Promise<void>
+  updateCategory: (id: string, updates: Partial<Category>) => Promise<void>
+  deleteCategory: (id: string) => Promise<void>
+  
+  addPriority: (prio: PriorityDef) => Promise<void>
+  updatePriority: (id: string, updates: Partial<PriorityDef>) => Promise<void>
+  deletePriority: (id: string) => Promise<void>
+  
+  addTimeFilter: (tf: TimeFilter) => Promise<void>
+  updateTimeFilter: (id: string, updates: Partial<TimeFilter>) => Promise<void>
+  deleteTimeFilter: (id: string) => Promise<void>
+  
+  addTag: (tag: Tag) => Promise<void>
+  updateTag: (id: string, updates: Partial<Tag>) => Promise<void>
+  deleteTag: (id: string) => Promise<void>
+  updateNotionConfig: (config: { apiKey?: string; databaseId?: string }) => Promise<void>
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
@@ -135,104 +139,266 @@ const DEFAULT_TIME_FILTERS: TimeFilter[] = [
   { id: 'unlimited', label: 'Sin límite', maxSeconds: 9999999 }
 ]
 
-export const useAppStore = create<AppState>()(
-  persist(
-    (set) => ({
-      activeModule: 'videos',
-      videos: [],
-      webLinks: [],
-      actions: [],
-      userProfile: { name: 'Usuario' },
-      theme: 'dark',
-      largeTextMode: false,
-      categories: DEFAULT_CATEGORIES,
-      priorities: DEFAULT_PRIORITIES,
-      timeFilters: DEFAULT_TIME_FILTERS,
-      tags: [],
-      notionConfig: {},
-      
-      addVideo: (videoData) => set((state) => ({
-        videos: [{ ...videoData, id: crypto.randomUUID(), saved_at: new Date().toISOString() }, ...state.videos]
-      })),
-      
-      updateVideo: (id, updates) => set((state) => ({
-        videos: state.videos.map(v => v.id === id ? { ...v, ...updates } : v)
-      })),
-      
-      deleteVideo: (id) => set((state) => ({
-        videos: state.videos.filter(v => v.id !== id)
-      })),
-      
-      addWebLink: (linkData) => set((state) => ({
-        webLinks: [{ ...linkData, id: crypto.randomUUID(), saved_at: new Date().toISOString() }, ...state.webLinks]
-      })),
-      
-      updateWebLink: (id, updates) => set((state) => ({
-        webLinks: state.webLinks.map(w => w.id === id ? { ...w, ...updates } : w)
-      })),
-      
-      deleteWebLink: (id) => set((state) => ({
-        webLinks: state.webLinks.filter(w => w.id !== id)
-      })),
-      
-      addAction: (actionData) => set((state) => ({
-        actions: [{ ...actionData, id: crypto.randomUUID(), created_at: new Date().toISOString() }, ...state.actions]
-      })),
-      
-      updateAction: (id, updates) => set((state) => ({
-        actions: state.actions.map(a => a.id === id ? { ...a, ...updates } : a)
-      })),
-      
-      deleteAction: (id) => set((state) => ({
-        actions: state.actions.filter(a => a.id !== id)
-      })),
-      
-      setActiveModule: (module) => set({ activeModule: module }),
-      updateUserProfile: (name) => set({ userProfile: { name } }),
-      toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
-      toggleLargeTextMode: () => set((state) => ({ largeTextMode: !state.largeTextMode })),
-      
-      addCategory: (cat) => set((state) => ({ categories: [...state.categories, cat] })),
-      updateCategory: (id, updates) => set((state) => ({
-        categories: state.categories.map(c => c.id === id ? { ...c, ...updates } : c)
-      })),
-      deleteCategory: (id) => set((state) => ({
-        categories: state.categories.filter(c => c.id !== id)
-      })),
-      
-      addPriority: (prio) => set((state) => ({ 
-        priorities: [...state.priorities, prio].sort((a, b) => b.level - a.level)
-      })),
-      updatePriority: (id, updates) => set((state) => ({
-        priorities: state.priorities.map(p => p.id === id ? { ...p, ...updates } : p).sort((a, b) => b.level - a.level)
-      })),
-      deletePriority: (id) => set((state) => ({
-        priorities: state.priorities.filter(p => p.id !== id)
-      })),
-      
-      addTimeFilter: (tf) => set((state) => ({ 
-        timeFilters: [...state.timeFilters, tf].sort((a, b) => a.maxSeconds - b.maxSeconds)
-      })),
-      updateTimeFilter: (id, updates) => set((state) => ({
-        timeFilters: state.timeFilters.map(t => t.id === id ? { ...t, ...updates } : t).sort((a, b) => a.maxSeconds - b.maxSeconds)
-      })),
-      deleteTimeFilter: (id) => set((state) => ({
-        timeFilters: state.timeFilters.filter(t => t.id !== id)
-      })),
-      
-      addTag: (tag) => set((state) => ({ tags: [...state.tags, tag] })),
-      updateTag: (id, updates) => set((state) => ({
-        tags: state.tags.map(t => t.id === id ? { ...t, ...updates } : t)
-      })),
-      deleteTag: (id) => set((state) => ({
-        tags: state.tags.filter(t => t.id !== id)
-      })),
-      updateNotionConfig: (config) => set((state) => ({
-        notionConfig: { ...state.notionConfig, ...config }
-      }))
-    }),
-    {
-      name: 'wikilinks-storage',
+export const useAppStore = create<AppState>((set, get) => ({
+  userId: null,
+  isInitialized: false,
+  activeModule: 'videos',
+  videos: [],
+  webLinks: [],
+  actions: [],
+  userProfile: { name: 'Usuario' },
+  theme: 'dark',
+  largeTextMode: false,
+  categories: DEFAULT_CATEGORIES,
+  priorities: DEFAULT_PRIORITIES,
+  timeFilters: DEFAULT_TIME_FILTERS,
+  tags: [],
+  notionConfig: {},
+
+  initializeStore: async () => {
+    if (get().isInitialized) return
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+
+    set({ userId: user.id })
+
+    const [settingsRes, videosRes, websRes, actionsRes] = await Promise.all([
+      supabase.from('user_settings').select('*').eq('user_id', user.id).single(),
+      supabase.from('videos').select('*').eq('user_id', user.id).order('saved_at', { ascending: false }),
+      supabase.from('web_links').select('*').eq('user_id', user.id).order('saved_at', { ascending: false }),
+      supabase.from('actions').select('*').eq('user_id', user.id).order('created_at', { ascending: false })
+    ])
+
+    let settings = settingsRes.data
+    if (!settings) {
+      const { data: newSettings } = await supabase.from('user_settings').insert({
+        user_id: user.id,
+        categories: DEFAULT_CATEGORIES,
+        priorities: DEFAULT_PRIORITIES,
+        time_filters: DEFAULT_TIME_FILTERS
+      }).select().single()
+      settings = newSettings
     }
-  )
-)
+
+    set({
+      isInitialized: true,
+      videos: videosRes.data || [],
+      webLinks: websRes.data || [],
+      actions: actionsRes.data || [],
+      theme: settings?.theme || 'dark',
+      largeTextMode: settings?.large_text_mode || false,
+      userProfile: settings?.user_profile || { name: 'Usuario' },
+      categories: settings?.categories || DEFAULT_CATEGORIES,
+      priorities: settings?.priorities || DEFAULT_PRIORITIES,
+      timeFilters: settings?.time_filters || DEFAULT_TIME_FILTERS,
+      tags: settings?.tags || [],
+      notionConfig: settings?.notion_config || {}
+    })
+  },
+
+  setActiveModule: (module) => set({ activeModule: module }),
+
+  addVideo: async (videoData) => {
+    const userId = get().userId
+    if (!userId) return
+    const { data } = await supabase.from('videos').insert({ ...videoData, user_id: userId }).select().single()
+    if (data) set((state) => ({ videos: [data, ...state.videos] }))
+  },
+  
+  updateVideo: async (id, updates) => {
+    const userId = get().userId
+    if (!userId) return
+    const { error } = await supabase.from('videos').update(updates).eq('id', id).eq('user_id', userId)
+    if (!error) {
+      set((state) => ({ videos: state.videos.map(v => v.id === id ? { ...v, ...updates } : v) }))
+    }
+  },
+  
+  deleteVideo: async (id) => {
+    const userId = get().userId
+    if (!userId) return
+    const { error } = await supabase.from('videos').delete().eq('id', id).eq('user_id', userId)
+    if (!error) {
+      set((state) => ({ videos: state.videos.filter(v => v.id !== id) }))
+    }
+  },
+
+  addWebLink: async (linkData) => {
+    const userId = get().userId
+    if (!userId) return
+    const { data } = await supabase.from('web_links').insert({ ...linkData, user_id: userId }).select().single()
+    if (data) set((state) => ({ webLinks: [data, ...state.webLinks] }))
+  },
+  
+  updateWebLink: async (id, updates) => {
+    const userId = get().userId
+    if (!userId) return
+    const { error } = await supabase.from('web_links').update(updates).eq('id', id).eq('user_id', userId)
+    if (!error) {
+      set((state) => ({ webLinks: state.webLinks.map(w => w.id === id ? { ...w, ...updates } : w) }))
+    }
+  },
+  
+  deleteWebLink: async (id) => {
+    const userId = get().userId
+    if (!userId) return
+    const { error } = await supabase.from('web_links').delete().eq('id', id).eq('user_id', userId)
+    if (!error) {
+      set((state) => ({ webLinks: state.webLinks.filter(w => w.id !== id) }))
+    }
+  },
+
+  addAction: async (actionData) => {
+    const userId = get().userId
+    if (!userId) return
+    const { data } = await supabase.from('actions').insert({ ...actionData, user_id: userId }).select().single()
+    if (data) set((state) => ({ actions: [data, ...state.actions] }))
+  },
+  
+  updateAction: async (id, updates) => {
+    const userId = get().userId
+    if (!userId) return
+    const { error } = await supabase.from('actions').update(updates).eq('id', id).eq('user_id', userId)
+    if (!error) {
+      set((state) => ({ actions: state.actions.map(a => a.id === id ? { ...a, ...updates } : a) }))
+    }
+  },
+  
+  deleteAction: async (id) => {
+    const userId = get().userId
+    if (!userId) return
+    const { error } = await supabase.from('actions').delete().eq('id', id).eq('user_id', userId)
+    if (!error) {
+      set((state) => ({ actions: state.actions.filter(a => a.id !== id) }))
+    }
+  },
+
+  // Settings Sync Helpers
+  updateUserProfile: async (name) => {
+    const userId = get().userId
+    if (!userId) return
+    const newProfile = { name }
+    const { error } = await supabase.from('user_settings').update({ user_profile: newProfile }).eq('user_id', userId)
+    if (!error) set({ userProfile: newProfile })
+  },
+
+  toggleTheme: async () => {
+    const userId = get().userId
+    if (!userId) return
+    const newTheme = get().theme === 'dark' ? 'light' : 'dark'
+    const { error } = await supabase.from('user_settings').update({ theme: newTheme }).eq('user_id', userId)
+    if (!error) set({ theme: newTheme })
+  },
+
+  toggleLargeTextMode: async () => {
+    const userId = get().userId
+    if (!userId) return
+    const newMode = !get().largeTextMode
+    const { error } = await supabase.from('user_settings').update({ large_text_mode: newMode }).eq('user_id', userId)
+    if (!error) set({ largeTextMode: newMode })
+  },
+
+  addCategory: async (cat) => {
+    const userId = get().userId
+    if (!userId) return
+    const newCategories = [...get().categories, cat]
+    const { error } = await supabase.from('user_settings').update({ categories: newCategories }).eq('user_id', userId)
+    if (!error) set({ categories: newCategories })
+  },
+
+  updateCategory: async (id, updates) => {
+    const userId = get().userId
+    if (!userId) return
+    const newCategories = get().categories.map(c => c.id === id ? { ...c, ...updates } : c)
+    const { error } = await supabase.from('user_settings').update({ categories: newCategories }).eq('user_id', userId)
+    if (!error) set({ categories: newCategories })
+  },
+
+  deleteCategory: async (id) => {
+    const userId = get().userId
+    if (!userId) return
+    const newCategories = get().categories.filter(c => c.id !== id)
+    const { error } = await supabase.from('user_settings').update({ categories: newCategories }).eq('user_id', userId)
+    if (!error) set({ categories: newCategories })
+  },
+
+  addPriority: async (prio) => {
+    const userId = get().userId
+    if (!userId) return
+    const newPriorities = [...get().priorities, prio].sort((a, b) => b.level - a.level)
+    const { error } = await supabase.from('user_settings').update({ priorities: newPriorities }).eq('user_id', userId)
+    if (!error) set({ priorities: newPriorities })
+  },
+
+  updatePriority: async (id, updates) => {
+    const userId = get().userId
+    if (!userId) return
+    const newPriorities = get().priorities.map(p => p.id === id ? { ...p, ...updates } : p).sort((a, b) => b.level - a.level)
+    const { error } = await supabase.from('user_settings').update({ priorities: newPriorities }).eq('user_id', userId)
+    if (!error) set({ priorities: newPriorities })
+  },
+
+  deletePriority: async (id) => {
+    const userId = get().userId
+    if (!userId) return
+    const newPriorities = get().priorities.filter(p => p.id !== id)
+    const { error } = await supabase.from('user_settings').update({ priorities: newPriorities }).eq('user_id', userId)
+    if (!error) set({ priorities: newPriorities })
+  },
+
+  addTimeFilter: async (tf) => {
+    const userId = get().userId
+    if (!userId) return
+    const newFilters = [...get().timeFilters, tf].sort((a, b) => a.maxSeconds - b.maxSeconds)
+    const { error } = await supabase.from('user_settings').update({ time_filters: newFilters }).eq('user_id', userId)
+    if (!error) set({ timeFilters: newFilters })
+  },
+
+  updateTimeFilter: async (id, updates) => {
+    const userId = get().userId
+    if (!userId) return
+    const newFilters = get().timeFilters.map(t => t.id === id ? { ...t, ...updates } : t).sort((a, b) => a.maxSeconds - b.maxSeconds)
+    const { error } = await supabase.from('user_settings').update({ time_filters: newFilters }).eq('user_id', userId)
+    if (!error) set({ timeFilters: newFilters })
+  },
+
+  deleteTimeFilter: async (id) => {
+    const userId = get().userId
+    if (!userId) return
+    const newFilters = get().timeFilters.filter(t => t.id !== id)
+    const { error } = await supabase.from('user_settings').update({ time_filters: newFilters }).eq('user_id', userId)
+    if (!error) set({ timeFilters: newFilters })
+  },
+
+  addTag: async (tag) => {
+    const userId = get().userId
+    if (!userId) return
+    const newTags = [...get().tags, tag]
+    const { error } = await supabase.from('user_settings').update({ tags: newTags }).eq('user_id', userId)
+    if (!error) set({ tags: newTags })
+  },
+
+  updateTag: async (id, updates) => {
+    const userId = get().userId
+    if (!userId) return
+    const newTags = get().tags.map(t => t.id === id ? { ...t, ...updates } : t)
+    const { error } = await supabase.from('user_settings').update({ tags: newTags }).eq('user_id', userId)
+    if (!error) set({ tags: newTags })
+  },
+
+  deleteTag: async (id) => {
+    const userId = get().userId
+    if (!userId) return
+    const newTags = get().tags.filter(t => t.id !== id)
+    const { error } = await supabase.from('user_settings').update({ tags: newTags }).eq('user_id', userId)
+    if (!error) set({ tags: newTags })
+  },
+
+  updateNotionConfig: async (config) => {
+    const userId = get().userId
+    if (!userId) return
+    const newConfig = { ...get().notionConfig, ...config }
+    const { error } = await supabase.from('user_settings').update({ notion_config: newConfig }).eq('user_id', userId)
+    if (!error) set({ notionConfig: newConfig })
+  }
+}))

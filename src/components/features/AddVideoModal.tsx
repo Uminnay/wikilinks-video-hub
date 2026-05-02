@@ -44,7 +44,12 @@ export default function AddVideoModal() {
   const addTag = useAppStore(state => state.addTag)
 
   useEffect(() => {
-    const handleOpen = () => setIsOpen(true)
+    const handleOpen = (e: any) => {
+      setIsOpen(true)
+      if (e?.detail?.url) {
+        setUrl(e.detail.url)
+      }
+    }
     window.addEventListener('open-add-video', handleOpen)
     return () => window.removeEventListener('open-add-video', handleOpen)
   }, [])

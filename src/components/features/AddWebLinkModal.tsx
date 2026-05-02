@@ -32,7 +32,12 @@ export default function AddWebLinkModal() {
   const addTag = useAppStore(state => state.addTag)
 
   useEffect(() => {
-    const handleOpen = () => setIsOpen(true)
+    const handleOpen = (e: any) => {
+      setIsOpen(true)
+      if (e?.detail?.url) {
+        setUrl(e.detail.url)
+      }
+    }
     window.addEventListener('open-add-web', handleOpen)
     return () => window.removeEventListener('open-add-web', handleOpen)
   }, [])

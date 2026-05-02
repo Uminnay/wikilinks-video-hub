@@ -5,6 +5,11 @@ import { useAppStore } from "@/store/useAppStore"
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
   const theme = useAppStore(state => state.theme)
   const largeTextMode = useAppStore(state => state.largeTextMode)
+  const initializeStore = useAppStore(state => state.initializeStore)
+
+  useEffect(() => {
+    initializeStore()
+  }, [initializeStore])
   
   useEffect(() => {
     const html = document.documentElement

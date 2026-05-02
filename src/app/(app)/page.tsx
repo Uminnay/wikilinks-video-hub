@@ -14,6 +14,7 @@ export default function HomePage() {
   const tags = useAppStore(state => state.tags)
   const actions = useAppStore(state => state.actions)
   const theme = useAppStore(state => state.theme)
+  const userProfile = useAppStore(state => state.userProfile)
   const toggleTheme = useAppStore(state => state.toggleTheme)
   
   // To avoid hydration mismatch due to Zustand persist reading from localStorage,
@@ -112,11 +113,10 @@ export default function HomePage() {
   return (
     <main className="px-4 pt-6 pb-24 max-w-3xl mx-auto flex flex-col gap-8">
       <header className="flex justify-between items-center w-full sticky top-0 bg-background/80 backdrop-blur-md py-3 z-30">
-        <div className="flex items-center gap-3">
-          <Link href="/settings" className="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center overflow-hidden border border-surface-high hover:brightness-110 transition-all">
-            <span className="material-symbols-outlined text-onSurface-muted">person</span>
-          </Link>
-          <h1 className="text-xl font-bold tracking-tighter text-primary">Wikilinks</h1>
+        <div className="flex items-center gap-2">
+          <h1 className="text-xl font-bold tracking-tighter text-primary">
+            Wikilinks <span className="text-onSurface">{userProfile.name}</span>
+          </h1>
         </div>
         <div className="flex items-center gap-2">
           <button 

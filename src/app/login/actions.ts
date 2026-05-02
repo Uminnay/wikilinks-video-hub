@@ -6,10 +6,18 @@ import { headers } from 'next/headers'
 
 export async function signInWithGoogle() {
   const supabase = createClient()
-  const headersList = headers()
-  const host = headersList.get('x-forwarded-host') || headersList.get('host') || 'localhost:3000'
-  const protocol = headersList.get('x-forwarded-proto') || (process.env.NODE_ENV === 'production' ? 'https' : 'http')
-  const origin = `${protocol}://${host}`
+  
+  // Use the explicit SITE_URL env var for reliability behind proxies.
+  // Falls back to header detection for local development.
+  let origin: string
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    origin = process.env.NEXT_PUBLIC_SITE_URL
+  } else {
+    const headersList = headers()
+    const host = headersList.get('x-forwarded-host') || headersList.get('host') || 'localhost:3000'
+    const protocol = headersList.get('x-forwarded-proto') || 'http'
+    origin = `${protocol}://${host}`
+  }
   
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',

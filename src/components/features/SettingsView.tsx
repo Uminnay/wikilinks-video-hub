@@ -89,10 +89,12 @@ export default function SettingsView() {
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState<'profile' | 'categories' | 'priorities' | 'times' | 'tags'>('profile')
   const [userEmail, setUserEmail] = useState<string | null>(null)
+  const [draftName, setDraftName] = useState("")
   const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    setDraftName(useAppStore.getState().userProfile.name)
     const fetchUser = async () => {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -168,16 +170,20 @@ export default function SettingsView() {
               <div className="flex gap-2">
                 <input 
                   type="text" 
-                  value={userProfile.name} 
-                  onChange={(e) => updateUserProfile(e.target.value)}
+                  value={draftName} 
+                  onChange={(e) => setDraftName(e.target.value)}
                   placeholder="Tu nombre..."
                   className="flex-1 bg-background border border-surface-high text-onSurface text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-primary transition-colors"
                 />
-                <div className="px-3 py-2 bg-surface-high rounded-lg text-[10px] uppercase font-bold text-primary flex items-center justify-center">
-                  Guardado
-                </div>
+                <button 
+                  onClick={() => updateUserProfile(draftName)}
+                  disabled={draftName === userProfile.name}
+                  className={`px-3 py-2 rounded-lg text-[10px] uppercase font-bold flex items-center justify-center transition-colors ${draftName !== userProfile.name ? 'bg-primary text-white hover:brightness-110 cursor-pointer' : 'bg-surface-high text-primary cursor-default'}`}
+                >
+                  {draftName !== userProfile.name ? 'Guardar' : 'Guardado'}
+                </button>
               </div>
-              <p className="text-[10px] text-onSurface-muted mt-2 italic">El nombre se guarda automáticamente mientras escribes.</p>
+              <p className="text-[10px] text-onSurface-muted mt-2 italic">Haz clic en Guardar para actualizar tu nombre.</p>
             </div>
             
             {userEmail && (

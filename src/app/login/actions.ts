@@ -2,22 +2,15 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { headers } from 'next/headers'
+
+const PRODUCTION_URL = 'https://wikilinks.liagil.es'
 
 export async function signInWithGoogle() {
   const supabase = createClient()
   
-  // Use the explicit SITE_URL env var for reliability behind proxies.
-  // Falls back to header detection for local development.
-  let origin: string
-  if (process.env.SITE_URL) {
-    origin = process.env.SITE_URL
-  } else {
-    const headersList = headers()
-    const host = headersList.get('x-forwarded-host') || headersList.get('host') || 'localhost:3000'
-    const protocol = headersList.get('x-forwarded-proto') || 'http'
-    origin = `${protocol}://${host}`
-  }
+  const origin = process.env.NODE_ENV === 'production' 
+    ? PRODUCTION_URL 
+    : 'http://localhost:3001'
   
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',

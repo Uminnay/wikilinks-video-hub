@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
+const PRODUCTION_URL = 'https://wikilinks.liagil.es'
+
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
+  const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/'
 
-  const siteUrl = process.env.SITE_URL
-  const host = request.headers.get('x-forwarded-host') || request.headers.get('host')
-  const protocol = request.headers.get('x-forwarded-proto') || (process.env.NODE_ENV === 'production' ? 'https' : 'http')
-  const resolvedOrigin = siteUrl || `${protocol}://${host}`
+  const resolvedOrigin = process.env.NODE_ENV === 'production' 
+    ? PRODUCTION_URL 
+    : 'http://localhost:3001'
 
   if (code) {
     const supabase = createClient()

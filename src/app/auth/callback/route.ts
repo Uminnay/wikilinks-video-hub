@@ -6,13 +6,19 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/'
 
+  const host = request.headers.get('x-forwarded-host') || request.headers.get('host')
+  const protocol = request.headers.get('x-forwarded-proto') || (process.env.NODE_ENV === 'production' ? 'https' : 'http')
+  const resolvedOrigin = `${protocol}://${host}`
+
   if (code) {
     const supabase = createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`)
+      return NextResponse.redirect(`${resolvedOrigin}${next}`)
+    } else {
+      console.error('Supabase Auth Error:', error)
     }
   }
 
-  return NextResponse.redirect(`${origin}/login?error=CouldNotAuthenticate`)
+  return NextResponse.redirect(`${resolvedOrigin}/login?error=CouldNotAuthenticate`)
 }

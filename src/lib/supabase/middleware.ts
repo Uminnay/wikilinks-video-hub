@@ -6,6 +6,9 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
+  // Track cookies that Supabase sets during auth operations
+  let pendingCookies: { name: string; value: string; options: any }[] = []
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -15,6 +18,8 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
+          // Save cookies for later so we can apply them to ANY response (including redirects)
+          pendingCookies = cookiesToSet
           cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({
             request,
@@ -28,24 +33,28 @@ export async function updateSession(request: NextRequest) {
   )
 
   // ── INTERCEPT AUTH CODE ──────────────────────────────────
-  // If Supabase/Google redirected back with a ?code= parameter,
+  // If a ?code= parameter arrives (from Supabase/Google OAuth redirect),
   // exchange it for a session RIGHT HERE, regardless of which URL it landed on.
-  // This fixes the issue where Supabase ignores our redirectTo and sends the
-  // code to the Site URL (/) which then gets bounced to /login by our guard below.
   const code = request.nextUrl.searchParams.get('code')
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
+    
+    const url = request.nextUrl.clone()
+    url.searchParams.delete('code')
+    url.searchParams.delete('error')
+    
     if (!error) {
-      // Success! Redirect to home, stripping the code from the URL
-      const url = request.nextUrl.clone()
-      url.searchParams.delete('code')
+      // Success! Redirect to home
       url.pathname = '/'
-      return NextResponse.redirect(url)
+      const redirectResponse = NextResponse.redirect(url)
+      // CRITICAL: Copy session cookies to the redirect response!
+      // Without this, the browser never receives the session cookies.
+      pendingCookies.forEach(({ name, value, options }) => {
+        redirectResponse.cookies.set(name, value, options)
+      })
+      return redirectResponse
     } else {
-      console.error('Middleware: Failed to exchange code for session:', error.message)
-      // If exchange fails, redirect to login with error
-      const url = request.nextUrl.clone()
-      url.searchParams.delete('code')
+      console.error('Middleware: Failed to exchange code:', error.message)
       url.pathname = '/login'
       url.searchParams.set('error', 'AuthFailed')
       return NextResponse.redirect(url)
@@ -57,7 +66,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Proteger todas las rutas excepto login y rutas estáticas
   const isLoginPage = request.nextUrl.pathname.startsWith('/login')
   const isAuthCallback = request.nextUrl.pathname.startsWith('/auth/callback')
   const isPublicRoute = request.nextUrl.pathname.startsWith('/api/') || 
@@ -65,15 +73,13 @@ export async function updateSession(request: NextRequest) {
                         request.nextUrl.pathname.includes('.')
 
   if (!user && !isLoginPage && !isAuthCallback && !isPublicRoute) {
-    // Redirigir al login
     const url = request.nextUrl.clone()
     url.pathname = '/login'
-    url.searchParams.delete('code') // Never carry code to login
+    url.searchParams.delete('code')
     return NextResponse.redirect(url)
   }
 
   if (user && isLoginPage) {
-    // Si está autenticado y en login, redirigir al inicio
     const url = request.nextUrl.clone()
     url.pathname = '/'
     return NextResponse.redirect(url)

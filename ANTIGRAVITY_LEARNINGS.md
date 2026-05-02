@@ -62,8 +62,8 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
    - Los textos de prioridad deben usar el mismo color hexadecimal de la prioridad para reforzar el vínculo visual.
 
 6. **Next.js - Uso de useSearchParams y Suspense**:
-   - Cualquier componente de cliente que utilice `useSearchParams` (como `WatchNowView`) **DEBE** estar envuelto en un límite de `<Suspense>`.
-   - **Regla:** Si un componente usa `useSearchParams`, crea un componente interno (ej. `WatchNowContent`) y expórtalo envuelto en `Suspense` para evitar errores de hidratación y fallos de construcción en Next.js.
+   - Cualquier componente de cliente que utilice `useSearchParams` (como `WatchNowView` o `ShareHandler`) **DEBE** estar envuelto en un límite de `<Suspense>`.
+   - **Regla:** Si un componente usa `useSearchParams`, envuélvelo en `Suspense` en el layout o página superior para evitar errores de hidratación y fallos de construcción (build) en Next.js.
 
 ---
 
@@ -78,36 +78,21 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
    - **IP:** `72.60.90.97`.
    - **Sistema:** Ubuntu 24.04 con Docker.
 
-3. **Configuración de Traefik (Reverse Proxy)**:
-   - **Certificados SSL:** El certresolver se llama **`letsencrypt`** (NO `myresolver`).
-   - **Redes:** Traefik funciona en **`network_mode: host`**. 
-   - **Regla de oro para Docker Compose:** No definir secciones de `networks` ni redes externas en las apps. Traefik detecta los contenedores por etiquetas (`labels`) a través del socket de Docker.
-   - **Limpieza de Git:** Al usar `git clone` dentro de un comando de Docker Compose, añadir siempre `rm -rf ./*` al principio para evitar errores de "directorio no vacío" si el contenedor se reinicia.
-   - **Next.js Production Builds**: When deploying to production via Docker, always include `devDependencies` during the build phase (`npm install --include=dev`) because Next.js needs them to compile (Tailwind, TypeScript, etc.).
-   - **Node.js Engine**: Next.js 14+ requires Node 20+. Using `node:18` or lower will result in `EBADENGINE` errors and potential silent crashes during build. Always use `node:20-alpine`.
-   - **VPS Resource Management**: Next.js builds are resource-intensive. To prevent builds from hanging or crashing on a VPS:
-       - Increase memory limit: `NODE_OPTIONS='--max-old-space-size=4096'`.
-       - Bypass non-critical checks: Use `typescript: { ignoreBuildErrors: true }` and `eslint: { ignoreDuringBuilds: true }` in `next.config.mjs` to prevent minor errors from blocking the build.
-   - **Docker Compose Optimization**: Instead of `rm -rf && git clone`, use a persistent strategy: `( [ -d .git ] || git clone ... ) && git pull`. This speeds up the restart loop and prevents timeouts from the hosting provider.
-   - **Traefik Configuration**: Ensure `network_mode: host` and proper labels for SSL certificates (`letsencrypt`) are present in the `docker-compose.yml`.
-   - **Puerto estándar:** La mayoría de las apps web (como Next.js) deben usar el puerto `3000` en el loadbalancer de Traefik.
+3. **Configuración de Despliegue y Troubleshooting**:
+    - **Certificados SSL:** El certresolver se llama **`letsencrypt`** (NO `myresolver`).
+    - **Redes:** Traefik funciona en **`network_mode: host`**, pero los contenedores individuales suelen requerir la red externa **`web`** para que el routing por etiquetas (`labels`) funcione correctamente.
+    - **Validación de DNS**: Si una web da 404 persistente tras el despliegue, verificar **siempre** que el dominio existe y apunta a la IP correcta con `nslookup`. No asumir que el dominio escrito en el chat es el correcto sin verificarlo.
+    - **PWA Share Target y WebAPKs (Android)**: Para que una PWA aparezca en el menú de "Compartir" de Android, Chrome **DEBE** instalarla como una "WebAPK" real. 
+        - **Requisito Crítico**: Los iconos definidos en `manifest.json` deben existir físicamente en la carpeta `public/`. Si los iconos dan 404, Chrome instala un acceso directo y el Share Target **NO** funciona.
+        - **Caché**: Tras actualizar el manifest, es necesario desinstalar la app, borrar datos de navegación/sitio en Chrome para ese dominio y volver a instalar.
+    - **Git Sync**: Siempre verificar si la carpeta del servidor es un repositorio git válido (`ls -a` para ver `.git`). Si no lo es, `git pull` fallará silenciosamente o dará error. Usar `git clone` si es necesario.
+    - **Next.js Build Stability**: Activar `ignoreDuringBuilds: true` tanto para ESLint como para TypeScript en `next.config.mjs` es vital para evitar que warnings menores detengan el despliegue en producción.
+    - **Node.js Engine**: Usar siempre `node:20-alpine` para Next.js 14+.
 
 4. **Seguridad del Repositorio (Pendiente)**:
    - Actualmente el repo es **Público** para facilitar el primer despliegue.
    - **Tarea Pendiente:** Crear un Personal Access Token (PAT) en GitHub, actualizar la URL en el `docker-compose.yml` de Hostinger y volver a poner el repositorio en **Privado**.
 
 5. **🔴 OAuth Redirects detrás de Proxy (Docker/Traefik) — CRÍTICO**:
-   - **Problema:** Cuando la app corre en un contenedor Docker detrás de Traefik, las funciones del servidor (server actions, API routes) ven como hostname interno `localhost:3000` o el nombre del contenedor en lugar del dominio público. Esto provoca que las URLs de redirección de OAuth (Supabase/Google) apunten a `localhost` y el login falle en bucle.
-   - **Intentos que NO funcionan:**
-     - ❌ Detectar `request.headers.get('host')` → Devuelve el hostname interno del contenedor.
-     - ❌ Detectar `x-forwarded-host` / `x-forwarded-proto` → No siempre se pasan correctamente a través de Traefik.
-     - ❌ Variables `NEXT_PUBLIC_*` → Se compilan en tiempo de build (build-time), no de ejecución (runtime). Si la variable no existía durante `npm run build`, el código la ve como `undefined` incluso si la añades después al contenedor.
-     - ❌ Variables de entorno de runtime (`SITE_URL` sin prefijo) → Dependen de que la configuración de entorno del contenedor Docker esté correcta, lo cual puede fallar.
-   - **Solución definitiva (Trifecta Ganadora):**
-     1. **Login Client-Side:** Iniciar OAuth desde un componente de cliente (`"use client"`) usando `supabase.auth.signInWithOAuth`. Esto garantiza que la cookie PKCE se cree en el navegador del usuario y no en el servidor.
-     2. **Middleware Interceptor:** Configurar el middleware para detectar el parámetro `?code=` en cualquier URL, realizar el `exchangeCodeForSession` y redirigir a `/`.
-     3. **Cookie Forwarding (CRÍTICO):** Al redirigir desde el middleware tras validar el código, es OBLIGATORIO copiar manualmente las cookies de sesión (`supabase.auth.setAll`) al objeto de respuesta de redirección (`NextResponse.redirect`). Si no se hace, la sesión se crea en el servidor pero el navegador nunca recibe las cookies y el usuario vuelve al login.
-   - **Configuración de Supabase obligatoria:**
-     - **Site URL:** debe ser el dominio público (`https://wikilinks.liagil.es`)
-     - **Redirect URLs:** debe incluir `https://wikilinks.liagil.es/auth/callback` y `http://localhost:3001/auth/callback` para desarrollo.
-   - **Regla de oro:** No confíes en la detección automática de dominios en entornos Docker con Proxy. Hardcodear la URL de producción para redirecciones de Auth es el camino más corto y seguro.
+    - **Problema:** Cuando la app corre en un contenedor Docker detrás de Traefik, las funciones del servidor ven como hostname interno `localhost:3000`. Esto rompe las redirecciones de OAuth.
+    - **Solución definitiva:** Iniciar OAuth desde el cliente, capturar el código en el middleware, y realizar el intercambio de sesión forzando el reenvío de cookies (`supabase.auth.setAll`) en la respuesta del middleware.

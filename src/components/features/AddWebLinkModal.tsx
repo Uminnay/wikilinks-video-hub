@@ -35,7 +35,16 @@ export default function AddWebLinkModal() {
     const handleOpen = (e: any) => {
       setIsOpen(true)
       if (e?.detail?.url) {
-        setUrl(e.detail.url)
+        let finalUrl = e.detail.url
+        // Clean Google Share URLs if they slip through
+        if (finalUrl.includes('share.google') && finalUrl.includes('?url=')) {
+          try {
+            const urlObj = new URL(finalUrl)
+            const extractedUrl = urlObj.searchParams.get('url')
+            if (extractedUrl) finalUrl = extractedUrl
+          } catch {}
+        }
+        setUrl(finalUrl)
       }
     }
     window.addEventListener('open-add-web', handleOpen)
@@ -117,6 +126,11 @@ export default function AddWebLinkModal() {
           const localUpdates: Record<string, any> = {}
           if (og.og_image_url) localUpdates.og_image_url = og.og_image_url
           if (!title.trim() && og.og_title) localUpdates.title = og.og_title
+          
+          // Add description to personal_notes if they are empty
+          if (og.og_description && (!saved.personal_notes || saved.personal_notes.trim() === "")) {
+            localUpdates.personal_notes = og.og_description
+          }
 
           if (Object.keys(localUpdates).length > 0) {
             useAppStore.setState(state => ({

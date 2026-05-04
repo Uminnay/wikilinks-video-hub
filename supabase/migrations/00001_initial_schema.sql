@@ -1,107 +1,77 @@
--- Schema definition for Wikilinks Video Hub
-
--- Enable necessary extensions
-create extension if not exists "uuid-ossp";
-
--- VIDEOS TABLE
-create table public.videos (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users not null,
-  youtube_video_id text,
-  url text not null,
-  title text not null,
-  channel_name text,
-  channel_id text,
-  thumbnail_url text,
-  duration_seconds integer,
-  published_at timestamp with time zone,
-  saved_at timestamp with time zone default now(),
-  category text default 'Sin clasificar',
-  status text default 'pending', -- pending | seen | discarded | notion_candidate
-  priority text, -- high | medium | low
-  content_type text,
-  caducity_type text,
-  personal_notes text,
-  notion_status text default 'none', -- none | candidate | prepared | exported
-  notion_page_url text,
-  notion_title text,
-  notion_channel text,
-  notion_category text,
-  notion_personal_note text,
-  notion_related_project text,
-  created_at timestamp with time zone default now(),
-  updated_at timestamp with time zone default now()
+-- TABLA DE AJUSTES GLOBALES DEL USUARIO
+CREATE TABLE IF NOT EXISTS user_settings (
+  user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  theme TEXT DEFAULT 'dark',
+  large_text_mode BOOLEAN DEFAULT FALSE,
+  user_profile JSONB DEFAULT '{"name": "Usuario"}',
+  categories JSONB DEFAULT '[]',
+  priorities JSONB DEFAULT '[]',
+  time_filters JSONB DEFAULT '[]',
+  tags JSONB DEFAULT '[]',
+  notion_config JSONB DEFAULT '{}'
 );
+ALTER TABLE user_settings ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can manage their own settings" ON user_settings FOR ALL USING (auth.uid() = user_id);
 
--- ACTIONS TABLE
-create table public.actions (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users not null,
-  video_id uuid references public.videos(id) on delete set null,
-  title text not null,
-  description text,
-  status text default 'pending', -- pending | in_progress | completed
-  due_date date,
-  related_project text,
-  created_at timestamp with time zone default now(),
-  updated_at timestamp with time zone default now()
+-- TABLA DE VÍDEOS
+CREATE TABLE IF NOT EXISTS videos (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  url TEXT NOT NULL,
+  youtube_video_id TEXT,
+  title TEXT NOT NULL,
+  channel_name TEXT,
+  thumbnail_url TEXT,
+  duration_seconds INTEGER,
+  published_at TIMESTAMP WITH TIME ZONE,
+  category TEXT NOT NULL,
+  priority TEXT,
+  status TEXT DEFAULT 'pending',
+  notion_status TEXT DEFAULT 'none',
+  notion_title TEXT,
+  notion_category TEXT,
+  notion_personal_note TEXT,
+  notion_related_project TEXT,
+  notion_date TEXT,
+  personal_notes TEXT,
+  ai_summary TEXT,
+  saved_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  tags TEXT[] DEFAULT '{}'
 );
+ALTER TABLE videos ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can manage their own videos" ON videos FOR ALL USING (auth.uid() = user_id);
 
--- RLS POLICIES
+-- TABLA DE ENLACES WEB
+CREATE TABLE IF NOT EXISTS web_links (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  url TEXT NOT NULL,
+  title TEXT NOT NULL,
+  category TEXT NOT NULL,
+  priority TEXT,
+  status TEXT DEFAULT 'pending',
+  notion_status TEXT DEFAULT 'none',
+  notion_title TEXT,
+  notion_category TEXT,
+  notion_personal_note TEXT,
+  notion_related_project TEXT,
+  notion_date TEXT,
+  personal_notes TEXT,
+  ai_summary TEXT,
+  saved_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  tags TEXT[] DEFAULT '{}'
+);
+ALTER TABLE web_links ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can manage their own web_links" ON web_links FOR ALL USING (auth.uid() = user_id);
 
--- Enable RLS
-alter table public.videos enable row level security;
-alter table public.actions enable row level security;
-
--- Policies for videos
-create policy "Users can view their own videos."
-  on public.videos for select
-  using ( auth.uid() = user_id );
-
-create policy "Users can insert their own videos."
-  on public.videos for insert
-  with check ( auth.uid() = user_id );
-
-create policy "Users can update their own videos."
-  on public.videos for update
-  using ( auth.uid() = user_id );
-
-create policy "Users can delete their own videos."
-  on public.videos for delete
-  using ( auth.uid() = user_id );
-
--- Policies for actions
-create policy "Users can view their own actions."
-  on public.actions for select
-  using ( auth.uid() = user_id );
-
-create policy "Users can insert their own actions."
-  on public.actions for insert
-  with check ( auth.uid() = user_id );
-
-create policy "Users can update their own actions."
-  on public.actions for update
-  using ( auth.uid() = user_id );
-
-create policy "Users can delete their own actions."
-  on public.actions for delete
-  using ( auth.uid() = user_id );
-
--- Triggers for updated_at
-create or replace function public.handle_updated_at()
-returns trigger as $$
-begin
-  new.updated_at = now();
-  return new;
-end;
-$$ language plpgsql;
-
-create trigger handle_videos_updated_at
-  before update on public.videos
-  for each row
-  execute procedure public.handle_updated_at();
-
-create trigger handle_actions_updated_at
-  before update on public.actions
-  for each row
-  execute procedure public.handle_updated_at();
+-- TABLA DE ACCIONES (SUBTAREAS)
+CREATE TABLE IF NOT EXISTS actions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  status TEXT DEFAULT 'pending',
+  video_id TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+ALTER TABLE actions ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can manage their own actions" ON actions FOR ALL USING (auth.uid() = user_id);

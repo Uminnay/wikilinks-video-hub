@@ -39,7 +39,7 @@ export default function WebLinkRow({
     <div className="bg-surface-low border border-surface-high rounded-xl p-3 flex flex-col gap-3 group hover:bg-surface-high/50 transition-colors">
       
       {/* Upper part: Info */}
-      <div className="flex gap-3">
+      <Link href={`/webs/${id}`} className="flex gap-3 relative z-10 cursor-pointer group-hover:brightness-110 transition-all">
         {/* Left: Icon or Initials */}
         <div className="w-12 h-12 bg-surface-high rounded-lg flex items-center justify-center flex-shrink-0 text-onSurface-muted">
           <span className="material-symbols-outlined text-[24px]">language</span>
@@ -54,10 +54,10 @@ export default function WebLinkRow({
             {domain}
           </p>
         </div>
-      </div>
+      </Link>
 
       {/* Middle part: Metadata */}
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 pointer-events-none z-10">
         {prio && (
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full shadow-sm" style={{ backgroundColor: prio.colorHex }}></div>

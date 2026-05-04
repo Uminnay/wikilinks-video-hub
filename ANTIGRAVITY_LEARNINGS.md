@@ -96,3 +96,15 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
 5. **🔴 OAuth Redirects detrás de Proxy (Docker/Traefik) — CRÍTICO**:
     - **Problema:** Cuando la app corre en un contenedor Docker detrás de Traefik, las funciones del servidor ven como hostname interno `localhost:3000`. Esto rompe las redirecciones de OAuth.
     - **Solución definitiva:** Iniciar OAuth desde el cliente, capturar el código en el middleware, y realizar el intercambio de sesión forzando el reenvío de cookies (`supabase.auth.setAll`) en la respuesta del middleware.
+
+6. **Consolidación de Esquema de Base de Datos**:
+    - **Regla:** Si las tablas (ej: `user_settings`, `web_links`) se crean directamente desde la UI de Supabase (SQL Editor) con todas sus reglas RLS perfectamente definidas, es mucho más robusto consolidar todo ese esquema en un archivo `00001_initial_schema.sql` en el código, en lugar de intentar añadir archivos de migración adicionales que puedan fragmentar o duplicar la lógica. Mantener el SQL original validado como única fuente de verdad evita errores de "tabla no existe" o RLS faltantes.
+
+---
+
+## 🛠️ BLOQUE E: Antigravity OS & Terminal Tricks (Windows)
+*Trucos para el propio agente al interactuar con el ordenador de Lia.*
+
+1. **Escapado de comillas en comandos PowerShell (`run_command`)**:
+   - **Problema:** Al intentar ejecutar comandos que requieren cadenas vacías (`""` o `''`) desde la herramienta `run_command` de Antigravity (que usa PowerShell por debajo), como por ejemplo `ssh-keygen -N ""`, el comando falla porque PowerShell se lía con las comillas y los argumentos.
+   - **Solución (El truco del .bat):** En lugar de pelearse con la sintaxis de PowerShell en una sola línea, lo más efectivo es usar `write_to_file` para crear un archivo temporal `.bat` (ej. `script.bat`), escribir dentro el comando en sintaxis pura de CMD (`@echo off \n ssh-keygen ...`), ejecutar el `.bat` con `run_command`, y por último borrar el `.bat`. Esto garantiza la ejecución sin errores de parseo.

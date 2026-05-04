@@ -11,6 +11,7 @@ export default function ShareHandler() {
 
   useEffect(() => {
     // Check if the URL has shared content parameters
+    const sharedUrl = searchParams.get('url') || searchParams.get('text')
     if (sharedUrl) {
       // Extract just the URL part if there's text around it
       const urlMatch = sharedUrl.match(/https?:\/\/[^\s]+/)

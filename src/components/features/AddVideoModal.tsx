@@ -137,17 +137,12 @@ export default function AddVideoModal() {
   }, [url, metadata, categories])
 
   const handleSave = async () => {
-    if (!url || !category || duplicateError) return
+    if (!url || duplicateError) return
 
     setSaving(true)
     
-    const titleToSave = metadata?.title || manualTitle
-    if (!titleToSave) {
-      alert("Introduce un título para el vídeo")
-      setSaving(false)
-      return
-    }
-
+    const titleToSave = metadata?.title || manualTitle || url
+    
     const videoData = {
       url,
       youtube_video_id: metadata?.videoId || null,
@@ -156,7 +151,7 @@ export default function AddVideoModal() {
       thumbnail_url: metadata?.thumbnailUrl || null,
       duration_seconds: metadata?.durationSeconds || null,
       published_at: metadata?.publishedAt || null,
-      category,
+      category: category || 'Sin clasificar',
       priority,
       status: 'pending' as const,
       notion_status: 'none' as const,
@@ -305,7 +300,7 @@ export default function AddVideoModal() {
 
           {/* Categories */}
           <section className="space-y-3">
-            <label className="block text-[10px] font-medium uppercase tracking-wider text-onSurface-muted">Categoría *</label>
+            <label className="block text-[10px] font-medium uppercase tracking-wider text-onSurface-muted">Categoría</label>
             <div className="flex flex-wrap gap-2">
               {categories.map(cat => (
                 <button 
@@ -428,7 +423,7 @@ export default function AddVideoModal() {
         <div className="absolute bottom-0 left-0 w-full p-4 bg-surface-low border-t border-surface-high pb-safe">
           <button 
             onClick={handleSave}
-            disabled={!url || !category || saving || (fetchFailed && !manualTitle) || !!duplicateError}
+            disabled={!url || saving || !!duplicateError}
             className="w-full py-3.5 rounded-xl bg-gradient-to-br from-[#7C5CFC] to-[#947DFF] text-white text-sm font-medium shadow-[0_4px_12px_rgba(124,92,252,0.3)] hover:brightness-110 disabled:opacity-50 disabled:grayscale transition-all flex items-center justify-center gap-2"
           >
             {saving ? (

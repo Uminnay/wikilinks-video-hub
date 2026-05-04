@@ -80,12 +80,6 @@ export default function WebLinkDetailView({ webId }: { webId: string }) {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Visual Header */}
-      <div className="w-full h-32 relative rounded-xl bg-surface-high border border-surface-high flex items-center justify-center flex-col gap-2 p-6 text-center">
-        <span className="material-symbols-outlined text-[48px] text-onSurface-muted">language</span>
-        <p className="text-sm font-medium text-onSurface-muted truncate w-full">{domain}</p>
-      </div>
-
       {/* Metadata */}
       <div className="space-y-2">
         <h1 className="text-xl font-bold tracking-tight leading-snug text-onSurface">{webLink.title}</h1>

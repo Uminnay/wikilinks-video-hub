@@ -97,29 +97,34 @@ export default function AddWebLinkModal() {
       priority,
       status: 'pending' as const,
       notion_status: 'none' as const,
-      tags: selectedTags,
-      og_image_url: null as string | null
+      tags: selectedTags
     }
 
     // Save immediately so user doesn't wait
-    addWebLink(webData)
+    await addWebLink(webData)
     closeModal()
     setSaving(false)
 
-    // Enrich with OG metadata in background (best effort)
+    // Enrich with OG metadata in background (best effort, local state only)
     try {
       const res = await fetch(`/api/opengraph?url=${encodeURIComponent(url)}`)
       if (res.ok) {
         const og = await res.json()
-        // Find the just-saved web link and update it
-        const { webLinks, updateWebLink } = useAppStore.getState()
+        const { webLinks } = useAppStore.getState()
         const saved = webLinks.find(w => w.url === url)
         if (saved) {
-          const updates: Partial<typeof webData> = {}
-          if (og.og_image_url) updates.og_image_url = og.og_image_url
-          // Only override title if user didn't type one (we used the url as fallback)
-          if (!title.trim() && og.og_title) updates.title = og.og_title
-          if (Object.keys(updates).length > 0) updateWebLink(saved.id, updates)
+          // Update only local state — og_image_url doesn't exist in DB yet
+          const localUpdates: Record<string, any> = {}
+          if (og.og_image_url) localUpdates.og_image_url = og.og_image_url
+          if (!title.trim() && og.og_title) localUpdates.title = og.og_title
+
+          if (Object.keys(localUpdates).length > 0) {
+            useAppStore.setState(state => ({
+              webLinks: state.webLinks.map(w =>
+                w.id === saved.id ? { ...w, ...localUpdates } : w
+              )
+            }))
+          }
         }
       }
     } catch {

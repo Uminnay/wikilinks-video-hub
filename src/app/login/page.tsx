@@ -64,7 +64,7 @@ export default function LoginPage() {
       </div>
 
       <div className="absolute bottom-10 flex flex-col items-center gap-1">
-        <span className="text-[10px] uppercase tracking-[0.2em] text-onSurface-muted font-bold">By Lia Gil</span>
+        <span className="text-[11px] tracking-[0.15em] text-onSurface-muted/60 font-medium">By Lia Gil</span>
       </div>
     </div>
   )

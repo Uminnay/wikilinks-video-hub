@@ -32,8 +32,9 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
    - En listados y grids, ocultar o atenuar el peso visual de los elementos vacíos (ej. categorías sin vídeos) para no saturar la vista.
    - Mantener el sistema de feedback visual claro pero sutil (ej. puntos de colores para prioridades, sin abusar de textos gigantes).
 
-3. **Iniciativa en la Ejecución**:
+3. **Iniciativa en la Ejecución y Despliegues Automáticos**:
    - El usuario prefiere que, si tengo las herramientas para realizar una acción técnica (como ejecutar comandos, editar archivos o configurar entornos), **la haga directamente** en lugar de pedir permiso o darle las instrucciones para que la haga él.
+   - **Regla de CI/CD (CRÍTICA)**: Cada vez que se implemente y el usuario valide una nueva funcionalidad o corrección localmente, se **DEBE** hacer automáticamente un `git add .`, `git commit` y `git push`. Como hay un flujo de GitHub Actions configurado, esto desplegará el código en producción sin necesidad de intervención manual. ¡No olvidar el push después de validar un cambio!
 
 ---
 

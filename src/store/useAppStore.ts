@@ -56,6 +56,7 @@ export type ActionItem = {
   title: string
   status: 'pending' | 'completed'
   video_id?: string
+  web_link_id?: string
   created_at: string
 }
 

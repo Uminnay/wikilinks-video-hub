@@ -9,9 +9,16 @@ export default function WebLinkDetailView({ webId }: { webId: string }) {
   const priorities = useAppStore(state => state.priorities)
   const tags = useAppStore(state => state.tags)
   const updateWebStore = useAppStore(state => state.updateWebLink)
+
+  const allActions = useAppStore(state => state.actions)
+  const addAction = useAppStore(state => state.addAction)
+  const updateAction = useAppStore(state => state.updateAction)
+  const deleteAction = useAppStore(state => state.deleteAction)
   
   const [mounted, setMounted] = useState(false)
   const [isEditingNote, setIsEditingNote] = useState(false)
+  const [newActionTitle, setNewActionTitle] = useState("")
+  const [showCompletedActions, setShowCompletedActions] = useState(false)
   
   // Custom dropdown states
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
@@ -46,6 +53,22 @@ export default function WebLinkDetailView({ webId }: { webId: string }) {
   const handleSaveNote = () => {
     updateWebLink({ personal_notes: noteContent })
     setIsEditingNote(false)
+  }
+
+  const handleAddAction = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newActionTitle.trim()) return
+    addAction({
+      title: newActionTitle.trim(),
+      status: 'pending',
+      web_link_id: webId
+    })
+    setNewActionTitle("")
+  }
+
+  const handleToggleAction = (id: string, currentStatus: string) => {
+    const newStatus = currentStatus === 'pending' ? 'completed' : 'pending'
+    updateAction(id, { status: newStatus })
   }
 
   let domain = ""
@@ -202,6 +225,95 @@ export default function WebLinkDetailView({ webId }: { webId: string }) {
           >
             <span className="material-symbols-outlined text-[16px]">content_copy</span>
           </button>
+        </div>
+      </div>
+
+      {/* Acciones vinculadas */}
+      <div className="space-y-3">
+        <label className="block text-[10px] font-medium uppercase tracking-wider text-onSurface-muted flex items-center gap-1.5">
+          <span className="material-symbols-outlined text-[14px] text-primary">bolt</span>
+          Acciones
+        </label>
+        
+        <div className="flex flex-col gap-2">
+          {(() => {
+            const webActions = allActions.filter(a => a.web_link_id === webId)
+            const pendingActions = webActions.filter(a => a.status === 'pending')
+            const completedActions = webActions.filter(a => a.status === 'completed')
+            
+            return (
+              <>
+                {/* Acciones pendientes */}
+                {pendingActions.map(action => (
+                  <div key={action.id} className="bg-surface-low rounded-xl p-3 border border-surface-high group hover:border-primary/30 flex items-start gap-3 transition-colors">
+                    <button 
+                      onClick={() => handleToggleAction(action.id, action.status)}
+                      className="w-6 h-6 rounded-full border-2 border-surface-high group-hover:border-primary flex items-center justify-center mt-0.5 transition-colors"
+                    >
+                      <div className="w-3 h-3 rounded-full bg-primary opacity-0 transition-opacity"></div>
+                    </button>
+                    <p className="text-sm flex-1 min-w-0 text-onSurface">{action.title}</p>
+                  </div>
+                ))}
+
+                {/* Formulario nueva acción */}
+                <form onSubmit={handleAddAction} className="flex gap-2 mt-1">
+                  <input 
+                    type="text"
+                    value={newActionTitle}
+                    onChange={(e) => setNewActionTitle(e.target.value)}
+                    placeholder="Añadir acción..."
+                    className="flex-1 bg-surface-low border border-surface-high text-onSurface text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary transition-colors"
+                  />
+                  <button 
+                    type="submit"
+                    disabled={!newActionTitle.trim()}
+                    className="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center hover:brightness-110 disabled:opacity-50 transition-all shadow-[0_4px_12px_rgba(124,92,252,0.3)]"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">add</span>
+                  </button>
+                </form>
+
+                {/* Acciones completadas */}
+                {completedActions.length > 0 && (
+                  <div className="mt-2">
+                    <button 
+                      onClick={() => setShowCompletedActions(!showCompletedActions)}
+                      className="flex items-center gap-2 text-xs font-medium text-onSurface-muted hover:text-onSurface transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[14px]">
+                        {showCompletedActions ? 'expand_less' : 'expand_more'}
+                      </span>
+                      Acciones realizadas ({completedActions.length})
+                    </button>
+                    
+                    {showCompletedActions && (
+                      <div className="flex flex-col gap-2 mt-3 pl-2 border-l-2 border-surface-high">
+                        {completedActions.map(action => (
+                          <div key={action.id} className="group flex items-start gap-3">
+                            <button 
+                              onClick={() => handleToggleAction(action.id, action.status)}
+                              className="w-5 h-5 rounded-full border-2 border-primary bg-primary flex items-center justify-center mt-0.5"
+                            >
+                              <span className="material-symbols-outlined text-[12px] text-white">check</span>
+                            </button>
+                            <p className="text-sm text-onSurface-muted line-through flex-1">{action.title}</p>
+                            <button 
+                              onClick={() => deleteAction(action.id)}
+                              className="opacity-0 group-hover:opacity-100 transition-opacity text-error/70 hover:text-error p-1"
+                              title="Eliminar acción"
+                            >
+                              <span className="material-symbols-outlined text-[16px]">delete</span>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )
+          })()}
         </div>
       </div>
 

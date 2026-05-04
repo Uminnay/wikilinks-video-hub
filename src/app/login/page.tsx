@@ -62,6 +62,10 @@ export default function LoginPage() {
         </div>
         
       </div>
+
+      <div className="absolute bottom-10 flex flex-col items-center gap-1">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-onSurface-muted font-bold">by Lia Gil</span>
+      </div>
     </div>
   )
 }

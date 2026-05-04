@@ -47,6 +47,7 @@ export type WebLink = {
   notion_date?: string
   personal_notes?: string
   ai_summary?: string
+  og_image_url?: string | null
   saved_at: string
   tags?: string[]
 }

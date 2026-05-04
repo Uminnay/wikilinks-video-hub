@@ -8,6 +8,7 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
 ---
 
 ## 🌍 BLOQUE A: Reglas Universales (Frameworks y Arquitectura)
+
 *Estas reglas aplican a cualquier proyecto que utilice estas tecnologías.*
 
 1. **React & Next.js - Regla de los Hooks (ABSOLUTA)**:
@@ -21,6 +22,7 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
 ---
 
 ## 👤 BLOQUE B: Preferencias de Usuario (Lia)
+
 *Estilo de trabajo y comunicación.*
 
 1. **Gestión de Reglas y Contexto**:
@@ -39,6 +41,7 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
 ---
 
 ## 🎯 BLOQUE C: Learnings Específicos del Proyecto (Wikilinks Video Hub)
+
 *Reglas y descubrimientos exclusivos para este repositorio.*
 
 1. **Generación de Resúmenes IA (API de Gemini)**:
@@ -69,10 +72,11 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
 ---
 
 ## 🌐 BLOQUE D: Infraestructura y Despliegue (VPS Hostinger & cdmon)
+
 *Detalles técnicos del entorno de producción de Lia.*
 
 1. **Gestión de Dominios**:
-   - Los dominios de Lia (ej. `liagil.es`) se gestionan en **cdmon**. 
+   - Los dominios de Lia (ej. `liagil.es`) se gestionan en **cdmon**.
    - Para crear subdominios, hay que añadir un registro tipo **A** en cdmon apuntando a la IP del VPS.
 
 2. **Servidor VPS (Hostinger)**:
@@ -83,7 +87,7 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
     - **Certificados SSL:** El certresolver se llama **`letsencrypt`** (NO `myresolver`).
     - **Redes:** Traefik funciona en **`network_mode: host`**, pero los contenedores individuales suelen requerir la red externa **`web`** para que el routing por etiquetas (`labels`) funcione correctamente.
     - **Validación de DNS**: Si una web da 404 persistente tras el despliegue, verificar **siempre** que el dominio existe y apunta a la IP correcta con `nslookup`. No asumir que el dominio escrito en el chat es el correcto sin verificarlo.
-    - **PWA Share Target y WebAPKs (Android)**: Para que una PWA aparezca en el menú de "Compartir" de Android, Chrome **DEBE** instalarla como una "WebAPK" real. 
+    - **PWA Share Target y WebAPKs (Android)**: Para que una PWA aparezca en el menú de "Compartir" de Android, Chrome **DEBE** instalarla como una "WebAPK" real.
         - **Requisito Crítico**: Los iconos definidos en `manifest.json` deben existir físicamente en la carpeta `public/`. Si los iconos dan 404, Chrome instala un acceso directo y el Share Target **NO** funciona.
         - **Caché**: Tras actualizar el manifest, es necesario desinstalar la app, borrar datos de navegación/sitio en Chrome para ese dominio y volver a instalar.
     - **Git Sync**: Siempre verificar si la carpeta del servidor es un repositorio git válido (`ls -a` para ver `.git`). Si no lo es, `git pull` fallará silenciosamente o dará error. Usar `git clone` si es necesario.
@@ -104,6 +108,7 @@ Este es un documento vivo. Su objetivo es registrar los aprendizajes, preferenci
 ---
 
 ## 🛠️ BLOQUE E: Antigravity OS & Terminal Tricks (Windows)
+
 *Trucos para el propio agente al interactuar con el ordenador de Lia.*
 
 1. **Escapado de comillas en comandos PowerShell (`run_command`)**:

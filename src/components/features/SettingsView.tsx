@@ -90,7 +90,7 @@ export default function SettingsView() {
   } = useAppStore()
 
   const [mounted, setMounted] = useState(false)
-  const [activeTab, setActiveTab] = useState<'profile' | 'categories' | 'priorities' | 'times' | 'tags' | 'integrations'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'categories' | 'priorities' | 'times' | 'tags' | 'integrations' | 'stats'>('profile')
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [draftName, setDraftName] = useState("")
   const [isSaving, setIsSaving] = useState(false)
@@ -157,6 +157,24 @@ export default function SettingsView() {
     setNewTag({ name: '', colorHex: PRESET_COLORS[0] })
   }
 
+  const handleExportData = () => {
+    const { videos, webLinks, actions, categories, tags, priorities } = useAppStore.getState()
+    const exportData = {
+      exported_at: new Date().toISOString(),
+      videos,
+      webLinks,
+      actions,
+      settings: { categories, tags, priorities }
+    }
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `wikilinks-backup-${new Date().toISOString().split('T')[0]}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="flex flex-col gap-6 relative">
       {/* Tabs */}
@@ -167,6 +185,7 @@ export default function SettingsView() {
         <button onClick={() => setActiveTab('times')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'times' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Tiempos</button>
         <button onClick={() => setActiveTab('tags')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'tags' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Etiquetas</button>
         <button onClick={() => setActiveTab('integrations')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'integrations' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Integraciones</button>
+        <button onClick={() => setActiveTab('stats')} className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${activeTab === 'stats' ? 'bg-primary text-white' : 'bg-surface-high text-onSurface-muted'}`}>Estadísticas</button>
       </div>
 
       {activeTab === 'profile' && (
@@ -273,6 +292,25 @@ export default function SettingsView() {
               </div>
             </div>
             <p className="text-[11px] text-onSurface-muted text-center pt-2">Tus datos se guardan de forma segura en tu navegador y no requieren conexión.</p>
+          </div>
+
+          <div className="bg-surface-low rounded-xl p-4 border border-surface-high space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                <span className="material-symbols-outlined text-[22px]">download</span>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-onSurface">Copia de Seguridad</h3>
+                <p className="text-[10px] text-onSurface-muted">Descarga todos tus datos en un archivo JSON</p>
+              </div>
+            </div>
+            <button
+              onClick={handleExportData}
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-xs font-bold"
+            >
+              <span className="material-symbols-outlined text-[18px]">download</span>
+              Exportar todo (JSON)
+            </button>
           </div>
         </section>
       )}
@@ -638,6 +676,145 @@ export default function SettingsView() {
           </div>
         </section>
       )}
+      {activeTab === 'stats' && (() => {
+        const { videos, webLinks, actions } = useAppStore.getState()
+        const now = new Date()
+        const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+        const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
+
+        const videosThisWeek = videos.filter(v => new Date(v.saved_at) >= oneWeekAgo).length
+        const videosLastWeek = videos.filter(v => new Date(v.saved_at) >= twoWeeksAgo && new Date(v.saved_at) < oneWeekAgo).length
+        const websThisWeek = webLinks.filter(w => new Date(w.saved_at) >= oneWeekAgo).length
+
+        const videosSeen = videos.filter(v => v.status === 'seen').length
+        const videosPending = videos.filter(v => v.status === 'pending').length
+        const websSeen = webLinks.filter(w => w.status === 'seen').length
+        const websPending = webLinks.filter(w => w.status === 'pending').length
+
+        const actionsCompleted = actions.filter(a => a.status === 'completed').length
+        const actionsPending = actions.filter(a => a.status === 'pending').length
+
+        // Top categories
+        const catCountVideos: Record<string, number> = {}
+        videos.forEach(v => { catCountVideos[v.category] = (catCountVideos[v.category] || 0) + 1 })
+        const topCats = Object.entries(catCountVideos).sort((a, b) => b[1] - a[1]).slice(0, 5)
+        const maxCatCount = topCats[0]?.[1] || 1
+
+        const videoProgress = videos.length ? Math.round((videosSeen / videos.length) * 100) : 0
+        const webProgress = webLinks.length ? Math.round((websSeen / webLinks.length) * 100) : 0
+
+        return (
+          <section className="space-y-4">
+            {/* Weekly summary */}
+            <div className="bg-surface-low rounded-xl p-4 border border-surface-high space-y-3">
+              <h2 className="text-sm font-semibold text-onSurface flex items-center gap-2">
+                <span className="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
+                Esta semana
+              </h2>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-background rounded-lg p-3 text-center">
+                  <p className="text-2xl font-bold text-primary">{videosThisWeek}</p>
+                  <p className="text-[10px] text-onSurface-muted mt-0.5">Vídeos guardados</p>
+                  {videosLastWeek > 0 && <p className="text-[10px] text-onSurface-muted/60 mt-0.5">{videosThisWeek >= videosLastWeek ? '+' : ''}{videosThisWeek - videosLastWeek} vs sem. anterior</p>}
+                </div>
+                <div className="bg-background rounded-lg p-3 text-center">
+                  <p className="text-2xl font-bold text-primary">{websThisWeek}</p>
+                  <p className="text-[10px] text-onSurface-muted mt-0.5">Webs guardadas</p>
+                </div>
+                <div className="bg-background rounded-lg p-3 text-center">
+                  <p className="text-2xl font-bold text-green-400">{actionsCompleted}</p>
+                  <p className="text-[10px] text-onSurface-muted mt-0.5">Acciones hechas</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Progress bars */}
+            <div className="bg-surface-low rounded-xl p-4 border border-surface-high space-y-4">
+              <h2 className="text-sm font-semibold text-onSurface flex items-center gap-2">
+                <span className="material-symbols-outlined text-[18px] text-primary">trending_up</span>
+                Progreso total
+              </h2>
+              
+              {/* Videos */}
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-onSurface-muted flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[14px]">video_library</span>
+                    Vídeos
+                  </span>
+                  <span className="text-xs font-semibold text-onSurface">{videosSeen} / {videos.length} vistos</span>
+                </div>
+                <div className="h-2 bg-surface-high rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#7C5CFC] to-[#947DFF] rounded-full transition-all duration-500" style={{ width: `${videoProgress}%` }} />
+                </div>
+                <div className="flex justify-between text-[10px] text-onSurface-muted">
+                  <span>{videosPending} pendientes</span>
+                  <span>{videoProgress}% completado</span>
+                </div>
+              </div>
+
+              {/* Webs */}
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-onSurface-muted flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[14px]">language</span>
+                    Webs
+                  </span>
+                  <span className="text-xs font-semibold text-onSurface">{websSeen} / {webLinks.length} vistas</span>
+                </div>
+                <div className="h-2 bg-surface-high rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#7C5CFC] to-[#947DFF] rounded-full transition-all duration-500" style={{ width: `${webProgress}%` }} />
+                </div>
+                <div className="flex justify-between text-[10px] text-onSurface-muted">
+                  <span>{websPending} pendientes</span>
+                  <span>{webProgress}% completado</span>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-onSurface-muted flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[14px]">check_circle</span>
+                    Acciones
+                  </span>
+                  <span className="text-xs font-semibold text-onSurface">{actionsCompleted} / {actions.length} completadas</span>
+                </div>
+                <div className="h-2 bg-surface-high rounded-full overflow-hidden">
+                  <div className="h-full bg-green-400 rounded-full transition-all duration-500" style={{ width: actions.length ? `${Math.round((actionsCompleted / actions.length) * 100)}%` : '0%' }} />
+                </div>
+                <div className="flex justify-between text-[10px] text-onSurface-muted">
+                  <span>{actionsPending} pendientes</span>
+                  <span>{actions.length ? Math.round((actionsCompleted / actions.length) * 100) : 0}% completado</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Top categories */}
+            {topCats.length > 0 && (
+              <div className="bg-surface-low rounded-xl p-4 border border-surface-high space-y-3">
+                <h2 className="text-sm font-semibold text-onSurface flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px] text-primary">folder</span>
+                  Top categorías (vídeos)
+                </h2>
+                <div className="space-y-2.5">
+                  {topCats.map(([cat, count]) => (
+                    <div key={cat} className="space-y-1">
+                      <div className="flex justify-between">
+                        <span className="text-xs text-onSurface">{cat}</span>
+                        <span className="text-xs font-semibold text-primary">{count}</span>
+                      </div>
+                      <div className="h-1.5 bg-surface-high rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-[#7C5CFC] to-[#947DFF] rounded-full" style={{ width: `${Math.round((count / maxCatCount) * 100)}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )
+      })()}
 
     </div>
   )

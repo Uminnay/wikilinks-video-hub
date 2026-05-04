@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useAppStore } from "@/store/useAppStore"
+import { useDebouncedSave } from "@/hooks/useDebouncedSave"
 
 export default function VideoDetailView({ videoId }: { videoId: string }) {
   const router = useRouter()
@@ -20,7 +21,6 @@ export default function VideoDetailView({ videoId }: { videoId: string }) {
   const deleteAction = useAppStore(state => state.deleteAction)
   
   const [mounted, setMounted] = useState(false)
-  const [isEditingNote, setIsEditingNote] = useState(false)
   const [generatingSummary, setGeneratingSummary] = useState(false)
   const [summaryError, setSummaryError] = useState<string | null>(null)
   const [summaryErrorDetails, setSummaryErrorDetails] = useState<string | null>(null)
@@ -35,12 +35,19 @@ export default function VideoDetailView({ videoId }: { videoId: string }) {
   const [noteContent, setNoteContent] = useState("")
   const [newActionTitle, setNewActionTitle] = useState("")
 
+  // Auto-save notes with debounce
+  const { status: noteSaveStatus } = useDebouncedSave(
+    noteContent,
+    async (value) => { await updateVideoStore(videoId, { personal_notes: value }) },
+    800
+  )
+
   useEffect(() => {
     setMounted(true)
     if (video) {
       setNoteContent(video.personal_notes || "")
     }
-  }, [video])
+  }, [video?.id]) // Only reset when video ID changes, not on every update
 
   if (!mounted) {
     return <div className="p-8 flex justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>
@@ -62,10 +69,7 @@ export default function VideoDetailView({ videoId }: { videoId: string }) {
     updateVideo({ category: e.target.value })
   }
 
-  const handleSaveNote = () => {
-    updateVideo({ personal_notes: noteContent })
-    setIsEditingNote(false)
-  }
+  // handleSaveNote removed — auto-save via useDebouncedSave
 
   const handleAddAction = (e: React.FormEvent) => {
     e.preventDefault()
@@ -340,49 +344,26 @@ export default function VideoDetailView({ videoId }: { videoId: string }) {
         </div>
       </div>
 
-      {/* Personal Notes */}
+      {/* Personal Notes — auto-save */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label className="block text-[10px] font-medium uppercase tracking-wider text-onSurface-muted">Notas Personales</label>
-          {!isEditingNote && (
-            <button onClick={() => setIsEditingNote(true)} className="text-primary text-[10px] font-medium uppercase tracking-wider flex items-center gap-1">
-              <span className="material-symbols-outlined text-[14px]">edit</span>
-              Editar
-            </button>
-          )}
+          <span className={`text-[10px] transition-all duration-300 flex items-center gap-1 ${
+            noteSaveStatus === 'saving' ? 'text-onSurface-muted' :
+            noteSaveStatus === 'saved' ? 'text-green-400' :
+            noteSaveStatus === 'error' ? 'text-red-400' : 'opacity-0'
+          }`}>
+            {noteSaveStatus === 'saving' && <><span className="material-symbols-outlined text-[12px] animate-spin">sync</span> Guardando...</>}
+            {noteSaveStatus === 'saved' && <><span className="material-symbols-outlined text-[12px]">check_circle</span> Guardado</>}
+            {noteSaveStatus === 'error' && <><span className="material-symbols-outlined text-[12px]">error</span> Error</>}
+          </span>
         </div>
-        
-        {isEditingNote ? (
-          <div className="space-y-2">
-            <textarea 
-              value={noteContent}
-              onChange={(e) => setNoteContent(e.target.value)}
-              placeholder="Añade una nota personal, ideas, timestamps..."
-              className="w-full bg-surface-low border border-surface-high text-onSurface text-sm rounded-lg p-3 min-h-[120px] focus:outline-none focus:border-primary transition-colors"
-            />
-            <div className="flex justify-end gap-2">
-              <button 
-                onClick={() => { setIsEditingNote(false); setNoteContent(video.personal_notes || ""); }}
-                className="px-4 py-2 text-xs font-medium text-onSurface-muted hover:text-onSurface"
-              >
-                Cancelar
-              </button>
-              <button 
-                onClick={handleSaveNote}
-                className="px-4 py-2 text-xs font-medium bg-primary text-white rounded-lg hover:brightness-110"
-              >
-                Guardar
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div 
-            onClick={() => setIsEditingNote(true)}
-            className={`w-full bg-surface-low border border-surface-high rounded-lg p-3 min-h-[80px] text-sm cursor-text ${!video.personal_notes ? 'text-onSurface-muted italic' : 'text-onSurface whitespace-pre-wrap'}`}
-          >
-            {video.personal_notes || "Añade una nota personal..."}
-          </div>
-        )}
+        <textarea 
+          value={noteContent}
+          onChange={(e) => setNoteContent(e.target.value)}
+          placeholder="Añade una nota personal, ideas, timestamps..."
+          className="w-full bg-surface-low border border-surface-high text-onSurface text-sm rounded-lg p-3 min-h-[120px] focus:outline-none focus:border-primary transition-colors resize-none"
+        />
       </div>
 
       {/* Acciones vinculadas */}

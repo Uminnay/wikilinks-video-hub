@@ -29,6 +29,13 @@ export default function HomePage() {
           </h1>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => window.dispatchEvent(new Event('open-global-search'))}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-high transition-colors text-onSurface"
+            title="Buscar (Ctrl+K)"
+          >
+            <span className="material-symbols-outlined">search</span>
+          </button>
           <button 
             onClick={toggleTheme}
             className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-high transition-colors text-onSurface"

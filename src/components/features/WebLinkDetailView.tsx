@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useAppStore } from "@/store/useAppStore"
+import { useDebouncedSave } from "@/hooks/useDebouncedSave"
 
 export default function WebLinkDetailView({ webId }: { webId: string }) {
   const allWebs = useAppStore(state => state.webLinks)
@@ -16,7 +17,6 @@ export default function WebLinkDetailView({ webId }: { webId: string }) {
   const deleteAction = useAppStore(state => state.deleteAction)
   
   const [mounted, setMounted] = useState(false)
-  const [isEditingNote, setIsEditingNote] = useState(false)
   const [newActionTitle, setNewActionTitle] = useState("")
   const [showCompletedActions, setShowCompletedActions] = useState(false)
   
@@ -27,12 +27,19 @@ export default function WebLinkDetailView({ webId }: { webId: string }) {
   const webLink = allWebs.find(w => w.id === webId)
   const [noteContent, setNoteContent] = useState("")
 
+  // Auto-save notes with debounce
+  const { status: noteSaveStatus } = useDebouncedSave(
+    noteContent,
+    async (value) => { await updateWebStore(webId, { personal_notes: value }) },
+    800
+  )
+
   useEffect(() => {
     setMounted(true)
     if (webLink) {
       setNoteContent(webLink.personal_notes || "")
     }
-  }, [webLink])
+  }, [webLink?.id]) // Only reset when web ID changes
 
   if (!mounted) {
     return <div className="p-8 flex justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>
@@ -50,10 +57,7 @@ export default function WebLinkDetailView({ webId }: { webId: string }) {
     updateWebLink({ priority: webLink.priority === priorityId ? null : priorityId })
   }
 
-  const handleSaveNote = () => {
-    updateWebLink({ personal_notes: noteContent })
-    setIsEditingNote(false)
-  }
+  // handleSaveNote removed — auto-save via useDebouncedSave
 
   const handleAddAction = (e: React.FormEvent) => {
     e.preventDefault()
@@ -80,6 +84,18 @@ export default function WebLinkDetailView({ webId }: { webId: string }) {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* OG Image Preview (shown if available) */}
+      {webLink.og_image_url && (
+        <div className="w-full aspect-video relative rounded-xl overflow-hidden bg-surface-high border border-surface-high">
+          <img
+            src={webLink.og_image_url}
+            alt={webLink.title}
+            className="w-full h-full object-cover"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+          />
+        </div>
+      )}
+
       {/* Metadata */}
       <div className="space-y-2">
         <h1 className="text-xl font-bold tracking-tight leading-snug text-onSurface">{webLink.title}</h1>
@@ -311,49 +327,26 @@ export default function WebLinkDetailView({ webId }: { webId: string }) {
         </div>
       </div>
 
-      {/* Personal Notes */}
+      {/* Personal Notes — auto-save */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label className="block text-[10px] font-medium uppercase tracking-wider text-onSurface-muted">Notas Personales</label>
-          {!isEditingNote && (
-            <button onClick={() => setIsEditingNote(true)} className="text-primary text-[10px] font-medium uppercase tracking-wider flex items-center gap-1">
-              <span className="material-symbols-outlined text-[14px]">edit</span>
-              Editar
-            </button>
-          )}
+          <span className={`text-[10px] transition-all duration-300 flex items-center gap-1 ${
+            noteSaveStatus === 'saving' ? 'text-onSurface-muted' :
+            noteSaveStatus === 'saved' ? 'text-green-400' :
+            noteSaveStatus === 'error' ? 'text-red-400' : 'opacity-0'
+          }`}>
+            {noteSaveStatus === 'saving' && <><span className="material-symbols-outlined text-[12px] animate-spin">sync</span> Guardando...</>}
+            {noteSaveStatus === 'saved' && <><span className="material-symbols-outlined text-[12px]">check_circle</span> Guardado</>}
+            {noteSaveStatus === 'error' && <><span className="material-symbols-outlined text-[12px]">error</span> Error</>}
+          </span>
         </div>
-        
-        {isEditingNote ? (
-          <div className="space-y-2">
-            <textarea 
-              value={noteContent}
-              onChange={(e) => setNoteContent(e.target.value)}
-              placeholder="Añade una nota personal o resumen..."
-              className="w-full bg-surface-low border border-surface-high text-onSurface text-sm rounded-lg p-3 min-h-[120px] focus:outline-none focus:border-primary transition-colors"
-            />
-            <div className="flex justify-end gap-2">
-              <button 
-                onClick={() => { setIsEditingNote(false); setNoteContent(webLink.personal_notes || ""); }}
-                className="px-4 py-2 text-xs font-medium text-onSurface-muted hover:text-onSurface"
-              >
-                Cancelar
-              </button>
-              <button 
-                onClick={handleSaveNote}
-                className="px-4 py-2 text-xs font-medium bg-primary text-white rounded-lg hover:brightness-110"
-              >
-                Guardar
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div 
-            onClick={() => setIsEditingNote(true)}
-            className={`w-full bg-surface-low border border-surface-high rounded-lg p-3 min-h-[80px] text-sm cursor-text ${!webLink.personal_notes ? 'text-onSurface-muted italic' : 'text-onSurface whitespace-pre-wrap'}`}
-          >
-            {webLink.personal_notes || "Añade una nota personal..."}
-          </div>
-        )}
+        <textarea 
+          value={noteContent}
+          onChange={(e) => setNoteContent(e.target.value)}
+          placeholder="Añade una nota personal o resumen..."
+          className="w-full bg-surface-low border border-surface-high text-onSurface text-sm rounded-lg p-3 min-h-[120px] focus:outline-none focus:border-primary transition-colors resize-none"
+        />
       </div>
 
       {/* Main Actions */}

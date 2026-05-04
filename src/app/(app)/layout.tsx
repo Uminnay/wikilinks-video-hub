@@ -3,6 +3,7 @@ import BottomNav from "@/components/ui/BottomNav";
 import AddVideoModal from "@/components/features/AddVideoModal";
 import AddWebLinkModal from "@/components/features/AddWebLinkModal";
 import ShareHandler from "@/components/features/ShareHandler";
+import GlobalSearchModal from "@/components/features/GlobalSearchModal";
 
 export default function AppLayout({
   children,
@@ -21,6 +22,7 @@ export default function AppLayout({
       <Suspense fallback={null}>
         <ShareHandler />
       </Suspense>
+      <GlobalSearchModal />
     </div>
   )
 }

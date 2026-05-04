@@ -97,14 +97,34 @@ export default function AddWebLinkModal() {
       priority,
       status: 'pending' as const,
       notion_status: 'none' as const,
-      tags: selectedTags
+      tags: selectedTags,
+      og_image_url: null as string | null
     }
 
+    // Save immediately so user doesn't wait
     addWebLink(webData)
-    
-    router.refresh()
     closeModal()
     setSaving(false)
+
+    // Enrich with OG metadata in background (best effort)
+    try {
+      const res = await fetch(`/api/opengraph?url=${encodeURIComponent(url)}`)
+      if (res.ok) {
+        const og = await res.json()
+        // Find the just-saved web link and update it
+        const { webLinks, updateWebLink } = useAppStore.getState()
+        const saved = webLinks.find(w => w.url === url)
+        if (saved) {
+          const updates: Partial<typeof webData> = {}
+          if (og.og_image_url) updates.og_image_url = og.og_image_url
+          // Only override title if user didn't type one (we used the url as fallback)
+          if (!title.trim() && og.og_title) updates.title = og.og_title
+          if (Object.keys(updates).length > 0) updateWebLink(saved.id, updates)
+        }
+      }
+    } catch {
+      // Silently fail — OG is a nice-to-have
+    }
   }
 
   const handleAddCategory = () => {

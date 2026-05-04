@@ -8,8 +8,8 @@ export const viewport: Viewport = {
   themeColor: "#7C5CFC",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export const metadata: Metadata = {
@@ -41,11 +41,11 @@ export default function RootLayout({
           try {
             const stored = JSON.parse(localStorage.getItem('wikilinks-storage') || '{}');
             const theme = stored?.state?.theme || 'dark';
-            const largeText = stored?.state?.largeTextMode || false;
+            const textSize = stored?.state?.textSize || 'normal';
             
             const classes = [];
             classes.push(theme === 'light' ? 'light' : 'dark');
-            if (largeText) classes.push('large-text-mode');
+            if (textSize !== 'normal') classes.push('text-' + textSize);
             
             document.documentElement.className = classes.join(' ');
           } catch(e) {

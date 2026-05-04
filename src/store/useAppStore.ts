@@ -71,7 +71,7 @@ interface AppState {
   
   userProfile: { name: string }
   theme: 'dark' | 'light'
-  largeTextMode: boolean
+  textSize: 'normal' | 'large' | 'extra-large'
   categories: Category[]
   priorities: PriorityDef[]
   timeFilters: TimeFilter[]
@@ -95,7 +95,7 @@ interface AppState {
   
   updateUserProfile: (name: string) => Promise<void>
   toggleTheme: () => Promise<void>
-  toggleLargeTextMode: () => Promise<void>
+  setTextSize: (size: 'normal' | 'large' | 'extra-large') => Promise<void>
   
   addCategory: (cat: Category) => Promise<void>
   updateCategory: (id: string, updates: Partial<Category>) => Promise<void>
@@ -149,7 +149,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   actions: [],
   userProfile: { name: 'Usuario' },
   theme: 'dark',
-  largeTextMode: false,
+  textSize: 'normal',
   categories: DEFAULT_CATEGORIES,
   priorities: DEFAULT_PRIORITIES,
   timeFilters: DEFAULT_TIME_FILTERS,
@@ -187,7 +187,7 @@ export const useAppStore = create<AppState>((set, get) => ({
       webLinks: websRes.data || [],
       actions: actionsRes.data || [],
       theme: settings?.theme || 'dark',
-      largeTextMode: settings?.large_text_mode || false,
+      textSize: settings?.text_size || (settings?.large_text_mode ? 'large' : 'normal'),
       userProfile: settings?.user_profile || { name: 'Usuario' },
       categories: settings?.categories || DEFAULT_CATEGORIES,
       priorities: settings?.priorities || DEFAULT_PRIORITIES,
@@ -291,12 +291,11 @@ export const useAppStore = create<AppState>((set, get) => ({
     if (!error) set({ theme: newTheme })
   },
 
-  toggleLargeTextMode: async () => {
+  setTextSize: async (size) => {
     const userId = get().userId
     if (!userId) return
-    const newMode = !get().largeTextMode
-    const { error } = await supabase.from('user_settings').update({ large_text_mode: newMode }).eq('user_id', userId)
-    if (!error) set({ largeTextMode: newMode })
+    const { error } = await supabase.from('user_settings').update({ text_size: size }).eq('user_id', userId)
+    if (!error) set({ textSize: size })
   },
 
   addCategory: async (cat) => {

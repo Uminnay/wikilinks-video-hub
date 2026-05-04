@@ -59,8 +59,11 @@ body {
 /* Safe area inset for PWA */
 .pb-safe { padding-bottom: env(safe-area-inset-bottom, 1rem); }
 
-/* === LARGE TEXT MODE === */
-html.large-text-mode {
-  font-size: 18px !important;
+/* === TEXT SIZE LEVELS === */
+html.text-large {
+  font-size: 19px !important;
+}
+html.text-extra-large {
+  font-size: 23px !important;
 }
 

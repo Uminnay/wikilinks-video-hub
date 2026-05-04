@@ -86,7 +86,7 @@ export default function SettingsView() {
     notionConfig, updateNotionConfig,
     videos, actions,
     theme, toggleTheme,
-    largeTextMode, toggleLargeTextMode
+    textSize, setTextSize
   } = useAppStore()
 
   const [mounted, setMounted] = useState(false)
@@ -222,15 +222,29 @@ export default function SettingsView() {
               </div>
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="block text-xs font-medium text-onSurface">Texto Grande</span>
-                  <span className="block text-[10px] text-onSurface-muted">Mejora la accesibilidad visual</span>
+                  <span className="block text-xs font-medium text-onSurface">Tamaño de Texto</span>
+                  <span className="block text-[10px] text-onSurface-muted">Ajusta la visibilidad de la interfaz</span>
                 </div>
-                <button 
-                  onClick={toggleLargeTextMode}
-                  className={`w-12 h-6 rounded-full p-1 transition-colors ${largeTextMode ? 'bg-primary' : 'bg-surface-high'}`}
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white transition-transform ${largeTextMode ? 'translate-x-6' : 'translate-x-0'}`} />
-                </button>
+                <div className="flex bg-surface-high rounded-lg p-1 min-w-[180px]">
+                  <button 
+                    onClick={() => setTextSize('normal')} 
+                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-md transition-all ${textSize === 'normal' ? 'bg-primary text-white shadow-sm' : 'text-onSurface-muted hover:text-onSurface'}`}
+                  >
+                    Normal
+                  </button>
+                  <button 
+                    onClick={() => setTextSize('large')} 
+                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-md transition-all ${textSize === 'large' ? 'bg-primary text-white shadow-sm' : 'text-onSurface-muted hover:text-onSurface'}`}
+                  >
+                    Grande
+                  </button>
+                  <button 
+                    onClick={() => setTextSize('extra-large')} 
+                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-md transition-all ${textSize === 'extra-large' ? 'bg-primary text-white shadow-sm' : 'text-onSurface-muted hover:text-onSurface'}`}
+                  >
+                    Extra
+                  </button>
+                </div>
               </div>
             </div>
           </div>

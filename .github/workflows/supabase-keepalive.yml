@@ -1,0 +1,28 @@
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    - cron: '0 8 * * 1,4'
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Supabase project
+        env:
+          SUPABASE_URL: https://qapeatcgnhhklxglydv.supabase.co
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo 'Missing GitHub secret: SUPABASE_ANON_KEY'
+            exit 1
+          fi
+
+          curl --fail --silent --show-error \
+            "$SUPABASE_URL/rest/v1/" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY"

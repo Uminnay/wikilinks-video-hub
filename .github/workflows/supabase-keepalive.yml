@@ -13,7 +13,7 @@ jobs:
       - name: Ping Wikilinks keepalive endpoint
         run: |
           curl --fail --show-error --silent \
-            "https://wikilinks.viaagil.es/api/keepalive" \
+            "https://wikilinks.liagil.es/api/keepalive" \
             --output /dev/null
 
           echo "Wikilinks keepalive completed."

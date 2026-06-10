@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wikilinks · Memoria ejecutiva y técnica actualizada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+:root{
+  --bg:#0F0F11;--panel:#16161B;--card:#1A1A1F;--card2:#202027;--border:#2A2A32;
+  --text:#F4F4F7;--muted:#A4A4B3;--soft:#7F7F90;--primary:#7C5CFC;--primary2:#947DFF;
+  --green:#10B981;--amber:#F59E0B;--blue:#60A5FA;--red:#EF4444;--sidebar:320px;
+  --shadow:0 22px 70px rgba(0,0,0,.38);--radius:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at top left,rgba(124,92,252,.22),transparent 360px),radial-gradient(circle at 80% 10%,rgba(16,185,129,.10),transparent 300px),var(--bg);color:var(--text);line-height:1.72;display:flex;min-height:100vh}h1,h2,h3,h4,.logo,.metric strong{font-family:'Plus Jakarta Sans',Inter,sans-serif}p{color:#CACAD6;margin-bottom:1rem;font-size:1.03rem}a{color:inherit}strong{color:#fff}.accent{color:var(--primary2)}.green{color:var(--green)}.amber{color:var(--amber)}.blue{color:var(--blue)}.red{color:var(--red)}code{background:#272733;border:1px solid var(--border);border-radius:7px;padding:.12rem .35rem;color:#DED9FF}ul{margin:1rem 0 1rem 1.25rem;color:#CACAD6}li{margin:.45rem 0}
+nav{position:fixed;left:0;top:0;width:var(--sidebar);height:100vh;background:rgba(15,15,17,.88);backdrop-filter:blur(18px);border-right:1px solid var(--border);padding:1.7rem 1.2rem;overflow:auto;z-index:20}.logo{font-weight:900;font-size:1.55rem;color:#fff;margin-bottom:.25rem}.nav-meta{color:var(--muted);font-size:.78rem;margin-bottom:1.3rem}.nav-links{list-style:none;margin:0}.nav-links a{display:flex;gap:.55rem;text-decoration:none;color:var(--muted);font-size:.87rem;font-weight:700;padding:.58rem .7rem;border-radius:13px;transition:.18s}.nav-links a:hover{background:rgba(124,92,252,.16);color:#fff;transform:translateX(3px)}.nav-footer{margin-top:1.3rem;border-top:1px solid var(--border);padding-top:1rem;color:var(--soft);font-size:.76rem}
+main{margin-left:var(--sidebar);width:calc(100% - var(--sidebar));max-width:1500px;padding:4.5rem 7% 7rem}.hero{text-align:center;margin-bottom:5.4rem}.eyebrow{font-weight:900;color:var(--primary2);letter-spacing:2px;text-transform:uppercase;font-size:.78rem;margin-bottom:1rem}.hero h1{font-size:clamp(3.4rem,8vw,7rem);line-height:.92;letter-spacing:-4px;margin-bottom:1.4rem;background:linear-gradient(135deg,#fff 0%,#E5E1FF 45%,var(--primary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.hero p{max-width:930px;margin:0 auto 1.55rem;font-size:1.23rem}.pillrow{display:flex;justify-content:center;gap:.72rem;flex-wrap:wrap}.pill{border:1px solid var(--border);background:rgba(26,26,31,.82);box-shadow:var(--shadow);padding:.62rem .9rem;border-radius:999px;color:#fff;font-weight:800;font-size:.85rem}.pill span{color:var(--primary2)}
+section{margin-bottom:5.2rem;scroll-margin-top:2rem}.section-head{display:flex;justify-content:space-between;gap:2rem;align-items:flex-end;margin-bottom:1.6rem;border-bottom:1px solid var(--border);padding-bottom:1rem}.section-head h2{font-size:clamp(2rem,4vw,3.15rem);line-height:1;letter-spacing:-1.8px}.section-head .num{color:var(--primary);font-weight:900}.kicker{text-transform:uppercase;letter-spacing:1.5px;color:var(--soft);font-size:.72rem;font-weight:900}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1.1rem}.card{background:linear-gradient(180deg,rgba(32,32,39,.92),rgba(26,26,31,.9));border:1px solid var(--border);border-radius:var(--radius);padding:1.35rem;box-shadow:var(--shadow)}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}.card h3{font-size:1.15rem;margin-bottom:.65rem}.small{font-size:.92rem;color:var(--muted)}.note{border-left:4px solid var(--primary);padding:1rem 1.2rem;background:rgba(124,92,252,.10);border-radius:0 16px 16px 0;color:#DAD5FF}.warning{border-left-color:var(--amber);background:rgba(245,158,11,.10);color:#FFE0AA}.ok{border-left-color:var(--green);background:rgba(16,185,129,.09);color:#C7F7E5}.metric{display:flex;flex-direction:column;gap:.15rem}.metric strong{font-size:2rem;line-height:1;color:#fff}.metric span{font-size:.78rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:1px}.tagline{font-size:.82rem;font-weight:900;border:1px solid var(--border);background:#111116;border-radius:999px;padding:.35rem .62rem;display:inline-flex;margin:.18rem;color:#D8D6E9}.table{width:100%;border-collapse:collapse;margin-top:.7rem;border:1px solid var(--border);border-radius:18px;overflow:hidden;display:table}.table th,.table td{padding:.85rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}.table th{color:#fff;background:#22222A;font-size:.78rem;text-transform:uppercase;letter-spacing:1px}.table td{color:#CACAD6}.flow{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}.step{background:#111116;border:1px solid var(--border);border-radius:16px;padding:.75rem .9rem;font-weight:800}.arrow{color:var(--primary2);font-weight:900}.mermaid-wrap{background:#fff;border-radius:22px;padding:1rem;overflow:auto;color:#111}.screen{border:1px solid var(--border);border-radius:26px;padding:1rem;background:linear-gradient(180deg,#191920,#101014)}.phone{width:230px;min-height:420px;border:1px solid #34343E;border-radius:34px;margin:0 auto;background:#0F0F11;padding:1rem;box-shadow:inset 0 0 0 6px #15151A}.phone-top{height:16px;width:70px;background:#24242C;border-radius:20px;margin:0 auto 1rem}.phone-card{background:#1A1A1F;border:1px solid #2A2A32;border-radius:16px;padding:.75rem;margin:.6rem 0}.phone-card b{font-size:.83rem}.phone-card small{display:block;color:#808090;font-size:.68rem}.footer{border-top:1px solid var(--border);padding-top:2rem;color:var(--muted);font-size:.9rem}
+@media(max-width:980px){body{display:block}nav{position:relative;width:100%;height:auto}main{margin-left:0;width:100%;padding:3rem 1.2rem}.span-4,.span-5,.span-6,.span-7,.span-8,.span-12{grid-column:span 12}.section-head{display:block}.hero h1{letter-spacing:-2px}.table{font-size:.86rem}}
+@media print{nav{display:none}main{margin:0;width:100%;padding:1.5rem}body{background:#fff;color:#111}.card{box-shadow:none}.hero h1{-webkit-text-fill-color:#111;background:none}.section-head h2,p,li,.table td{color:#111}.card{background:#fff;border-color:#ddd}.pill{box-shadow:none;color:#111}.nav-footer{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Wikilinks</div>
+  <div class="nav-meta">Memoria ejecutiva y técnica actualizada · Proyecto de entrega</div>
+  <ul class="nav-links">
+    <li><a href="#resumen">01 · Resumen ejecutivo</a></li>
+    <li><a href="#problema">02 · Problema y oportunidad</a></li>
+    <li><a href="#solucion">03 · Solución actual</a></li>
+    <li><a href="#modulos">04 · Módulos funcionales</a></li>
+    <li><a href="#ia">05 · IA y automatización</a></li>
+    <li><a href="#acciones">06 · Acciones</a></li>
+    <li><a href="#ux">07 · UX y pantallas</a></li>
+    <li><a href="#arquitectura">08 · Arquitectura técnica</a></li>
+    <li><a href="#datos">09 · Modelo de datos</a></li>
+    <li><a href="#estado">10 · Estado GitHub/despliegue</a></li>
+    <li><a href="#roadmap">11 · Roadmap</a></li>
+    <li><a href="#defensa">12 · Defensa del proyecto</a></li>
+  </ul>
+  <div class="nav-footer">URL pública correcta:<br><strong>https://wikilinks.liagil.es/</strong><br><br>Repositorio revisado:<br><strong>Uminnay/wikilinks-video-hub</strong></div>
+</nav>
+<main>
+  <header class="hero">
+    <div class="eyebrow">Memoria de Proyecto Final · versión actualizada</div>
+    <h1>Wikilinks</h1>
+    <p>Una aplicación personal para capturar, ordenar y convertir enlaces —vídeos de YouTube y páginas web— en conocimiento útil, acciones y referencias seleccionadas.</p>
+    <div class="pillrow">
+      <div class="pill"><span>01</span> Vídeos YouTube</div>
+      <div class="pill"><span>02</span> Enlaces web</div>
+      <div class="pill"><span>03</span> Resumen IA</div>
+      <div class="pill"><span>04</span> Acciones</div>
+      <div class="pill"><span>05</span> Notion</div>
+      <div class="pill"><span>06</span> PWA / móvil</div>
+    </div>
+  </header>
+
+  <section id="resumen">
+    <div class="section-head"><div><div class="kicker">visión general</div><h2><span class="num">01</span> Resumen ejecutivo</h2></div></div>
+    <div class="grid">
+      <div class="card span-8">
+        <h3>Qué es Wikilinks</h3>
+        <p><strong>Wikilinks</strong> es una aplicación web personal orientada a resolver el desorden generado por enlaces guardados sin criterio: vídeos de YouTube, artículos, herramientas, recursos, páginas web, ideas y contenidos que pueden ser útiles, pero que suelen terminar perdidos en “Ver más tarde”, WhatsApp, pestañas abiertas o listas poco accionables.</p>
+        <p>La evolución actual del proyecto supera el alcance inicial de <strong>Wikilinks Video Hub</strong>. La app ya no se limita a organizar vídeos: incorpora un segundo módulo para <strong>enlaces web</strong>, un sistema de <strong>acciones/tareas</strong>, categorización, etiquetas, prioridades, estados, búsqueda global y preparación de contenidos para Notion.</p>
+        <div class="note ok"><strong>Idea central:</strong> no se trata de guardar más enlaces, sino de decidir qué hacer con ellos: ver, leer, descartar, convertir en acción o guardar como referencia.</div>
+      </div>
+      <div class="card span-4">
+        <h3>Estado actual</h3>
+        <div class="metric"><strong>MVP+</strong><span>más allá del PRD inicial</span></div><br>
+        <div class="metric"><strong>2</strong><span>módulos principales</span></div><br>
+        <div class="metric"><strong>IA</strong><span>análisis bajo demanda</span></div><br>
+        <div class="metric"><strong>Login</strong><span>app protegida</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="problema">
+    <div class="section-head"><div><div class="kicker">necesidad</div><h2><span class="num">02</span> Problema y oportunidad</h2></div></div>
+    <div class="grid">
+      <div class="card span-6"><h3>Problema de partida</h3><ul><li>Se guardan vídeos de YouTube sin un sistema claro de consumo.</li><li>Los enlaces útiles acaban mezclados con ocio, formación, herramientas, podcasts o artículos.</li><li>Las listas nativas de YouTube o los mensajes enviados a una misma persona no ayudan a decidir qué hacer después.</li><li>No existe un flujo claro para pasar de contenido guardado a acción, referencia o descarte.</li><li>Notion no debe llenarse de enlaces basura: solo deben llegar los recursos realmente útiles.</li></ul></div>
+      <div class="card span-6"><h3>Oportunidad de producto</h3><p>Wikilinks actúa como una capa intermedia entre el consumo impulsivo de contenido y la gestión seria del conocimiento personal.</p><div class="flow"><div class="step">Guardar</div><div class="arrow">→</div><div class="step">Clasificar</div><div class="arrow">→</div><div class="step">Priorizar</div><div class="arrow">→</div><div class="step">Actuar</div><div class="arrow">→</div><div class="step">Archivar</div></div></div>
+      <div class="card span-12"><h3>Propuesta de valor actualizada</h3><p><strong>Wikilinks convierte enlaces dispersos en una biblioteca accionable:</strong> una cola ordenada de vídeos y webs que permite decidir qué ver, qué leer, qué descartar, qué convertir en tarea y qué guardar en Notion.</p></div>
+    </div>
+  </section>
+
+  <section id="solucion">
+    <div class="section-head"><div><div class="kicker">producto</div><h2><span class="num">03</span> Solución actual</h2></div></div>
+    <div class="grid">
+      <div class="card span-4"><h3>Vídeos</h3><p>Alta por URL de YouTube, extracción automática de metadatos, miniatura, duración, canal, fecha, categorías, etiquetas, prioridad, estados y resumen IA bajo demanda.</p></div>
+      <div class="card span-4"><h3>Webs</h3><p>Alta de enlaces web con título, categoría, prioridad, etiquetas, detección de duplicados y enriquecimiento Open Graph en segundo plano cuando es posible.</p></div>
+      <div class="card span-4"><h3>Acciones</h3><p>Creación y seguimiento de tareas derivadas de vídeos o enlaces, con estado pendiente/completado y posibilidad de vincularlas al recurso original.</p></div>
+    </div>
+  </section>
+
+  <section id="modulos">
+    <div class="section-head"><div><div class="kicker">funcionalidades</div><h2><span class="num">04</span> Módulos funcionales</h2></div></div>
+    <table class="table">
+      <thead><tr><th>Módulo</th><th>Función</th><th>Estado</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Video Hub</strong></td><td>Gestionar vídeos de YouTube guardados por URL, metadatos, categoría, prioridad, etiquetas y estados.</td><td><span class="green">Implementado</span></td><td>Reduce el caos de “Ver más tarde”.</td></tr>
+        <tr><td><strong>Web Links</strong></td><td>Guardar páginas web, artículos o herramientas como enlaces organizados.</td><td><span class="green">Implementado</span></td><td>Amplía Wikilinks más allá de YouTube.</td></tr>
+        <tr><td><strong>Resumen IA</strong></td><td>Generar análisis/resumen del vídeo bajo demanda desde la ficha del vídeo.</td><td><span class="green">Implementado</span></td><td>Permite decidir si merece la pena ver un vídeo.</td></tr>
+        <tr><td><strong>Acciones</strong></td><td>Crear tareas manuales o vinculadas a recursos.</td><td><span class="green">Implementado / ampliable</span></td><td>Transforma consumo pasivo en ejecución.</td></tr>
+        <tr><td><strong>Notion</strong></td><td>Preparar recursos seleccionados y exportarlos a una base de datos de Notion configurada por el usuario.</td><td><span class="green">Implementado</span></td><td>Evita saturar Notion con enlaces no filtrados.</td></tr>
+        <tr><td><strong>Búsqueda</strong></td><td>Buscar por título, canal, URL o etiquetas según módulo.</td><td><span class="green">Implementado</span></td><td>Recuperación rápida del contenido guardado.</td></tr>
+        <tr><td><strong>PWA</strong></td><td>Uso móvil, instalación como app y recepción de enlaces compartidos mediante share target.</td><td><span class="green">Implementado</span></td><td>Facilita captura rápida desde móvil.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="ia">
+    <div class="section-head"><div><div class="kicker">automatización</div><h2><span class="num">05</span> IA y metadatos</h2></div></div>
+    <div class="grid">
+      <div class="card span-6"><h3>Metadatos de YouTube</h3><p>Cuando se añade un vídeo, la app extrae el ID de YouTube y consulta la API para recuperar título, canal, miniatura/carátula, duración y fecha de publicación. Si la API falla, usa oEmbed como fallback.</p><ul><li>Formatos soportados: <code>youtube.com/watch</code>, <code>youtu.be</code> y <code>shorts</code>.</li><li>La miniatura puede cargarse desde YouTube Data API o mediante URL estándar de imagen del vídeo.</li><li>La duración ISO 8601 se convierte a segundos para filtros y visualización.</li></ul></div>
+      <div class="card span-6"><h3>Resumen / análisis IA</h3><p>En la ficha del vídeo existe un bloque de <strong>Resumen IA</strong> con botón para generar análisis, estado de carga, reintento y regeneración.</p></div>
+      <div class="card span-12"><h3>Uso responsable de IA</h3><p>La IA se usa como apoyo de decisión y reducción de fricción, no como sustituto de criterio. El usuario sigue decidiendo si el recurso se ve, se descarta, se convierte en acción o se guarda en Notion.</p></div>
+    </div>
+  </section>
+
+  <section id="acciones">
+    <div class="section-head"><div><div class="kicker">ejecución</div><h2><span class="num">06</span> Funcionalidad de acciones</h2></div></div>
+    <div class="grid">
+      <div class="card span-7"><h3>Qué resuelve</h3><p>La función de acciones evita que Wikilinks sea solo un almacén bonito. Permite convertir un contenido en una tarea concreta: probar una herramienta, revisar un tutorial, aplicar una técnica, investigar una idea, preparar un post o guardar una referencia.</p><ul><li>Vista propia de acciones.</li><li>Creación manual de nuevas acciones.</li><li>Estados: pendiente y completada.</li><li>Acciones vinculadas a vídeos mediante <code>video_id</code>.</li><li>Acciones vinculadas también a enlaces web mediante <code>web_link_id</code>.</li></ul></div>
+      <div class="card span-5"><h3>Representación UX</h3><div class="screen"><div class="phone"><div class="phone-top"></div><div class="phone-card"><b>Acciones</b><small>Gestiona las tareas extraídas de tus vídeos</small></div><div class="phone-card"><b>Probar herramienta IA</b><small>Vinculado: vídeo · Tutorial Gemini</small></div><div class="phone-card"><b>Crear prompt de resumen</b><small>Pendiente</small></div><div class="phone-card"><b><s>Revisar canal de marketing</s></b><small>Completada</small></div></div></div></div>
+      <div class="card span-12 note ok">Acciones es una de las claves diferenciales del proyecto porque conecta gestión de enlaces con productividad real. No solo se guarda contenido; se transforma en trabajo accionable.</div>
+    </div>
+  </section>
+
+  <section id="ux">
+    <div class="section-head"><div><div class="kicker">experiencia</div><h2><span class="num">07</span> UX y pantallas principales</h2></div></div>
+    <div class="grid">
+      <div class="card span-4"><h3>Inicio</h3><p>Vista de entrada con búsqueda, colecciones, etiquetas, prioridades y accesos a herramientas: Notion, Acciones, Sin clasificar, Papelera e Historial.</p></div>
+      <div class="card span-4"><h3>Añadir vídeo</h3><p>Bottom sheet con URL, carga automática de metadatos, detección de duplicados, categoría, prioridad y etiquetas.</p></div>
+      <div class="card span-4"><h3>Añadir web</h3><p>Bottom sheet específico para páginas web con URL, título, categoría, prioridad, etiquetas, duplicados y Open Graph.</p></div>
+      <div class="card span-4"><h3>Detalle vídeo</h3><p>Miniatura, metadatos, categoría, estado, prioridad, etiquetas, notas personales, acciones vinculadas, resumen IA y botones principales.</p></div>
+      <div class="card span-4"><h3>Qué ver</h3><p>Vista de decisión rápida basada en tiempo disponible, categoría, prioridad y estado pendiente.</p></div>
+      <div class="card span-4"><h3>Acciones</h3><p>Lista de tareas pendientes y completadas, con posibilidad de navegar al vídeo vinculado.</p></div>
+    </div>
+  </section>
+
+  <section id="arquitectura">
+    <div class="section-head"><div><div class="kicker">tecnología</div><h2><span class="num">08</span> Arquitectura técnica</h2></div></div>
+    <div class="grid">
+      <div class="card span-6"><h3>Stack actual</h3><ul><li><strong>Frontend:</strong> Next.js 14 App Router + TypeScript.</li><li><strong>Estado global:</strong> Zustand.</li><li><strong>Backend/Data:</strong> Supabase.</li><li><strong>Autenticación:</strong> Supabase Auth / login protegido.</li><li><strong>Estilos:</strong> Tailwind CSS + diseño oscuro Vanta Core.</li><li><strong>APIs:</strong> YouTube Data API, oEmbed, Gemini API, OpenGraph, Notion.</li><li><strong>UX móvil:</strong> PWA y gestos con react-swipeable.</li></ul></div>
+      <div class="card span-6"><h3>Flujo técnico</h3><div class="mermaid-wrap"><pre class="mermaid">flowchart TD
+A[Usuario añade URL] --> B{Tipo de recurso}
+B -->|YouTube| C[Extraer video ID]
+C --> D[YouTube Data API]
+D --> E[Guardar vídeo en Supabase]
+B -->|Web| F[Guardar enlace web]
+F --> G[Open Graph best effort]
+E --> H[Detalle + resumen IA]
+H --> I[Acción / Notion / Visto / Descartado]
+G --> I
+I --> J[Base de conocimiento personal]</pre></div></div>
+      <div class="card span-12 note ok"><strong>Observación técnica:</strong> la web pública está protegida por login y sin sesión muestra la pantalla de acceso con Google. El repositorio local y GitHub han sido revisados: la rama <code>main</code> está sincronizada con <code>origin/main</code>.</div>
+    </div>
+  </section>
+
+  <section id="datos">
+    <div class="section-head"><div><div class="kicker">datos</div><h2><span class="num">09</span> Modelo de datos</h2></div></div>
+    <div class="grid">
+      <div class="card span-4"><h3>Video</h3><ul><li>URL y <code>youtube_video_id</code></li><li>Título, canal, miniatura</li><li>Duración y publicación</li><li>Categoría, prioridad, estado</li><li>Notas personales</li><li><code>ai_summary</code></li><li>Estado Notion</li><li>Etiquetas</li></ul></div>
+      <div class="card span-4"><h3>WebLink</h3><ul><li>URL y título</li><li>Categoría, prioridad, estado</li><li>Notas personales</li><li><code>og_image_url</code> previsto en frontend; revisar persistencia en base de datos</li><li><code>ai_summary</code> preparado</li><li>Estado Notion</li><li>Etiquetas</li></ul></div>
+      <div class="card span-4"><h3>ActionItem</h3><ul><li>Título</li><li>Estado pendiente/completado</li><li><code>video_id</code> opcional</li><li><code>web_link_id</code> opcional</li><li>Fecha de creación</li></ul></div>
+      <div class="card span-12"><h3>Configuración de usuario</h3><p>Las categorías, prioridades, filtros de tiempo, etiquetas, perfil de usuario, tema, tamaño de texto y configuración Notion se gestionan como preferencias del usuario, lo que permite personalizar Wikilinks sin rehacer la base de datos para cada cambio de organización.</p></div>
+    </div>
+  </section>
+
+  <section id="estado">
+    <div class="section-head"><div><div class="kicker">control de versión</div><h2><span class="num">10</span> Estado GitHub y despliegue</h2></div></div>
+    <div class="grid">
+      <div class="card span-6"><h3>Repositorio revisado</h3><p><strong>GitHub:</strong> <code>Uminnay/wikilinks-video-hub</code></p><p><strong>URL pública correcta:</strong> <code>https://wikilinks.liagil.es/</code></p><p>El código revisado contiene las funcionalidades principales descritas en esta memoria. El README del repositorio se ha actualizado para explicar el producto, el stack, las variables de entorno, el despliegue y las limitaciones conocidas.</p></div>
+      <div class="card span-6"><h3>Sincronización confirmada</h3><p>La revisión del repositorio confirma que la carpeta local está en <code>main</code>, el remoto apunta al repositorio esperado y GitHub contiene el mismo último commit que el entorno local.</p><ul><li>Rama actual: <code>main</code>.</li><li>Remoto: <code>https://github.com/Uminnay/wikilinks-video-hub.git</code>.</li><li>Último commit revisado: <code>2ac07e1 Fix keepalive endpoint domain</code>.</li><li>Estado local: sin cambios pendientes.</li><li>Push: actualizado respecto a <code>origin/main</code>.</li></ul></div>
+      <div class="card span-12 note ok"><strong>Recomendación operativa actual:</strong> el repositorio se compartirá con el profesor mediante invitación a su usuario de GitHub. La aplicación desplegada se prueba mediante acceso con cuenta de Google, tal como indica la pantalla de login. No deben compartirse claves ni variables de entorno.</div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="section-head"><div><div class="kicker">evolución</div><h2><span class="num">11</span> Roadmap ejecutado y mejoras futuras</h2></div></div>
+    <table class="table">
+      <thead><tr><th>Fase</th><th>Objetivo</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>Fase 1</td><td>Definir el problema y el alcance inicial.</td><td>Concepto de Wikilinks como gestor personal de vídeos, enlaces y conocimiento práctico.</td></tr>
+        <tr><td>Fase 2</td><td>Construir el núcleo funcional.</td><td>Alta de vídeos de YouTube, metadatos automáticos, categorías, prioridades, estados y detalle del recurso.</td></tr>
+        <tr><td>Fase 3</td><td>Ampliar la app más allá de YouTube.</td><td>Módulo de enlaces web con clasificación, etiquetas, prioridad, estados y enriquecimiento Open Graph.</td></tr>
+        <tr><td>Fase 4</td><td>Convertir contenidos en acciones.</td><td>Sistema de tareas pendientes/completadas vinculadas a vídeos y enlaces web.</td></tr>
+        <tr><td>Fase 5</td><td>Integrar IA, Notion y experiencia móvil.</td><td>Resumen IA, preparación/exportación a Notion, búsqueda global, PWA y acceso protegido con Google.</td></tr>
+        <tr><td>Fase 6</td><td>Prueba con usuarios reales y evolución futura.</td><td>Recopilación de feedback y mejoras futuras: introducción de tareas por voz, gestión asistida por IA, recomendaciones inteligentes y automatización de flujos.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="defensa">
+    <div class="section-head"><div><div class="kicker">presentación</div><h2><span class="num">12</span> Defensa del proyecto</h2></div></div>
+    <div class="grid">
+      <div class="card span-7"><h3>Argumento principal</h3><p>Wikilinks demuestra cómo una necesidad personal muy concreta puede transformarse en un producto digital funcional: una aplicación que ordena el caos de enlaces y vídeos guardados, reduce la fricción de captura, añade automatización útil y permite convertir información dispersa en conocimiento y acciones.</p><p>El valor del proyecto no está solo en la tecnología, sino en el diseño del flujo: guardar menos basura, clasificar mejor, decidir antes y actuar después.</p></div>
+      <div class="card span-5"><h3>Frase de cierre</h3><div class="note ok"><strong>Wikilinks no es una app para acumular enlaces. Es una herramienta para convertir contenido guardado en decisiones, conocimiento y acciones.</strong></div></div>
+      <div class="card span-12"><h3>Puntos fuertes para destacar</h3><span class="tagline">Problema real</span><span class="tagline">MVP funcional</span><span class="tagline">Uso personal validable</span><span class="tagline">IA con sentido</span><span class="tagline">Módulo de acciones</span><span class="tagline">Extensible a webs</span><span class="tagline">Preparado para Notion</span><span class="tagline">Stack moderno</span><span class="tagline">PWA</span></div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <p>Versión: v5 · Actualizada con estado real de GitHub, README renovado, módulo de webs, acciones, IA, Notion, PWA, URL pública correcta y limitaciones conocidas.</p>
+  </div>
+</main>
+<script>
+  if (window.mermaid) { mermaid.initialize({startOnLoad:true, theme:'default'}); }
+</script>
+</body>
+</html>

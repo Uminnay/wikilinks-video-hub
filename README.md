@@ -116,6 +116,7 @@ La aplicación pública está protegida por login, por lo que las funcionalidade
 La memoria ejecutiva y técnica del proyecto está disponible en:
 
 [docs/memoria-wikilinks-app.html](docs/memoria-wikilinks-app.html)
+https://uminnay.github.io/wikilinks-video-hub/memoria-wikilinks-app.html
 
 ## Limitaciones conocidas
 

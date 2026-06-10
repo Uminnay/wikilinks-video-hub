@@ -6,6 +6,8 @@ App pública: [https://wikilinks.liagil.es](https://wikilinks.liagil.es)
 
 Repositorio: [https://github.com/Uminnay/wikilinks-video-hub](https://github.com/Uminnay/wikilinks-video-hub)
 
+enlace web memoria: https://wikilinks.liagil.es/memoria-wikilinks-app.html
+
 ## Funcionalidades principales
 
 - **Vídeos de YouTube**: alta por URL, detección de duplicados, categorías, prioridades, etiquetas, estados, historial y papelera.

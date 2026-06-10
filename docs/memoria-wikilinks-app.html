@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Wikilinks · Memoria ejecutiva y técnica actualizada</title>
+<title>Wikilinks · Memoria ejecutiva y técnica ampliada</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@ section{margin-bottom:5.2rem;scroll-margin-top:2rem}.section-head{display:flex;j
 <body>
 <nav>
   <div class="logo">Wikilinks</div>
-  <div class="nav-meta">Memoria ejecutiva y técnica actualizada · Proyecto de entrega</div>
+  <div class="nav-meta">Memoria ejecutiva, técnica y académica ampliada · Proyecto de entrega</div>
   <ul class="nav-links">
     <li><a href="#resumen">01 · Resumen ejecutivo</a></li>
     <li><a href="#problema">02 · Problema y oportunidad</a></li>
@@ -40,12 +40,22 @@ section{margin-bottom:5.2rem;scroll-margin-top:2rem}.section-head{display:flex;j
     <li><a href="#estado">10 · Estado GitHub/despliegue</a></li>
     <li><a href="#roadmap">11 · Roadmap</a></li>
     <li><a href="#defensa">12 · Defensa del proyecto</a></li>
+    <li><a href="#objetivos">13 · Objetivos y alcance</a></li>
+    <li><a href="#usuarios">14 · Usuarios y casos de uso</a></li>
+    <li><a href="#flujos">15 · Flujos UX</a></li>
+    <li><a href="#metodologia">16 · Metodología e IA</a></li>
+    <li><a href="#construccion">17 · Construcción técnica</a></li>
+    <li><a href="#metricas">18 · Evaluación y métricas</a></li>
+    <li><a href="#riesgos">19 · Riesgos y mitigación</a></li>
+    <li><a href="#privacidad">20 · Privacidad e IA responsable</a></li>
+    <li><a href="#benchmark">21 · Benchmark</a></li>
+    <li><a href="#qa">22 · QA, backlog y límites</a></li>
   </ul>
   <div class="nav-footer">URL pública correcta:<br><strong>https://wikilinks.liagil.es/</strong><br><br>Repositorio revisado:<br><strong>Uminnay/wikilinks-video-hub</strong></div>
 </nav>
 <main>
   <header class="hero">
-    <div class="eyebrow">Memoria de Proyecto Final · versión actualizada</div>
+    <div class="eyebrow">Memoria de Proyecto Final · versión ampliada</div>
     <h1>Wikilinks</h1>
     <p>Una aplicación personal para capturar, ordenar y convertir enlaces —vídeos de YouTube y páginas web— en conocimiento útil, acciones y referencias seleccionadas.</p>
     <div class="pillrow">
@@ -203,8 +213,112 @@ I --> J[Base de conocimiento personal]</pre></div></div>
     </div>
   </section>
 
+  <section id="objetivos">
+    <div class="section-head"><div><div class="kicker">alcance académico</div><h2><span class="num">13</span> Objetivos y alcance</h2></div></div>
+    <div class="grid">
+      <div class="card span-6"><h3>Objetivo general</h3><p>Diseñar y desarrollar una aplicación web funcional que permita capturar, ordenar y revisar recursos digitales de forma consciente. Wikilinks busca transformar vídeos y enlaces dispersos en una biblioteca personal útil, accionable y conectada con herramientas externas como Notion.</p></div>
+      <div class="card span-6"><h3>Objetivos específicos</h3><ul><li>Crear un sistema de alta rápida para vídeos de YouTube y enlaces web.</li><li>Automatizar la captura de metadatos para reducir fricción.</li><li>Permitir clasificación mediante categorías, etiquetas, prioridad y estado.</li><li>Incorporar acciones/tareas vinculadas a recursos.</li><li>Preparar recursos seleccionados para exportación a Notion.</li><li>Ofrecer una experiencia móvil instalable mediante PWA.</li></ul></div>
+      <div class="card span-6"><h3>Dentro del alcance</h3><ul><li>Aplicación privada con login de Google.</li><li>Módulos de vídeos, webs, acciones, búsqueda, Notion y ajustes.</li><li>Persistencia de datos por usuario en Supabase.</li><li>Despliegue público protegido en <code>wikilinks.liagil.es</code>.</li><li>Documentación técnica mediante README y memoria HTML.</li></ul></div>
+      <div class="card span-6"><h3>Fuera del alcance actual</h3><ul><li>Red social o biblioteca compartida entre usuarios.</li><li>Transcripción completa de vídeos de YouTube.</li><li>Recomendaciones automáticas avanzadas basadas en historial.</li><li>Sincronización bidireccional completa con Notion.</li><li>Aplicaciones nativas para iOS o Android.</li></ul></div>
+    </div>
+  </section>
+
+  <section id="usuarios">
+    <div class="section-head"><div><div class="kicker">personas y uso</div><h2><span class="num">14</span> Usuarios y casos de uso</h2></div></div>
+    <div class="grid">
+      <div class="card span-4"><h3>Usuario principal</h3><p>Persona que consume contenido formativo o profesional en YouTube, blogs, newsletters y redes, pero necesita un sistema para decidir qué merece atención real.</p></div>
+      <div class="card span-4"><h3>Usuario móvil</h3><p>Usuario que encuentra un enlace desde el móvil y quiere guardarlo rápidamente sin abrir Notion, copiar datos manualmente o perder el recurso entre mensajes.</p></div>
+      <div class="card span-4"><h3>Usuario creador</h3><p>Persona que convierte vídeos, herramientas o artículos en ideas, tareas, publicaciones, documentación o referencias para proyectos.</p></div>
+      <div class="card span-12"><h3>Casos de uso principales</h3><table class="table"><thead><tr><th>Caso</th><th>Acción del usuario</th><th>Resultado esperado</th></tr></thead><tbody><tr><td>Guardar vídeo</td><td>Pega o comparte una URL de YouTube.</td><td>La app obtiene título, canal, miniatura, duración y permite clasificar.</td></tr><tr><td>Guardar web</td><td>Añade una URL de artículo, herramienta o página.</td><td>El enlace queda organizado por categoría, prioridad y etiquetas.</td></tr><tr><td>Revisar cola</td><td>Filtra por categoría, etiquetas, prioridad o búsqueda.</td><td>Encuentra rápidamente qué ver, leer o descartar.</td></tr><tr><td>Crear acción</td><td>Añade una tarea vinculada a un vídeo o enlace.</td><td>El recurso se transforma en una tarea concreta.</td></tr><tr><td>Enviar a Notion</td><td>Marca un recurso como candidato y prepara sus datos.</td><td>Solo los recursos validados pasan a la base de conocimiento.</td></tr></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="flujos">
+    <div class="section-head"><div><div class="kicker">recorridos</div><h2><span class="num">15</span> Flujos UX principales</h2></div></div>
+    <div class="grid">
+      <div class="card span-6"><h3>Flujo de captura</h3><div class="flow"><div class="step">Encontrar recurso</div><div class="arrow">→</div><div class="step">Compartir o pegar URL</div><div class="arrow">→</div><div class="step">Clasificar</div><div class="arrow">→</div><div class="step">Guardar</div></div><p class="small">Este flujo reduce el esfuerzo inicial. La app intenta completar datos automáticamente para que el usuario solo decida cómo quiere organizar el recurso.</p></div>
+      <div class="card span-6"><h3>Flujo de decisión</h3><div class="flow"><div class="step">Buscar</div><div class="arrow">→</div><div class="step">Revisar detalle</div><div class="arrow">→</div><div class="step">Ver / leer</div><div class="arrow">→</div><div class="step">Descartar o archivar</div></div><p class="small">La aplicación no solo almacena. Ayuda a decidir qué merece tiempo y qué debe salir de la cola.</p></div>
+      <div class="card span-6"><h3>Flujo de acción</h3><div class="flow"><div class="step">Detectar idea</div><div class="arrow">→</div><div class="step">Crear tarea</div><div class="arrow">→</div><div class="step">Ejecutar</div><div class="arrow">→</div><div class="step">Completar</div></div><p class="small">Las acciones convierten el contenido guardado en trabajo concreto, evitando que la app sea solo otro contenedor de enlaces.</p></div>
+      <div class="card span-6"><h3>Flujo de conocimiento</h3><div class="flow"><div class="step">Seleccionar candidato</div><div class="arrow">→</div><div class="step">Preparar datos</div><div class="arrow">→</div><div class="step">Exportar a Notion</div><div class="arrow">→</div><div class="step">Conservar referencia</div></div><p class="small">Notion funciona como destino final solo para recursos filtrados, no como almacén masivo de enlaces sin revisar.</p></div>
+    </div>
+  </section>
+
+  <section id="metodologia">
+    <div class="section-head"><div><div class="kicker">proceso de trabajo</div><h2><span class="num">16</span> Metodología de desarrollo e IA</h2></div></div>
+    <div class="grid">
+      <div class="card span-7"><h3>Desarrollo asistido por IA</h3><p>El proyecto se ha construido combinando criterio humano, desarrollo iterativo y apoyo de herramientas de IA. La IA se ha usado para acelerar análisis, generación de código, revisión de errores, documentación y mejora de la memoria, pero las decisiones de producto, alcance y validación se han mantenido bajo dirección humana.</p><p>El enfoque seguido puede describirse como un proceso de <strong>vibe coding supervisado</strong>: se parte de una necesidad concreta, se describe el comportamiento esperado, se implementa, se prueba y se ajusta según los resultados reales de la app.</p></div>
+      <div class="card span-5"><h3>Rol humano</h3><ul><li>Definir el problema y la utilidad real.</li><li>Validar si una función aporta valor.</li><li>Comprobar el estado real de GitHub y despliegue.</li><li>Revisar la memoria y decidir tono de entrega.</li><li>No compartir claves ni datos sensibles.</li></ul></div>
+      <div class="card span-12"><h3>Prompts y decisiones representativas</h3><table class="table"><thead><tr><th>Necesidad</th><th>Petición realizada</th><th>Resultado</th></tr></thead><tbody><tr><td>Diagnóstico técnico</td><td>Comprobar estado real de Git, ramas, remoto y funcionalidades.</td><td>Confirmación de sincronización local/GitHub y detección de módulos implementados.</td></tr><tr><td>Documentación</td><td>Actualizar README para que explique el producto real.</td><td>README específico con funcionalidades, stack, estructura y limitaciones.</td></tr><tr><td>Memoria</td><td>Crear memoria HTML profesional y ajustarla al formato del curso.</td><td>Documento ampliado con visión ejecutiva, técnica y académica.</td></tr><tr><td>Entrega</td><td>Preparar repo para compartir con el profesor.</td><td>Memoria en <code>docs/</code>, README enlazado y repositorio actualizado.</td></tr></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="construccion">
+    <div class="section-head"><div><div class="kicker">implementación</div><h2><span class="num">17</span> Construcción técnica</h2></div></div>
+    <div class="grid">
+      <div class="card span-6"><h3>Frontend y rutas</h3><p>La aplicación usa Next.js 14 con App Router. Las rutas privadas se agrupan bajo <code>src/app/(app)</code>, con páginas específicas para inicio, webs, detalle de vídeo, detalle web, acciones, ajustes, historial, papelera, etiquetas, categorías y Notion.</p></div>
+      <div class="card span-6"><h3>Estado global y datos</h3><p>Zustand centraliza vídeos, enlaces, acciones, categorías, prioridades, etiquetas, tema, tamaño de texto y configuración de Notion. Supabase actúa como persistencia por usuario, con políticas RLS para aislar datos.</p></div>
+      <div class="card span-6"><h3>APIs internas</h3><ul><li><code>/api/youtube</code>: obtiene metadatos de YouTube.</li><li><code>/api/summarize</code>: genera resumen con Gemini.</li><li><code>/api/opengraph</code>: intenta enriquecer enlaces web.</li><li><code>/api/notion</code>: crea páginas en Notion.</li><li><code>/api/keepalive</code>: mantiene activo Supabase mediante consulta ligera.</li></ul></div>
+      <div class="card span-6"><h3>Despliegue</h3><p>El proyecto incluye Dockerfile, Docker Compose y workflow de GitHub Actions. El flujo de despliegue previsto actualiza el código en el VPS desde <code>main</code> y reconstruye el contenedor.</p></div>
+    </div>
+  </section>
+
+  <section id="metricas">
+    <div class="section-head"><div><div class="kicker">validación</div><h2><span class="num">18</span> Evaluación y métricas</h2></div></div>
+    <div class="grid">
+      <div class="card span-4"><h3>Uso de contenido</h3><ul><li>Número de vídeos guardados.</li><li>Número de enlaces web guardados.</li><li>Recursos vistos o leídos.</li><li>Recursos descartados.</li></ul></div>
+      <div class="card span-4"><h3>Productividad</h3><ul><li>Acciones creadas.</li><li>Acciones completadas.</li><li>Recursos convertidos en tareas.</li><li>Tiempo desde captura hasta decisión.</li></ul></div>
+      <div class="card span-4"><h3>Conocimiento</h3><ul><li>Candidatos a Notion.</li><li>Recursos preparados.</li><li>Recursos exportados.</li><li>Uso de resumen IA.</li></ul></div>
+      <div class="card span-12 note ok"><strong>Indicador de éxito:</strong> Wikilinks funciona si reduce enlaces olvidados, aumenta decisiones tomadas y convierte parte del contenido guardado en acciones o conocimiento reutilizable.</div>
+    </div>
+  </section>
+
+  <section id="riesgos">
+    <div class="section-head"><div><div class="kicker">control</div><h2><span class="num">19</span> Riesgos y mitigación</h2></div></div>
+    <table class="table">
+      <thead><tr><th>Riesgo</th><th>Impacto</th><th>Mitigación</th></tr></thead>
+      <tbody>
+        <tr><td>Dependencia de APIs externas</td><td>YouTube, Gemini o Notion pueden fallar o cambiar límites.</td><td>Usar fallbacks, mostrar errores claros y mantener funciones básicas sin IA.</td></tr>
+        <tr><td>Datos sensibles</td><td>Claves API o datos personales no deben exponerse.</td><td>Variables en entorno, `.env` ignorado y no mostrar credenciales en documentación.</td></tr>
+        <tr><td>Login obligatorio</td><td>El profesor no ve datos internos sin acceso.</td><td>Invitación al repositorio, acceso con Google y memoria/capturas para explicar el flujo.</td></tr>
+        <tr><td>Acumulación de enlaces</td><td>La app podría convertirse en otra lista sin revisar.</td><td>Estados, prioridades, acciones, papelera y flujo Notion para forzar decisiones.</td></tr>
+        <tr><td>Metadatos incompletos</td><td>Algunas webs o vídeos pueden devolver datos parciales.</td><td>Permitir título manual, fallback oEmbed y guardado aunque el enriquecimiento falle.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="privacidad">
+    <div class="section-head"><div><div class="kicker">responsabilidad</div><h2><span class="num">20</span> Privacidad e IA responsable</h2></div></div>
+    <div class="grid">
+      <div class="card span-6"><h3>Privacidad</h3><p>Wikilinks usa autenticación con Google mediante Supabase Auth. Cada usuario accede a sus propios recursos y ajustes. La documentación no incluye claves, tokens ni valores de archivos <code>.env</code>.</p><ul><li>Datos asociados al usuario autenticado.</li><li>Variables sensibles fuera del repositorio.</li><li>Repo compartido con el profesor mediante invitación.</li></ul></div>
+      <div class="card span-6"><h3>Uso responsable de IA</h3><p>La IA se usa como apoyo para resumir o analizar, pero el usuario conserva la decisión final. La app no debe presentar el análisis como verdad absoluta, sino como ayuda para priorizar y decidir.</p><ul><li>El resumen ayuda a decidir, no sustituye la revisión.</li><li>El usuario marca estados y candidatos a Notion.</li><li>Las acciones siguen siendo creadas y validadas por la persona.</li></ul></div>
+    </div>
+  </section>
+
+  <section id="benchmark">
+    <div class="section-head"><div><div class="kicker">comparativa</div><h2><span class="num">21</span> Benchmark</h2></div></div>
+    <table class="table">
+      <thead><tr><th>Alternativa</th><th>Qué resuelve</th><th>Limitación frente a Wikilinks</th></tr></thead>
+      <tbody>
+        <tr><td>YouTube “Ver más tarde”</td><td>Guardar vídeos dentro de YouTube.</td><td>No integra webs, acciones, Notion ni clasificación personal avanzada.</td></tr>
+        <tr><td>Favoritos del navegador</td><td>Guardar enlaces rápidamente.</td><td>No aporta flujo de revisión, estados, tareas ni análisis IA.</td></tr>
+        <tr><td>Pocket / Read-it-later</td><td>Guardar artículos para leer después.</td><td>Menos orientado a vídeos, tareas y preparación para Notion.</td></tr>
+        <tr><td>Notion</td><td>Base de conocimiento flexible.</td><td>Requiere más entrada manual y puede llenarse de enlaces sin filtrar.</td></tr>
+        <tr><td>Wikilinks</td><td>Captura, clasificación, acción y exportación filtrada.</td><td>Proyecto personal en evolución, con margen para IA más avanzada y demo pública.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="qa">
+    <div class="section-head"><div><div class="kicker">calidad y cierre</div><h2><span class="num">22</span> QA, backlog y limitaciones</h2></div></div>
+    <div class="grid">
+      <div class="card span-6"><h3>Checklist de pruebas</h3><ul><li>Login con cuenta Google.</li><li>Añadir vídeo de YouTube y obtener metadatos.</li><li>Detectar vídeo duplicado.</li><li>Añadir enlace web y clasificarlo.</li><li>Crear acción vinculada a vídeo y web.</li><li>Buscar recurso desde búsqueda global.</li><li>Marcar recurso como candidato a Notion.</li><li>Probar vista móvil/PWA y compartir enlace.</li></ul></div>
+      <div class="card span-6"><h3>Limitaciones actuales</h3><ul><li>Resumen IA sin transcripción completa del vídeo.</li><li>La app pública requiere login para revisar módulos internos.</li><li>OpenGraph puede ser parcial según la web de origen.</li><li>La vista global de acciones puede mejorar el contexto de enlaces web.</li><li>No existe todavía modo demo público con datos ficticios.</li></ul></div>
+      <div class="card span-12"><h3>Backlog de mejoras futuras</h3><span class="tagline">Transcripción real de vídeos</span><span class="tagline">Tareas por voz</span><span class="tagline">Gestión asistida por IA</span><span class="tagline">Modo demo</span><span class="tagline">Mejor OpenGraph persistente</span><span class="tagline">Recomendaciones inteligentes</span><span class="tagline">Estadísticas avanzadas</span><span class="tagline">Exportación Notion más configurable</span></div>
+    </div>
+  </section>
+
   <div class="footer">
-    <p>Versión: v5 · Actualizada con estado real de GitHub, README renovado, módulo de webs, acciones, IA, Notion, PWA, URL pública correcta y limitaciones conocidas.</p>
+    <p>Versión: v6 · Memoria ampliada con objetivos, usuarios, flujos UX, metodología IA, construcción técnica, métricas, riesgos, privacidad, benchmark, QA, backlog y limitaciones conocidas.</p>
   </div>
 </main>
 <script>
